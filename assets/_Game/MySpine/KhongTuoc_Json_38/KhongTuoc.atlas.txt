@@ -1,0 +1,993 @@
+
+KhongTuoc.png
+size: 5324, 5324
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Base_Body/Base_Bicep_L
+  rotate: true
+  xy: 1783, 64
+  size: 280, 388
+  orig: 286, 404
+  offset: 6, 16
+  index: -1
+Base_Body/Base_Bicep_R
+  rotate: false
+  xy: 4535, 2801
+  size: 286, 389
+  orig: 286, 404
+  offset: 0, 15
+  index: -1
+Base_Body/Base_Body
+  rotate: false
+  xy: 2865, 952
+  size: 539, 934
+  orig: 539, 934
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Forearm_L
+  rotate: false
+  xy: 4881, 1764
+  size: 270, 361
+  orig: 274, 365
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Forearm_R
+  rotate: false
+  xy: 4864, 2127
+  size: 274, 365
+  orig: 274, 365
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Hand_HR
+  rotate: false
+  xy: 5154, 1598
+  size: 150, 170
+  orig: 150, 178
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Hand_L
+  rotate: false
+  xy: 4863, 580
+  size: 207, 196
+  orig: 207, 196
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Hand_L1
+  rotate: false
+  xy: 4863, 778
+  size: 244, 198
+  orig: 244, 199
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Hand_R
+  rotate: false
+  xy: 4829, 382
+  size: 207, 196
+  orig: 207, 196
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Leg_L
+  rotate: true
+  xy: 2685, 3618
+  size: 290, 1523
+  orig: 290, 1523
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Leg_R
+  rotate: true
+  xy: 2619, 2472
+  size: 290, 1523
+  orig: 290, 1523
+  offset: 0, 0
+  index: -1
+Base_Body/Base_Underwear_B
+  rotate: false
+  xy: 2841, 200
+  size: 530, 256
+  orig: 530, 258
+  offset: 0, 1
+  index: -1
+Base_Body/Base_Underwear_L
+  rotate: true
+  xy: 4210, 3619
+  size: 289, 341
+  orig: 289, 367
+  offset: 0, 26
+  index: -1
+Base_Body/Base_Underwear_R
+  rotate: true
+  xy: 4056, 252
+  size: 288, 340
+  orig: 288, 367
+  offset: 0, 27
+  index: -1
+Base_Body/Base_Underwear_T
+  rotate: false
+  xy: 2662, 2
+  size: 420, 196
+  orig: 422, 206
+  offset: 2, 10
+  index: -1
+Base_Body/Shadow
+  rotate: true
+  xy: 4144, 2025
+  size: 768, 415
+  orig: 768, 415
+  offset: 0, 0
+  index: -1
+Face/Base_Acnes
+  rotate: true
+  xy: 5214, 4326
+  size: 223, 55
+  orig: 301, 421
+  offset: 34, 99
+  index: -1
+Face/Base_Dirt
+  rotate: false
+  xy: 4920, 3173
+  size: 301, 374
+  orig: 301, 421
+  offset: 0, 0
+  index: -1
+Face/Base_EBalll_L
+  rotate: true
+  xy: 5246, 2952
+  size: 89, 70
+  orig: 89, 70
+  offset: 0, 0
+  index: -1
+Face/Base_EBalll_R
+  rotate: false
+  xy: 5086, 533
+  size: 89, 70
+  orig: 89, 70
+  offset: 0, 0
+  index: -1
+Face/Base_EBrows_L
+  rotate: false
+  xy: 4144, 1888
+  size: 121, 38
+  orig: 121, 38
+  offset: 0, 0
+  index: -1
+Face/Base_EBrows_R
+  rotate: false
+  xy: 4267, 1888
+  size: 121, 38
+  orig: 121, 38
+  offset: 0, 0
+  index: -1
+Face/Base_ELash_L
+  rotate: false
+  xy: 609, 21
+  size: 110, 44
+  orig: 110, 53
+  offset: 0, 2
+  index: -1
+Face/Base_ELash_R
+  rotate: true
+  xy: 5038, 471
+  size: 107, 46
+  orig: 110, 53
+  offset: 0, 0
+  index: -1
+Face/Base_ELid_L
+  rotate: false
+  xy: 5167, 2515
+  size: 103, 65
+  orig: 103, 65
+  offset: 0, 0
+  index: -1
+Face/Base_ELid_R
+  rotate: false
+  xy: 5163, 1261
+  size: 103, 65
+  orig: 103, 65
+  offset: 0, 0
+  index: -1
+Face/Base_ELight_L
+  rotate: true
+  xy: 2662, 200
+  size: 23, 30
+  orig: 23, 30
+  offset: 0, 0
+  index: -1
+Face/Base_ELight_L1
+  rotate: false
+  xy: 5140, 2176
+  size: 11, 13
+  orig: 11, 13
+  offset: 0, 0
+  index: -1
+Face/Base_ELight_R1
+  rotate: false
+  xy: 5140, 2176
+  size: 11, 13
+  orig: 11, 13
+  offset: 0, 0
+  index: -1
+Face/Base_ELight_R
+  rotate: true
+  xy: 5072, 753
+  size: 23, 31
+  orig: 23, 31
+  offset: 0, 0
+  index: -1
+Face/Base_Ear_L
+  rotate: false
+  xy: 2662, 225
+  size: 67, 121
+  orig: 67, 121
+  offset: 0, 0
+  index: -1
+Face/Base_Ear_R
+  rotate: false
+  xy: 3701, 72
+  size: 67, 121
+  orig: 67, 121
+  offset: 0, 0
+  index: -1
+Face/Base_Head
+  rotate: true
+  xy: 825, 108
+  size: 301, 421
+  orig: 301, 421
+  offset: 0, 0
+  index: -1
+Face/Base_Iris_L
+  rotate: false
+  xy: 4016, 1109
+  size: 23, 23
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+Face/Base_Iris_R
+  rotate: false
+  xy: 2694, 200
+  size: 23, 23
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+Face/Base_Mouth
+  rotate: true
+  xy: 791, 77
+  size: 94, 32
+  orig: 94, 32
+  offset: 0, 0
+  index: -1
+Face/Base_Mouth_A
+  rotate: false
+  xy: 4617, 39
+  size: 116, 61
+  orig: 116, 61
+  offset: 0, 0
+  index: -1
+Face/Base_Mouth_H
+  rotate: false
+  xy: 5086, 484
+  size: 93, 47
+  orig: 93, 47
+  offset: 0, 0
+  index: -1
+Face/Base_Pores
+  rotate: false
+  xy: 488, 67
+  size: 301, 104
+  orig: 301, 421
+  offset: 0, 74
+  index: -1
+Face/Base_Pupil_L
+  rotate: false
+  xy: 5265, 4268
+  size: 57, 56
+  orig: 57, 56
+  offset: 0, 0
+  index: -1
+Face/Base_Pupil_R
+  rotate: false
+  xy: 5265, 4210
+  size: 57, 56
+  orig: 57, 56
+  offset: 0, 0
+  index: -1
+Face/Face_BLash_L
+  rotate: true
+  xy: 5038, 385
+  size: 84, 48
+  orig: 84, 48
+  offset: 0, 0
+  index: -1
+Face/Face_BLash_R
+  rotate: false
+  xy: 4961, 34
+  size: 84, 48
+  orig: 84, 48
+  offset: 0, 0
+  index: -1
+Face/Makeup_BLash_L
+  rotate: true
+  xy: 5223, 3227
+  size: 112, 52
+  orig: 112, 54
+  offset: 0, 1
+  index: -1
+Face/Makeup_BLash_R
+  rotate: true
+  xy: 5214, 3999
+  size: 111, 52
+  orig: 112, 54
+  offset: 0, 1
+  index: -1
+Face/Makeup_Blush
+  rotate: false
+  xy: 4735, 84
+  size: 301, 281
+  orig: 301, 421
+  offset: 0, 0
+  index: -1
+Face/Makeup_Contour
+  rotate: false
+  xy: 4561, 2378
+  size: 301, 421
+  orig: 301, 421
+  offset: 0, 0
+  index: -1
+Face/Makeup_Contour_BL
+  rotate: true
+  xy: 5246, 3135
+  size: 90, 76
+  orig: 90, 76
+  offset: 0, 0
+  index: -1
+Face/Makeup_Contour_BR
+  rotate: true
+  xy: 5246, 3043
+  size: 90, 76
+  orig: 90, 76
+  offset: 0, 0
+  index: -1
+Face/Makeup_Contour_UL
+  rotate: false
+  xy: 2731, 200
+  size: 47, 79
+  orig: 47, 79
+  offset: 0, 0
+  index: -1
+Face/Makeup_Contour_UR
+  rotate: true
+  xy: 721, 18
+  size: 47, 78
+  orig: 47, 78
+  offset: 0, 0
+  index: -1
+Face/Makeup_ELid_L
+  rotate: true
+  xy: 5223, 3341
+  size: 103, 65
+  orig: 103, 65
+  offset: 0, 0
+  index: -1
+Face/Makeup_ELid_R
+  rotate: false
+  xy: 2731, 281
+  size: 103, 65
+  orig: 103, 65
+  offset: 0, 0
+  index: -1
+Face/Makeup_E_Shadow
+  rotate: true
+  xy: 5140, 2191
+  size: 301, 181
+  orig: 301, 421
+  offset: 0, 100
+  index: -1
+Face/Makeup_Ebrows_L
+  rotate: false
+  xy: 488, 28
+  size: 119, 37
+  orig: 124, 37
+  offset: 0, 0
+  index: -1
+Face/Makeup_Foundation
+  rotate: false
+  xy: 4561, 1955
+  size: 301, 421
+  orig: 301, 421
+  offset: 0, 0
+  index: -1
+Face/Makeup_Foundation_BD
+  rotate: true
+  xy: 5223, 3196
+  size: 29, 21
+  orig: 29, 21
+  offset: 0, 0
+  index: -1
+Face/Makeup_Foundation_BL
+  rotate: true
+  xy: 4016, 1134
+  size: 55, 41
+  orig: 55, 41
+  offset: 0, 0
+  index: -1
+Face/Makeup_Foundation_BM
+  rotate: true
+  xy: 4071, 2773
+  size: 20, 44
+  orig: 20, 44
+  offset: 0, 0
+  index: -1
+Face/Makeup_Foundation_BR
+  rotate: true
+  xy: 5280, 2815
+  size: 55, 42
+  orig: 55, 42
+  offset: 0, 0
+  index: -1
+Face/Makeup_Foundation_BT
+  rotate: false
+  xy: 5272, 556
+  size: 50, 47
+  orig: 50, 47
+  offset: 0, 0
+  index: -1
+Face/Makeup_Highlight
+  rotate: false
+  xy: 4864, 2494
+  size: 301, 374
+  orig: 301, 421
+  offset: 0, 0
+  index: -1
+Face/Makeup_Highlight_BL
+  rotate: true
+  xy: 5280, 2716
+  size: 97, 34
+  orig: 97, 34
+  offset: 0, 0
+  index: -1
+Face/Makeup_Highlight_BM
+  rotate: true
+  xy: 5303, 5280
+  size: 42, 19
+  orig: 42, 19
+  offset: 0, 0
+  index: -1
+Face/Makeup_Highlight_BR
+  rotate: true
+  xy: 5280, 2617
+  size: 97, 34
+  orig: 97, 34
+  offset: 0, 0
+  index: -1
+Face/Makeup_Lens_L
+  rotate: false
+  xy: 5265, 4152
+  size: 57, 56
+  orig: 57, 56
+  offset: 0, 0
+  index: -1
+Face/Makeup_Lens_R
+  rotate: false
+  xy: 5181, 497
+  size: 57, 56
+  orig: 57, 56
+  offset: 0, 0
+  index: -1
+Face/Makeup_Mascara_UL
+  rotate: false
+  xy: 4614, 1191
+  size: 89, 31
+  orig: 89, 31
+  offset: 0, 0
+  index: -1
+Face/Makeup_Mascara_UR
+  rotate: false
+  xy: 4705, 1191
+  size: 89, 31
+  orig: 89, 31
+  offset: 0, 0
+  index: -1
+Face/Makeup_Mouth
+  rotate: false
+  xy: 3701, 29
+  size: 94, 41
+  orig: 94, 41
+  offset: 0, 0
+  index: -1
+Face/Makeup_Mouth_A
+  rotate: false
+  xy: 4499, 36
+  size: 116, 64
+  orig: 116, 64
+  offset: 0, 0
+  index: -1
+Face/Makeup_Mouth_H
+  rotate: false
+  xy: 5177, 555
+  size: 93, 48
+  orig: 93, 49
+  offset: 0, 0
+  index: -1
+Face/Makeup_ULash_L
+  rotate: false
+  xy: 4735, 34
+  size: 111, 48
+  orig: 112, 48
+  offset: 0, 0
+  index: -1
+Face/Makeup_ULash_R
+  rotate: false
+  xy: 4848, 35
+  size: 111, 47
+  orig: 112, 48
+  offset: 1, 1
+  index: -1
+Face/Medicine_BL
+  rotate: false
+  xy: 5088, 430
+  size: 71, 52
+  orig: 71, 52
+  offset: 0, 0
+  index: -1
+Face/Medicine_BR
+  rotate: false
+  xy: 4484, 3573
+  size: 66, 44
+  orig: 66, 44
+  offset: 0, 0
+  index: -1
+Face/Moist_Head
+  rotate: true
+  xy: 4823, 2870
+  size: 301, 421
+  orig: 301, 421
+  offset: 0, 0
+  index: -1
+Face/Serum_BL
+  rotate: true
+  xy: 2780, 201
+  size: 78, 55
+  orig: 78, 55
+  offset: 0, 0
+  index: -1
+Face/Serum_BR
+  rotate: false
+  xy: 5088, 381
+  size: 69, 47
+  orig: 69, 47
+  offset: 0, 0
+  index: -1
+Face/Shadow_Hair_T2
+  rotate: true
+  xy: 5163, 1328
+  size: 268, 126
+  orig: 268, 126
+  offset: 0, 0
+  index: -1
+Face/Trim_Ebrows_L
+  rotate: false
+  xy: 4390, 1889
+  size: 119, 37
+  orig: 124, 37
+  offset: 0, 0
+  index: -1
+Hair/Added_Bangs
+  rotate: true
+  xy: 2153, 1800
+  size: 372, 434
+  orig: 372, 435
+  offset: 0, 1
+  index: -1
+Hair/Added_Hair_B
+  rotate: false
+  xy: 1717, 2174
+  size: 900, 1450
+  orig: 902, 1450
+  offset: 2, 0
+  index: -1
+Hair/Base_Bangs
+  rotate: false
+  xy: 4465, 367
+  size: 362, 218
+  orig: 363, 271
+  offset: 0, 53
+  index: -1
+Hair/Base_Hair_B
+  rotate: true
+  xy: 3406, 545
+  size: 562, 653
+  orig: 562, 653
+  offset: 0, 0
+  index: -1
+Hair/Base_Hair_T
+  rotate: false
+  xy: 4398, 102
+  size: 335, 263
+  orig: 335, 272
+  offset: 0, 0
+  index: -1
+Hair/Base_SHair_L
+  rotate: true
+  xy: 4144, 1928
+  size: 95, 392
+  orig: 95, 392
+  offset: 0, 0
+  index: -1
+Hair/Dyed_Bangs
+  rotate: true
+  xy: 1717, 1799
+  size: 373, 434
+  orig: 373, 435
+  offset: 0, 1
+  index: -1
+Hair/Dyed_Hair_B
+  rotate: false
+  xy: 1248, 346
+  size: 852, 1451
+  orig: 902, 1451
+  offset: 25, 0
+  index: -1
+Hair/Dyed_Hair_T
+  rotate: true
+  xy: 4889, 1246
+  size: 346, 272
+  orig: 346, 272
+  offset: 0, 0
+  index: -1
+Hair/Makeup_Headband
+  rotate: true
+  xy: 4309, 2798
+  size: 349, 224
+  orig: 349, 224
+  offset: 0, 0
+  index: -1
+Hair/Set_K_Bangs
+  rotate: false
+  xy: 4553, 3566
+  size: 482, 393
+  orig: 482, 393
+  offset: 0, 0
+  index: -1
+Hair/Set_K_Hair_B
+  rotate: false
+  xy: 2, 411
+  size: 1244, 1386
+  orig: 1244, 1386
+  offset: 0, 0
+  index: -1
+Hair/Straight_Bangs
+  rotate: true
+  xy: 4614, 1588
+  size: 365, 265
+  orig: 365, 265
+  offset: 0, 0
+  index: -1
+Hair/Straight_Hair_B
+  rotate: false
+  xy: 4016, 1191
+  size: 596, 695
+  orig: 596, 695
+  offset: 0, 0
+  index: -1
+Hair/Trim_Bangs
+  rotate: true
+  xy: 4484, 3192
+  size: 372, 434
+  orig: 372, 435
+  offset: 0, 1
+  index: -1
+Hair/Trim_Hair_B
+  rotate: true
+  xy: 2619, 2764
+  size: 852, 1450
+  orig: 902, 1450
+  offset: 25, 0
+  index: -1
+Outfit_Base/Base_Belt
+  rotate: true
+  xy: 5214, 4920
+  size: 402, 87
+  orig: 402, 87
+  offset: 0, 0
+  index: -1
+Outfit_Base/Base_Boots_L
+  rotate: true
+  xy: 2, 23
+  size: 148, 484
+  orig: 148, 484
+  offset: 0, 0
+  index: -1
+Outfit_Base/Base_Coat_B
+  rotate: false
+  xy: 4889, 978
+  size: 269, 266
+  orig: 269, 266
+  offset: 0, 0
+  index: -1
+Outfit_Base/Base_Coat_L
+  rotate: true
+  xy: 2, 173
+  size: 236, 821
+  orig: 236, 821
+  offset: 0, 0
+  index: -1
+Outfit_Base/Base_Coat_R
+  rotate: false
+  xy: 4071, 2795
+  size: 236, 821
+  orig: 236, 821
+  offset: 0, 0
+  index: -1
+Outfit_Base/Base_Coat_SL
+  rotate: false
+  xy: 4061, 542
+  size: 402, 647
+  orig: 402, 656
+  offset: 0, 0
+  index: -1
+Outfit_Base/Base_Dress
+  rotate: false
+  xy: 4486, 3961
+  size: 726, 1361
+  orig: 821, 1451
+  offset: 47, 90
+  index: -1
+Outfit_Base/Base_Shirt_L
+  rotate: false
+  xy: 4465, 587
+  size: 396, 602
+  orig: 400, 608
+  offset: 0, 0
+  index: -1
+Outfit_Base/Base_Shirt_M
+  rotate: true
+  xy: 2102, 348
+  size: 481, 737
+  orig: 487, 756
+  offset: 3, 14
+  index: -1
+Outfit_Base/Base_Shirt_MB
+  rotate: true
+  xy: 5153, 1770
+  size: 182, 148
+  orig: 182, 148
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Armbrace_L
+  rotate: false
+  xy: 5223, 3446
+  size: 99, 101
+  orig: 107, 101
+  offset: 8, 0
+  index: -1
+Set_K/Set_K_Bracelet_L
+  rotate: false
+  xy: 4398, 2
+  size: 99, 98
+  orig: 99, 98
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Collar
+  rotate: true
+  xy: 5167, 2582
+  size: 286, 111
+  orig: 286, 111
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Crest_B
+  rotate: true
+  xy: 2102, 831
+  size: 966, 761
+  orig: 966, 761
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Decor_BR
+  rotate: false
+  xy: 5214, 4112
+  size: 49, 212
+  orig: 49, 212
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Decor_UR
+  rotate: false
+  xy: 4332, 27
+  size: 64, 223
+  orig: 66, 223
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Erings_L
+  rotate: false
+  xy: 5214, 4551
+  size: 89, 367
+  orig: 89, 367
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Feather_B
+  rotate: false
+  xy: 2, 3626
+  size: 2681, 1696
+  orig: 2681, 1696
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Feather_L
+  rotate: false
+  xy: 2, 1799
+  size: 1713, 1825
+  orig: 1716, 1825
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Feather_R
+  rotate: true
+  xy: 2685, 3910
+  size: 1412, 1799
+  orig: 1412, 1799
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Gloves_BL
+  rotate: false
+  xy: 3084, 2
+  size: 212, 196
+  orig: 214, 197
+  offset: 0, 1
+  index: -1
+Set_K/Set_K_Gloves_ML
+  rotate: false
+  xy: 4614, 1224
+  size: 273, 362
+  orig: 275, 367
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Gloves_UL
+  rotate: true
+  xy: 4881, 1594
+  size: 168, 271
+  orig: 175, 289
+  offset: 7, 18
+  index: -1
+Set_K/Set_K_Headband
+  rotate: false
+  xy: 3298, 28
+  size: 401, 165
+  orig: 401, 165
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Heels_L
+  rotate: false
+  xy: 5109, 753
+  size: 150, 223
+  orig: 161, 223
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Heels_UL
+  rotate: true
+  xy: 4398, 403
+  size: 137, 65
+  orig: 137, 65
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Necklace1
+  rotate: false
+  xy: 4051, 37
+  size: 279, 213
+  orig: 279, 213
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Shoulder_R
+  rotate: false
+  xy: 3797, 2
+  size: 252, 307
+  orig: 252, 307
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Skirt
+  rotate: false
+  xy: 3406, 1109
+  size: 608, 777
+  orig: 629, 785
+  offset: 0, 8
+  index: -1
+Set_K/Set_K_Skirt_L
+  rotate: false
+  xy: 2865, 458
+  size: 533, 492
+  orig: 533, 492
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Skirt_R
+  rotate: false
+  xy: 4309, 3149
+  size: 173, 468
+  orig: 173, 468
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Stocking_L
+  rotate: true
+  xy: 2619, 2180
+  size: 290, 1523
+  orig: 290, 1523
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Stocking_M
+  rotate: false
+  xy: 1248, 85
+  size: 533, 259
+  orig: 533, 259
+  offset: 0, 0
+  index: -1
+Set_K/Set_K_Stocking_R
+  rotate: true
+  xy: 2619, 1888
+  size: 290, 1523
+  orig: 290, 1523
+  offset: 0, 0
+  index: -1
+Z_Ending/E_Bicep_L1
+  rotate: true
+  xy: 5037, 3549
+  size: 410, 208
+  orig: 418, 210
+  offset: 0, 2
+  index: -1
+Z_Ending/E_Bicep_L2
+  rotate: true
+  xy: 2173, 97
+  size: 249, 487
+  orig: 251, 521
+  offset: 2, 28
+  index: -1
+Z_Ending/E_Forearm_L1
+  rotate: true
+  xy: 3373, 195
+  size: 179, 422
+  orig: 179, 427
+  offset: 0, 4
+  index: -1
+Z_Ending/E_Forearm_L2
+  rotate: false
+  xy: 3400, 376
+  size: 427, 167
+  orig: 430, 167
+  offset: 3, 0
+  index: -1
+Z_Ending/E_Hand_L1
+  rotate: false
+  xy: 3829, 311
+  size: 225, 232
+  orig: 225, 250
+  offset: 0, 0
+  index: -1
+Z_Ending/E_Hand_L2
+  rotate: false
+  xy: 5072, 605
+  size: 208, 146
+  orig: 221, 155
+  offset: 11, 6
+  index: -1
+Z_Ending/E_Hand_L3
+  rotate: false
+  xy: 5153, 1954
+  size: 166, 235
+  orig: 179, 235
+  offset: 0, 0
+  index: -1
+Z_FX/FX_Heart
+  rotate: true
+  xy: 4538, 1888
+  size: 65, 62
+  orig: 65, 62
+  offset: 0, 0
+  index: -1
+Z_FX/FX_Star
+  rotate: true
+  xy: 5246, 2872
+  size: 78, 71
+  orig: 78, 71
+  offset: 0, 0
+  index: -1
+Z_FX/F_Angry
+  rotate: false
+  xy: 4486, 3910
+  size: 55, 49
+  orig: 55, 49
+  offset: 0, 0
+  index: -1
