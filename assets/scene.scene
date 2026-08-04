@@ -200,7 +200,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Sprite",
+    "_name": "Lv94_P4_background",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -218,8 +218,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 21,
-      "y": -51.00000000000006,
+      "x": 77.658,
+      "y": -668,
       "z": 0
     },
     "_lrot": {
@@ -231,8 +231,8 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 3,
-      "y": 3,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_mobility": 0,
@@ -243,7 +243,7 @@
       "y": 0,
       "z": 0
     },
-    "_id": "7bH0MxFlZG6pp0sOujf0Ud"
+    "_id": "echGb9nx5M4KUkpLefse6A"
   },
   {
     "__type__": "cc.UITransform",
@@ -264,7 +264,7 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_id": "29LSb4ZxtB0KdDFMpGz/Gn"
+    "_id": "e8KB8webZLDLi8zlp170i7"
   },
   {
     "__type__": "cc.Sprite",
@@ -289,7 +289,7 @@
       "__uuid__": "a8396d33-acfe-43e9-94f4-f34031d9c172@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "_type": 1,
+    "_type": 0,
     "_fillType": 0,
     "_sizeMode": 1,
     "_fillCenter": {
@@ -302,7 +302,7 @@
     "_isTrimmedMode": true,
     "_useGrayscale": false,
     "_atlas": null,
-    "_id": "acZMqGuYdL2aBzRp7s8Mk3"
+    "_id": "9bEBVojrlNPLfcOf4Qxfd7"
   },
   {
     "__type__": "cc.UITransform",
