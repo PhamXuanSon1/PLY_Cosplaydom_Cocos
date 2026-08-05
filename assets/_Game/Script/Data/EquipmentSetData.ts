@@ -11,8 +11,9 @@ export class EquipmentSetData {
     public skeletonDataFileName: string = "";
 
     // danh sách các cặp slot và attachment
-    @property({ type: [SlotAttachmentPair],
-                tooltip: "Danh sách các cặp slot và attachment"
+    @property({
+        type: [SlotAttachmentPair],
+        tooltip: "Danh sách các cặp slot và attachment"
     })
     public slotAttachmentPairs: SlotAttachmentPair[];
 }

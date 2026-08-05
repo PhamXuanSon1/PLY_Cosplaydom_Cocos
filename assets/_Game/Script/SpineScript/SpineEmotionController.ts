@@ -59,9 +59,10 @@ export class SpineEmotionController extends Component {
     }
 
     public PlayHappyAnim(): void {
-        if (!this.skeletonAnimation || !this.charComponent) return;
-
-
+        this.EmotionRoutine(this.happyAnimationName, this.smileSlots);
+    }
+    public PlayAngryAnim(): void {
+        this.EmotionRoutine(this.angryAnimationName, this.angrySlots);
     }
 
     public EmotionRoutine(animName: string, slots: EmotonSlotConfig[]): void {
