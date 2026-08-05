@@ -1,21 +1,21 @@
-import { _decorator, CCBoolean, Component, Node, sp } from 'cc';
+import { _decorator, CCBoolean, CCString, Component, Node, sp } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('SlotAttachmentPair')
 export class SlotAttachmentPair {
     
-    @property({ type: CCBoolean,
-                tooltip: "Bat tat tinh nang cua cap slot va attachment"
+    @property({
+        tooltip: "Bat tat tinh nang cua cap slot va attachment"
     })
-    public isEnabled : boolean = true;
+    public isEnabled: boolean = true;
 
-    @property({ type: String,
-                tooltip: "Ten cua slot trong skeleton data"
+    @property({
+        tooltip: "Ten cua slot trong skeleton data"
     })
-    public slotName : string = "";
+    public slotName: string = "";
 
-    @property({ type: String,
-                tooltip: "Ten cua attachment trong skeleton data"
+    @property({
+        tooltip: "Ten cua attachment trong skeleton data"
     })
     public attachmentName: string = '';
 

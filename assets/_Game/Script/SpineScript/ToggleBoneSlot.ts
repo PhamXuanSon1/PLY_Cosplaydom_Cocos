@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, sp } from 'cc';
-import { SlotAttachmentPair } from './SlotAttachmentPair';
+import { SlotAttachmentPair } from '../Data/SlotAttachmentPair';
 const { ccclass, property } = _decorator;
 
 @ccclass('ToggleBoneSlot')
