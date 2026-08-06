@@ -8,10 +8,18 @@ const { ccclass, property, executeInEditMode } = _decorator;
 
 @ccclass('CharacterEquipmentSetup')
 export class CharacterEquipmentSetup {
-    @property({ type: Character, tooltip: "Character component để thay đổi attachment" })
+    @property({ 
+        type: Character, 
+        displayName: "Character",
+        tooltip: "Character component để thay đổi attachment" 
+    })
     public character: Character | null = null;
 
-    @property({ type: JsonAsset, tooltip: "File JSON chứa dữ liệu trang phục" })
+    @property({ 
+        type: JsonAsset, 
+        displayName: "Equipment Data (JSON)",
+        tooltip: "File JSON chứa dữ liệu trang phục" 
+    })
     public equipmentData: JsonAsset | null = null;
 }
 
@@ -22,33 +30,56 @@ export class CharacterManager extends Component {
     // KHAI BÁO CÁC BIẾN  
     public static instance: CharacterManager | null = null;
 
-    @property({ type: [CharacterEquipmentSetup], tooltip: "Danh sách các cặp character và equipment data (JSON)" })
+    @property({ 
+        type: [CharacterEquipmentSetup], 
+        group: { name: '1. Character Setup', id: 'characterSetup' },
+        displayName: 'Character Setups',
+        tooltip: "Danh sách các cặp character và equipment data (JSON)" 
+    })
     public characterSetups: CharacterEquipmentSetup[] = [];
 
-    @property({ type: Node, tooltip: "Nhân vật đc scale" })
+    @property({ 
+        type: Node, 
+        group: { name: '1. Character Setup', id: 'characterSetup' },
+        displayName: 'Character Node 1',
+        tooltip: "Nhân vật được scale" 
+    })
     public character1: Node;
 
-    //scale ban đầu
+    // scale ban đầu
     private originalScales: Map<Node, Vec3> = new Map();
 
-    //vị trí ban đầu
+    // vị trí ban đầu
     private originalPositions: Map<Node, Vec3> = new Map();
 
 
     // EDITOR TEST PROPERTIES (Thay thế Odin Inspector [Button], [TableList] trong Unity)
     // Giúp chọn và set giá trị ngay trong Editor mà không cần chạy game
 
-    @property({ type: Character, tooltip: "Nhân vật target để test" })
+    @property({ 
+        type: Character, 
+        group: { name: '2. Editor Test Target', id: 'editorTarget' },
+        displayName: 'Target Test Character',
+        tooltip: "Nhân vật target để test" 
+    })
     public targetTestCharacter: Character | null = null;
 
-    @property({ type: JsonAsset, tooltip: "Equipment data JSON asset target để test/lưu" })
+    @property({ 
+        type: JsonAsset, 
+        group: { name: '2. Editor Test Target', id: 'editorTarget' },
+        displayName: 'Test Equipment Data Asset',
+        tooltip: "Equipment data JSON asset target để test/lưu" 
+    })
     public testEquipmentDataAsset: JsonAsset | null = null;
 
     // SEARCH KEYWORD PROPERTY
-    @property({ tooltip: "Từ khóa tìm kiếm theo tên Slot hoặc Attachment trong myEquipmentSet" })
     private _searchKeyword: string = "";
 
-    @property({ displayName: "Search Keyword", tooltip: "Nhập từ khóa để lọc trực tiếp các phần tử trong myEquipmentSet" })
+    @property({ 
+        group: { name: '3. Equipment Set & Search', id: 'equipmentSearch' },
+        displayName: "Search Keyword", 
+        tooltip: "Nhập từ khóa để lọc trực tiếp các phần tử trong myEquipmentSet" 
+    })
     get searchKeyword(): string {
         return this._searchKeyword;
     }
@@ -57,38 +88,63 @@ export class CharacterManager extends Component {
         this.filterEquipmentSet();
     }
 
-    @property({ type: [SlotAttachmentPair], tooltip: "Set trang phục hiện tại" })
+    @property({ 
+        type: [SlotAttachmentPair], 
+        group: { name: '3. Equipment Set & Search', id: 'equipmentSearch' },
+        displayName: 'My Equipment Set',
+        tooltip: "Set trang phục hiện tại" 
+    })
     public myEquipmentSet: SlotAttachmentPair[] = [];
 
     // Master list chứa toàn bộ các slot/attachment
     private _allEquipmentSet: SlotAttachmentPair[] = [];
 
-    //BUTTON EDITOR
-    @property({ displayName: "Lấy tất cả slot từ target", tooltip: "Tích vào checkbox này để tự động lấy danh sách slot từ Spine Skeleton" })
+    // BUTTON EDITOR
+    @property({ 
+        group: { name: '4. Editor Actions', id: 'editorActions' },
+        displayName: "🔘 Get All Slots", 
+        tooltip: "Tích vào checkbox này để tự động lấy danh sách slot từ Spine Skeleton" 
+    })
     get btnGetAllSlot(): boolean { return false; }
     set btnGetAllSlot(value: boolean) {
         if (value == true) this.getAllSlots();
     }
 
-    @property({ displayName: "Tải data từ JSON", tooltip: "Đọc dữ liệu từ file Test Equipment Data Asset (JSON) nạp vào myEquipmentSet" })
+    @property({ 
+        group: { name: '4. Editor Actions', id: 'editorActions' },
+        displayName: "📂 Load From Test JSON", 
+        tooltip: "Đọc dữ liệu từ file Test Equipment Data Asset (JSON) nạp vào myEquipmentSet" 
+    })
     get btnLoadFromTestJson(): boolean { return false; }
     set btnLoadFromTestJson(value: boolean) {
         if (value == true) this.loadFromTestJson();
     }
 
-    @property({ displayName: "Mặc đồ ngay", tooltip: "Tick vào checkbox để mặc đồ ngay" })
+    @property({ 
+        group: { name: '4. Editor Actions', id: 'editorActions' },
+        displayName: "👕 Equip Now (Editor)", 
+        tooltip: "Tick vào checkbox để mặc đồ ngay" 
+    })
     get btnEditorEquip(): boolean { return false; }
     set btnEditorEquip(value: boolean) {
         if (value == true) this.onEditorEquip();
     }
 
-    @property({ displayName: "Tắt Tất Cả Đồ", tooltip: "Tích vào checkbox này để ẩn toàn bộ trang bị" })
+    @property({ 
+        group: { name: '4. Editor Actions', id: 'editorActions' },
+        displayName: "🚫 Disable All Items", 
+        tooltip: "Tích vào checkbox này để ẩn toàn bộ trang bị" 
+    })
     get btnDisableAllItems(): boolean { return false; }
     set btnDisableAllItems(value: boolean) {
         if (value == true) this.disableAllItems();
     }
 
-    @property({ displayName: "Lưu data & Ghi đè JSON", tooltip: "Lưu dữ liệu hiện tại trong myEquipmentSet vào file Test Equipment Data Asset (JSON) và ghi đè file trên ổ đĩa" })
+    @property({ 
+        group: { name: '4. Editor Actions', id: 'editorActions' },
+        displayName: "💾 Save To Test JSON", 
+        tooltip: "Lưu dữ liệu hiện tại trong myEquipmentSet vào file Test Equipment Data Asset (JSON) và ghi đè file trên ổ đĩa" 
+    })
     get btnSaveToTestJson(): boolean { return false; }
     set btnSaveToTestJson(value: boolean) {
         if (value == true) this.saveToTestJson();
