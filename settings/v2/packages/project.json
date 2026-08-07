@@ -12,6 +12,10 @@
     {
       "name": "DrawItem",
       "value": 1
+    },
+    {
+      "name": "Makeup",
+      "value": 2
     }
   ]
 }

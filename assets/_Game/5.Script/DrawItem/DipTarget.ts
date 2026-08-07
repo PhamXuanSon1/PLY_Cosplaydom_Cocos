@@ -1,11 +1,10 @@
-import { _decorator, Component, CCBoolean } from 'cc';
+import { _decorator, Component } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('DipTarget')
 export class DipTarget extends Component {
 
     @property({
-        type: CCBoolean,
         group: { name: '1. Basic Info', id: 'basicInfo' },
         displayName: 'Is Open',
         tooltip: "Đánh dấu xem hộp phấn/màu này đã được mở nắp chưa. Nếu chưa mở thì cọ không thể nhúng vào được."

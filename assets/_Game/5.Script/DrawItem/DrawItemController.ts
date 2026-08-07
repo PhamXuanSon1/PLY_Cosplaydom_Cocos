@@ -24,15 +24,29 @@ export class DrawItemController extends Component {
     public itemType: DrawItemType = DrawItemType.ClickOnly;
 
     @property({
-        type: [DrawItemController],
+        type: [Component],
         group: { name: '1. Basic Info', id: 'basicInfo' },
         displayName: 'Unlock Requirements',
         tooltip: "Danh sách các vật phẩm CẦN PHẢI hoàn thành trước khi mở khoá vật phẩm này (dành cho trường hợp cần nhiều hơn 1 điều kiện)."
     })
     public requireItemsToUnlock: DrawItemController[] = [];
 
+    public isUnlocked(): boolean {
+        if (this.requireItemsToUnlock && this.requireItemsToUnlock.length > 0) {
+            for (let i = 0; i < this.requireItemsToUnlock.length; i++) {
+                if (this.requireItemsToUnlock[i] != null && !this.requireItemsToUnlock[i].isCompleted) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public IsUnlocked(): boolean {
+        return this.isUnlocked();
+    }
+
     @property({
-        type: CCString,
         group: { name: '1. Basic Info', id: 'basicInfo' },
         displayName: 'Makeup ID',
         tooltip: "ID dùng để đối chiếu với Makeup Target. Chỉ khi DrawItem và Target có cùng ID thì mới vẽ/tương tác được."
@@ -64,7 +78,6 @@ export class DrawItemController extends Component {
     public dipTarget: Node | null = null;
 
     @property({
-        type: CCBoolean,
         group: { name: '2. Interaction Setup', id: 'interactionSetup' },
         displayName: 'Has Dipped',
         tooltip: "Xác định xem cọ đã có phấn chưa. Sẽ tự động reset về false khi bắt đầu game."
@@ -128,7 +141,6 @@ export class DrawItemController extends Component {
     public drawFaceEffect: Node | null = null;
 
     @property({
-        type: CCBoolean,
         group: { name: '4. Audio & Events', id: 'audioEvents' },
         displayName: 'Play Loop FX On Drag',
         tooltip: "Bật cái này nếu muốn phát âm thanh lặp lại liên tục trong suốt quá trình cầm/kéo đồ vật này."
@@ -144,7 +156,6 @@ export class DrawItemController extends Component {
     public loopFxToPlay: FxType = FxType.Brush;
 
     @property({
-        type: CCBoolean,
         group: { name: '4. Audio & Events', id: 'audioEvents' },
         displayName: 'Play One-Shot When Drawing',
         tooltip: "BẬT: Mỗi khi mục tiêu tăng thêm 1 tiến độ, sẽ phát âm thanh 1 LẦN DUY NHẤT (One-shot) (Dùng cho quẹt cọ, phấn).\nTẮT: Âm thanh Loop kêu liên tục từ lúc cầm lên đến lúc thả ra (Dùng cho máy sấy, máy xăm)."
@@ -152,7 +163,6 @@ export class DrawItemController extends Component {
     public onlyPlayLoopFxWhenDrawing: boolean = true;
 
     @property({
-        type: CCBoolean,
         group: { name: '4. Audio & Events', id: 'audioEvents' },
         displayName: 'Play FX On Complete',
         tooltip: "Bật cái này nếu muốn phát 1 âm thanh một lần duy nhất khi đồ vật hoàn thành (Click xong, Kéo tới đích xong...)."
@@ -200,7 +210,6 @@ export class DrawItemController extends Component {
     public OnCompleteEvent: EventHandler[] = [];
 
     @property({
-        type: CCBoolean,
         group: { name: '5. Completion', id: 'completionSettings' },
         displayName: 'Enable Auto Complete',
         tooltip: "Bật cái này nếu muốn tự động hoàn thành tất cả các mục tiêu còn lại khi đạt đến một mức % nhất định (Ví dụ 70%). Chỉ dành cho DirectDraw và DipAndDraw."

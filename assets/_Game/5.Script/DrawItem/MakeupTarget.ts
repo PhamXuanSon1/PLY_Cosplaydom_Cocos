@@ -9,14 +9,12 @@ const { ccclass, property } = _decorator;
 @ccclass('MakeupSlotConfig')
 export class MakeupSlotConfig {
     @property({ 
-        type: CCString, 
         displayName: 'Slot Name',
         tooltip: 'Tên của Spine Slot' 
     })
     public slotName: string = '';
 
     @property({ 
-        type: CCString, 
         displayName: 'Attachment Name',
         tooltip: 'Tên của Attachment cần bật' 
     })
@@ -38,7 +36,6 @@ export class MakeupTarget extends Component {
     public targetCharacter: Character | null = null;
 
     @property({
-        type: CCString,
         group: { name: '1. Target & ID', id: 'targetId' },
         displayName: 'Required Makeup ID',
         tooltip: 'ID đối chiếu với MakeupID của DrawItem'
@@ -49,7 +46,6 @@ export class MakeupTarget extends Component {
     // 2. Turn On Settings
     // ==========================================
     @property({
-        type: CCString,
         group: { name: '2. Turn On Settings', id: 'turnOnSettings' },
         displayName: 'Slot Name',
         tooltip: 'Tên Slot cần bật'
@@ -57,7 +53,6 @@ export class MakeupTarget extends Component {
     public slotName: string = '';
 
     @property({
-        type: CCString,
         group: { name: '2. Turn On Settings', id: 'turnOnSettings' },
         displayName: 'Attachment Name',
         tooltip: 'Tên Attachment cần bật'
@@ -92,7 +87,6 @@ export class MakeupTarget extends Component {
     // 3. Turn Off Settings (Optional)
     // ==========================================
     @property({
-        type: CCString,
         group: { name: '3. Turn Off Settings', id: 'turnOffSettings' },
         displayName: 'Slot Name To Turn Off',
         tooltip: 'Nhập tên Slot mà bạn muốn tắt đi khi vẽ cái mới lên. Để trống nếu không cần.'
@@ -124,7 +118,6 @@ export class MakeupTarget extends Component {
     public multipleObjectsToTurnOff: Node[] = [];
 
     @property({
-        type: CCBoolean,
         group: { name: '3. Turn Off Settings', id: 'turnOffSettings' },
         displayName: 'Turn Off Only When Done',
         tooltip: 'Bật cái này nếu CHỈ muốn tắt slot khi đã vẽ xong 100% (không làm mờ dần trong lúc vẽ).'
@@ -135,7 +128,6 @@ export class MakeupTarget extends Component {
     // 4. Status
     // ==========================================
     @property({
-        type: CCBoolean,
         group: { name: '4. Status', id: 'statusGroup' },
         displayName: 'Is Applied',
         tooltip: 'Check xem vị trí này đã hoàn thành makeup chưa'
@@ -146,7 +138,6 @@ export class MakeupTarget extends Component {
     // 5. Draw Settings
     // ==========================================
     @property({
-        type: CCBoolean,
         group: { name: '5. Draw Settings', id: 'drawSettings' },
         displayName: 'Continuous Mode',
         tooltip: 'Bật tuỳ chọn này nếu bạn muốn tiến độ tăng liên tục khi di chuột đè lên (không cần nhấc ra).'

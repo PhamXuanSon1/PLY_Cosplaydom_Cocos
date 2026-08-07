@@ -52,9 +52,17 @@ export class Character extends Component {
         }
     }
 
-    // Bật danh sách các cặp Slot-Attachment
-    public turnOnSlotAttachments(pairs: SlotAttachmentPair[]): void {
+    // Bật danh sách các cặp Slot-Attachment.
+    // Hỗ trợ 2 kiểu gọi:
+    //  - Từ code:         truyền mảng SlotAttachmentPair[]
+    //  - Từ EventHandler: truyền chuỗi "slot/attachment, slot/attachment" (Cocos đưa CustomEventData vào dưới dạng string)
+    public turnOnSlotAttachments(pairs: SlotAttachmentPair[] | string): void {
         if(!this.spineSkeleton) return;
+
+        if(typeof pairs === 'string'){
+            this.applySlotDataString(pairs, true);
+            return;
+        }
 
         for(const pair of pairs){
             if(pair.isEnabled){
@@ -64,14 +72,41 @@ export class Character extends Component {
     }
 
 
-    //Tắt danh sách các cặp Slot-Attachment
-    public turnOffSlotAttachments(pairs: SlotAttachmentPair[]): void {
+    //Tắt danh sách các cặp Slot-Attachment (nhận mảng hoặc chuỗi "slot, slot" / "slot/attachment, ..." từ EventHandler)
+    public turnOffSlotAttachments(pairs: SlotAttachmentPair[] | string): void {
         if(!this.spineSkeleton) return;
+
+        if(typeof pairs === 'string'){
+            this.applySlotDataString(pairs, false);
+            return;
+        }
 
         for(const pair of pairs){
             if(pair.isEnabled){
                 this.turnSlotAttachment(pair.slotName, null); // Tắt attachment bằng cách đặt null
             }
+        }
+    }
+
+    /**
+     * Parse chuỗi CustomEventData rồi bật/tắt từng slot.
+     * Định dạng: "slotName, attachmentName" cho 1 cặp; nhiều cặp ngăn nhau bằng dấu ';'.
+     * Ví dụ: "Hair_F/Added_Bangs, Hair/Added_Bangs; Item_F/Set_K_Headband, Item/Headband"
+     * Nếu bỏ phần attachment (không có dấu phẩy) thì mặc định attachment = tên slot.
+     *
+     * LƯU Ý: tên slot & attachment của Spine có thể chứa dấu '/', nên KHÔNG dùng '/' làm dấu phân cách.
+     * @param turnOn true = bật (gán attachment), false = tắt (gán null)
+     */
+    private applySlotDataString(data: string, turnOn: boolean): void {
+        const pairs = data.split(';');
+        for(const rawPair of pairs){
+            // Chỉ tách ở dấu phẩy ĐẦU TIÊN: trước là slot, sau là attachment (để tên chứa '/' không bị vỡ).
+            const commaIdx = rawPair.indexOf(',');
+            const slotName = (commaIdx >= 0 ? rawPair.substring(0, commaIdx) : rawPair).trim();
+            if(!slotName) continue;
+
+            const attachmentName = commaIdx >= 0 ? rawPair.substring(commaIdx + 1).trim() : '';
+            this.turnSlotAttachment(slotName, turnOn ? (attachmentName || slotName) : null);
         }
     }
 
