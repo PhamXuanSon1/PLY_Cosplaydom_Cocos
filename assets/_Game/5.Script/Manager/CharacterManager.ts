@@ -99,55 +99,34 @@ export class CharacterManager extends Component {
     // Master list chứa toàn bộ các slot/attachment
     private _allEquipmentSet: SlotAttachmentPair[] = [];
 
-    // BUTTON EDITOR
-    @property({ 
-        group: { name: '4. Editor Actions', id: 'editorActions' },
-        displayName: "🔘 Get All Slots", 
-        tooltip: "Tích vào checkbox này để tự động lấy danh sách slot từ Spine Skeleton" 
-    })
-    get btnGetAllSlot(): boolean { return false; }
-    set btnGetAllSlot(value: boolean) {
-        if (value == true) this.getAllSlots();
-    }
+    // Các nút Editor Actions giờ do custom inspector (ply-inspector) vẽ ra và gọi thẳng
+    // getAllSlots/loadFromTestJson/onEditorEquip/disableAllItems/saveToTestJson qua getInspectorConfig().
 
-    @property({ 
-        group: { name: '4. Editor Actions', id: 'editorActions' },
-        displayName: "📂 Load From Test JSON", 
-        tooltip: "Đọc dữ liệu từ file Test Equipment Data Asset (JSON) nạp vào myEquipmentSet" 
-    })
-    get btnLoadFromTestJson(): boolean { return false; }
-    set btnLoadFromTestJson(value: boolean) {
-        if (value == true) this.loadFromTestJson();
-    }
-
-    @property({ 
-        group: { name: '4. Editor Actions', id: 'editorActions' },
-        displayName: "👕 Equip Now (Editor)", 
-        tooltip: "Tick vào checkbox để mặc đồ ngay" 
-    })
-    get btnEditorEquip(): boolean { return false; }
-    set btnEditorEquip(value: boolean) {
-        if (value == true) this.onEditorEquip();
-    }
-
-    @property({ 
-        group: { name: '4. Editor Actions', id: 'editorActions' },
-        displayName: "🚫 Disable All Items", 
-        tooltip: "Tích vào checkbox này để ẩn toàn bộ trang bị" 
-    })
-    get btnDisableAllItems(): boolean { return false; }
-    set btnDisableAllItems(value: boolean) {
-        if (value == true) this.disableAllItems();
-    }
-
-    @property({ 
-        group: { name: '4. Editor Actions', id: 'editorActions' },
-        displayName: "💾 Save To Test JSON", 
-        tooltip: "Lưu dữ liệu hiện tại trong myEquipmentSet vào file Test Equipment Data Asset (JSON) và ghi đè file trên ổ đĩa" 
-    })
-    get btnSaveToTestJson(): boolean { return false; }
-    set btnSaveToTestJson(value: boolean) {
-        if (value == true) this.saveToTestJson();
+    // Khai báo UI cho custom inspector (không hard-code trong extension).
+    public getInspectorConfig() {
+        return {
+            sections: [
+                { header: '1. Nhân vật & Setup', props: ['characterSetups', 'character1'] },
+                { header: '2. Target Test', props: ['targetTestCharacter', 'testEquipmentDataAsset'] },
+            ],
+            buttonsHeader: '3. Hành động (Editor)',
+            buttons: [
+                { label: 'Lấy Tất Cả Slot', method: 'getAllSlots', color: 'success' },
+                { label: 'Tải Từ JSON', method: 'loadFromTestJson', color: 'primary' },
+                { label: 'Lưu Vào JSON', method: 'saveToTestJson', color: 'warn' },
+                { label: 'Mặc Đồ Ngay', method: 'onEditorEquip', color: 'success' },
+                { label: 'Tắt Tất Cả Đồ', method: 'disableAllItems', color: 'danger' },
+            ],
+            tables: [{
+                header: '4. Bộ Trang Bị', arrayProp: 'myEquipmentSet', search: true,
+                columns: [
+                    { field: 'isEnabled', label: 'Bật', type: 'checkbox' },
+                    { field: 'slotName', label: 'Slot Name', type: 'text' },
+                    { field: 'attachmentName', label: 'Attachment Name', type: 'text' },
+                ],
+                addMethod: 'addEquipmentPair', removeMethod: 'removeEquipmentPair',
+            }],
+        };
     }
 
 

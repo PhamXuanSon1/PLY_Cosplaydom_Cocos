@@ -1,0 +1,225 @@
+==============================================================================
+  ply-inspector  -  HUONG DAN VIET CODE
+==============================================================================
+
+Custom Inspector dung chung cho Cocos Creator 3.7.x.
+Mot inspector tong quat (generic.js) ve UI dep (group / nut mau / bang) cho
+BAT KY component nao, dua tren khai bao getInspectorConfig() dat ngay trong
+component. Extension KHONG hard-code component nao.
+
+
+------------------------------------------------------------------------------
+  1. Y TUONG
+------------------------------------------------------------------------------
+
+- Component tu khai bao "muon hien gi" qua method getInspectorConfig().
+- Inspector doc config do (qua execute-component-method) roi dung UI.
+- Khong co config  ->  tu render toan bo property nhu mac dinh (an toan).
+
+    Component.getInspectorConfig()  ->  generic.js  ->  UI (group + nut + bang)
+
+
+------------------------------------------------------------------------------
+  2. THEM 1 COMPONENT VAO HE THONG  -  2 BUOC
+------------------------------------------------------------------------------
+
+BUOC 1 - Viet getInspectorConfig() trong component:
+
+    import { _decorator, Component, Node } from 'cc';
+    const { ccclass, property } = _decorator;
+
+    @ccclass('MyManager')
+    export class MyManager extends Component {
+
+        @property public speed: number = 1;
+        @property(Node) public target: Node | null = null;
+        @property({ type: [MyRow] }) public rows: MyRow[] = [];
+
+        // ==== Khai bao UI cho ply-inspector ====
+        public getInspectorConfig() {
+            return {
+                sections: [
+                    { header: '1. Cau hinh', props: ['speed', 'target'] },
+                ],
+                buttonsHeader: '2. Hanh dong',
+                buttons: [
+                    { label: 'Reset', method: 'resetAll', color: 'danger' },
+                    { label: 'Chay',  method: 'runNow',   color: 'success' },
+                ],
+                tables: [{
+                    header: '3. Danh sach', arrayProp: 'rows', search: true,
+                    columns: [
+                        { field: 'enabled', label: 'Bat', type: 'checkbox' },
+                        { field: 'name',    label: 'Ten', type: 'text' },
+                    ],
+                    addMethod: 'addRow', removeMethod: 'removeRow',
+                }],
+            };
+        }
+
+        // Cac method duoc nut / bang goi toi
+        public resetAll(): void { /* ... */ }
+        public runNow(): void { /* ... */ }
+        public addRow(): void { this.rows.push(new MyRow()); }
+        public removeRow(i: number): void {
+            if (i >= 0 && i < this.rows.length) this.rows.splice(i, 1);
+        }
+    }
+
+
+BUOC 2 - Dang ky type trong package.json (extensions/ply-inspector):
+
+    "contributions": {
+      "inspector": {
+        "section": {
+          "node": {
+            "CharacterManager": "./dist/generic.js",
+            "GameManager":      "./dist/generic.js",
+            "MyManager":        "./dist/generic.js"      <-- them dong nay
+          }
+        }
+      }
+    }
+
+  * Key = DUNG TEN trong @ccclass('...'), khong phai ten file.
+  * Day la thu duy nhat phai "dang ky" (Cocos can biet ap inspector cho type nao).
+  * Khong can viet file inspector moi, khong dung DOM.
+
+
+------------------------------------------------------------------------------
+  3. CAU TRUC CONFIG DAY DU
+------------------------------------------------------------------------------
+
+  getInspectorConfig() tra ve mot object voi cac phan (tat ca deu tuy chon):
+
+  sections: danh sach group property
+      header : string        -> tieu de group
+      props  : string[]      -> ten cac @property muon hien (dung ten bien)
+
+  buttonsHeader: string      -> tieu de group nut (mac dinh "Hanh dong (Editor)")
+  buttons: danh sach nut
+      label  : string        -> chu tren nut
+      method : string        -> ten method component se goi (khong tham so)
+      color  : string        -> 'success'=xanh la, 'primary'=xanh duong,
+                                 'warn'=vang, 'danger'=do   (tuy chon)
+      args   : any[]          -> (tuy chon) tham so truyen vao method
+
+  tables: danh sach bang
+      header      : string   -> tieu de bang (tuy chon)
+      arrayProp   : string   -> ten @property mang (VD: 'rows')
+      search      : boolean  -> bat o tim kiem (loc client-side theo cot text)
+      columns     : danh sach cot
+          field : string     -> ten field cua phan tu trong mang
+          label : string     -> tieu de cot
+          type  : string     -> 'checkbox' (boolean)  hoac  'text' (string)
+      addMethod   : string   -> method them dong (khong tham so).
+                                Khong khai bao -> an nut  +
+      removeMethod: string   -> method xoa dong, nhan (index: number).
+                                Khong khai bao -> an nut  x
+
+
+------------------------------------------------------------------------------
+  4. QUY TAC QUAN TRONG
+------------------------------------------------------------------------------
+
+- Ten phai KHOP TUYET DOI (phan biet hoa/thuong):
+      props / columns.field   = dung ten @property
+      buttons.method / addMethod / removeMethod = dung ten method public
+
+- Nut: method phai la public va KHONG tham so (hoac truyen qua args).
+
+- Bang:
+      Chi hop cho mang "hang don gian" (moi phan tu la class co field
+      string / boolean).
+      type 'checkbox' <-> field kieu boolean
+      type 'text'     <-> field kieu string
+      removeMethod(index: number)  -> nhan index cua dong
+      addMethod()                  -> thuong this.arr.push(new ...)
+      Sua o se tu ghi vao scene (co Undo). Them/xoa dong goi method roi refresh.
+
+- Property phuc tap (Node, Asset, enum, mang long, class con...) cho vao
+  sections.props deu render duoc (dung ui-prop mac dinh cua Cocos, tu sync).
+
+- getInspectorConfig() phai tra ve DU LIEU THUAN (khong ham).
+  No chay trong tien trinh scene.
+
+- Khong khai bao getInspectorConfig -> inspector tu render moi property (fallback).
+
+
+------------------------------------------------------------------------------
+  5. BUILD LAI EXTENSION
+------------------------------------------------------------------------------
+
+  Sau khi sua file trong src/ cua extension:
+
+      cd extensions/ply-inspector
+      npx -p typescript@5.4 tsc -p tsconfig.json
+
+  Ra dist/generic.js.
+  (Chi sua getInspectorConfig trong component thi KHONG can build extension,
+   nhung can nap lai - xem muc 6.)
+
+
+------------------------------------------------------------------------------
+  6. NAP LAI TRONG EDITOR
+------------------------------------------------------------------------------
+
+- Sua package.json (them/bot type) hoac doi ten extension  -> RESTART editor.
+- Sua dist/generic.js  -> tat/bat extension trong Extension Manager,
+      hoac chon node khac roi chon lai.
+- Sua getInspectorConfig trong component  -> editor tu bien dich lai script;
+      chon lai node (config duoc cache theo type, chon lai de nap config moi).
+
+
+------------------------------------------------------------------------------
+  7. EXPORT SANG PROJECT KHAC
+------------------------------------------------------------------------------
+
+  Copy ca thu muc extensions/ply-inspector (kem dist/) vao extensions/ cua
+  project dich. generic.js khong phu thuoc project nay. Component nao co
+  getInspectorConfig() + duoc liet ke trong package.json la chay.
+
+  - Chung repo/team -> commit vao git, ca team pull ve co luon.
+  - Dung cho moi project tren may -> copy vao
+        C:\Users\<user>\.CocosCreator\extensions\
+    (khong di theo git).
+
+
+------------------------------------------------------------------------------
+  8. LOI THUONG GAP
+------------------------------------------------------------------------------
+
+  Inspector van la ban mac dinh, khong thanh custom
+      -> Chua dang ky type trong package.json, hoac chua restart editor.
+         Key phai khop @ccclass.
+
+  Group hien nhung trong
+      -> Sai ten trong sections.props (khac ten @property).
+
+  Bam nut khong co gi xay ra
+      -> Sai ten method, hoac method khong public. Xem Console.
+
+  Bang khong sync khi sua o
+      -> columns.field sai ten, hoac field khong phai string/boolean.
+
+  Nut  +  /  x  khong hien
+      -> Chua khai bao addMethod / removeMethod.
+
+  Ca inspector render moi property (ke ca thu khong muon)
+      -> Component chua co getInspectorConfig() (dang chay fallback).
+
+
+------------------------------------------------------------------------------
+  9. THAM CHIEU
+------------------------------------------------------------------------------
+
+  Component mau:
+      assets/_Game/5.Script/Manager/CharacterManager.ts
+          (co du sections + buttons + table)
+      assets/_Game/5.Script/Manager/GameManager.ts
+          (sections + buttons)
+
+  Ma inspector:
+      extensions/ply-inspector/src/generic.ts
+
+==============================================================================

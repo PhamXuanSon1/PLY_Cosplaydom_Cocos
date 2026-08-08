@@ -53,7 +53,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 328
+      "__id__": 338
     },
     "_id": "b51b0140-f104-4025-aceb-2ce3ebacf84f"
   },
@@ -73,12 +73,21 @@
       },
       {
         "__id__": 325
+      },
+      {
+        "__id__": 327
+      },
+      {
+        "__id__": 329
+      },
+      {
+        "__id__": 331
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 327
+        "__id__": 337
       }
     ],
     "_prefab": null,
@@ -7140,6 +7149,223 @@
     "_id": "a8mAGUjvZBu5o2obttGxwW"
   },
   {
+    "__type__": "cc.Node",
+    "_name": "DrawItemManager",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 328
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_mobility": 0,
+    "_layer": 33554432,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "11D9Z/cJBHpIaFVIMVfi27"
+  },
+  {
+    "__type__": "9a342WY401N7rcSQ8QYHysc",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 327
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "availableMakeupIDs": [],
+    "characterSkeleton": null,
+    "mapConfigs": [],
+    "currentMapStatus": "Đang ở Map 1",
+    "_id": "2fGfy1BqlASaO+jIxYWbpl"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "GameManager",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 330
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_mobility": 0,
+    "_layer": 33554432,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "cew67OH/lBSKVYbuJ2k1dt"
+  },
+  {
+    "__type__": "5d3e6LMk5tBaK/6NRQRUDfc",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 329
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "isGoogleBuild": false,
+    "googleDisabledObjects": [],
+    "googleDisabledBehaviours": [],
+    "listObjectInIntro": [],
+    "listObjectInMap1": [],
+    "listObjectInMap2": [],
+    "listObjectInMap3": [],
+    "listObjectInMap4": [],
+    "autoSwitchToMap3AtEnd": true,
+    "map2ToMap3Sequence": [],
+    "_id": "50Ol8QMA9KapSTAeY//mvW"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "HandHintManager",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 332
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_mobility": 0,
+    "_layer": 33554432,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "15+jwDaVFLhr5oYA72R6F5"
+  },
+  {
+    "__type__": "af2d5whsStGi4qvuoK9veXX",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 331
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "handIcon": null,
+    "handAnimator": null,
+    "delayBeforeHint": 2.5,
+    "circleRadius": 100,
+    "circleDuration": 1.5,
+    "dragAwayHintDistance": 200,
+    "map1_Hints": {
+      "__id__": 333
+    },
+    "map2_Hints": {
+      "__id__": 334
+    },
+    "map3_Hints": {
+      "__id__": 335
+    },
+    "map4_Hints": {
+      "__id__": 336
+    },
+    "_id": "0bOiT9/SVPmY4plzS6/wHW"
+  },
+  {
+    "__type__": "MapHintConfig",
+    "mapName": "New Map",
+    "orderedHintItems": []
+  },
+  {
+    "__type__": "MapHintConfig",
+    "mapName": "New Map",
+    "orderedHintItems": []
+  },
+  {
+    "__type__": "MapHintConfig",
+    "mapName": "New Map",
+    "orderedHintItems": []
+  },
+  {
+    "__type__": "MapHintConfig",
+    "mapName": "New Map",
+    "orderedHintItems": []
+  },
+  {
     "__type__": "cc.UITransform",
     "_name": "",
     "_objFlags": 0,
@@ -7163,22 +7389,22 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 329
+      "__id__": 339
     },
     "shadows": {
-      "__id__": 330
+      "__id__": 340
     },
     "_skybox": {
-      "__id__": 331
+      "__id__": 341
     },
     "fog": {
-      "__id__": 332
+      "__id__": 342
     },
     "octree": {
-      "__id__": 333
+      "__id__": 343
     },
     "lightProbeInfo": {
-      "__id__": 334
+      "__id__": 344
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

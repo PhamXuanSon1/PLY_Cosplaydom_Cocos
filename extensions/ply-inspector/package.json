@@ -1,0 +1,19 @@
+{
+  "package_version": 2,
+  "name": "ply-inspector",
+  "description": "Custom Inspector dùng chung (nút bấm màu + table) cho nhiều component: CharacterManager, GameManager...",
+  "version": "1.0.0",
+  "author": "PLY",
+  "editor": ">=3.7.0",
+  "main": "./dist/main.js",
+  "contributions": {
+    "inspector": {
+      "section": {
+        "node": {
+          "CharacterManager": "./dist/generic.js",
+          "GameManager": "./dist/generic.js"
+        }
+      }
+    }
+  }
+}
