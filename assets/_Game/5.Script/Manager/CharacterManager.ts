@@ -377,6 +377,20 @@ export class CharacterManager extends Component {
         }
     }
 
+    // Thêm 1 dòng trống vào bảng trang bị (dùng cho nút ＋ của custom inspector)
+    public addEquipmentPair(): void {
+        const pair = new SlotAttachmentPair();
+        this.myEquipmentSet.push(pair);
+        this._allEquipmentSet = [...this.myEquipmentSet];
+    }
+
+    // Xoá 1 dòng theo index (dùng cho nút ✕ của custom inspector)
+    public removeEquipmentPair(index: number): void {
+        if (index < 0 || index >= this.myEquipmentSet.length) return;
+        this.myEquipmentSet.splice(index, 1);
+        this._allEquipmentSet = [...this.myEquipmentSet];
+    }
+
     //Mặc thử trang bị trên Editor (Chỉ với Target Character)
     public onEditorEquip(): void {
         const targetList = (this._allEquipmentSet && this._allEquipmentSet.length > 0) ? this._allEquipmentSet : this.myEquipmentSet;

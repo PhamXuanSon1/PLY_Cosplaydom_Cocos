@@ -1,0 +1,18 @@
+{
+  "package_version": 2,
+  "name": "character-inspector",
+  "description": "Custom Inspector cho CharacterManager (nút bấm + table trang bị)",
+  "version": "1.0.0",
+  "author": "PLY",
+  "editor": ">=3.7.0",
+  "main": "./dist/main.js",
+  "contributions": {
+    "inspector": {
+      "section": {
+        "node": {
+          "CharacterManager": "./dist/character-manager.js"
+        }
+      }
+    }
+  }
+}
