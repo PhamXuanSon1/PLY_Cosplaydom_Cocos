@@ -2582,7 +2582,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Sprite",
+    "_name": "WhiteBackground",
     "_objFlags": 0,
     "_parent": {
       "__id__": 57
@@ -2688,7 +2688,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Sprite",
+    "_name": "CircleGreen",
     "_objFlags": 0,
     "_parent": {
       "__id__": 57
@@ -2786,7 +2786,7 @@
       "y": 0.5
     },
     "_fillStart": 0.25,
-    "_fillRange": 0,
+    "_fillRange": 1,
     "_isTrimmedMode": true,
     "_useGrayscale": false,
     "_atlas": null,
@@ -2932,7 +2932,7 @@
   {
     "__type__": "cc.Node",
     "_name": "TableImage",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 68
     },
