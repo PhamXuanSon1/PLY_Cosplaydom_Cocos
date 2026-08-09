@@ -43,27 +43,12 @@ export class DrawInputManager extends Component {
     public maxDistance: number = 100;
 
     // ==========================================
-    // 2. Effects & UI
+    // UI
     // ==========================================
-    @property({
-        type: Node,
-        group: { name: '2. Effects & UI', id: 'effectsUI' },
-        displayName: 'Drag Trail Effect',
-        tooltip: 'Kéo Node chứa Trail Renderer hoặc Particle System vào đây. Nó sẽ đi theo con trỏ khi bạn đang cầm đồ vật.'
-    })
-    public dragTrailEffect: Node | null = null;
 
     @property({
         type: Node,
-        group: { name: '2. Effects & UI', id: 'effectsUI' },
-        displayName: 'Drag Layer Container',
-        tooltip: 'Node Layer nằm ở vị trí trên cùng trong Canvas để chứa item khi đang kéo. Nếu để trống sẽ tự động dùng Canvas.'
-    })
-    public dragLayer: Node | null = null;
-
-    @property({
-        type: Node,
-        group: { name: '2. Effects & UI', id: 'effectsUI' },
+        group: { name: '3. Progress UI', id: 'progressUI' },
         displayName: 'Progress Container',
         tooltip: 'Container chứa vòng Fill UI, sẽ được bật lên khi cầm cọ vẽ'
     })
@@ -71,7 +56,7 @@ export class DrawInputManager extends Component {
 
     @property({
         type: Sprite,
-        group: { name: '2. Effects & UI', id: 'effectsUI' },
+        group: { name: '3. Progress UI', id: 'progressUI' },
         displayName: 'Progress Fill Image (Sprite)',
         tooltip: 'Sprite type Filled để chạy fill progress'
     })
@@ -299,11 +284,6 @@ export class DrawInputManager extends Component {
 
                 const touchWorldPos = this.getTouchWorldPos(event);
 
-                if (this.dragTrailEffect) {
-                    this.dragTrailEffect.active = true;
-                    this.dragTrailEffect.setWorldPosition(touchWorldPos);
-                }
-
                 if (this.currentDrawItemController.itemType === DrawItemType.DirectDraw || this.currentDrawItemController.itemType === DrawItemType.DipAndDraw) {
                     if (this.progressContainer) {
                         this.progressContainer.active = true;
@@ -388,10 +368,6 @@ export class DrawInputManager extends Component {
         const touchWorldPos = this.getTouchWorldPos(event);
         const targetPos = touchWorldPos.clone().add(this.offset);
         this.currentDrawItem.node.setWorldPosition(targetPos);
-
-        if (this.dragTrailEffect) {
-            this.dragTrailEffect.setWorldPosition(touchWorldPos);
-        }
 
         if (this.currentDrawItemController && this.currentDrawItemController.tipPoint) {
             if (this.progressContainer && this.progressContainer.active && this.progressFillImage) {
@@ -547,10 +523,6 @@ export class DrawInputManager extends Component {
         if (this.currentDrawItem) {
             this.isDropping = true;
             try {
-                if (this.dragTrailEffect) {
-                    this.dragTrailEffect.active = false;
-                }
-
                 if (this.progressContainer) {
                     this.progressContainer.active = false;
                 }
@@ -807,7 +779,6 @@ export class DrawInputManager extends Component {
         const colliders = this.currentDrawItem.getComponentsInChildren(Collider2D);
         for (const col of colliders) col.enabled = false;
 
-        if (this.dragTrailEffect) this.dragTrailEffect.active = false;
         if (this.progressContainer) this.progressContainer.active = false;
         if (this.currentDrawItemController.drawFaceEffect) {
             this.currentDrawItemController.drawFaceEffect.active = false;
@@ -891,8 +862,8 @@ export class DrawInputManager extends Component {
                 }
             }
 
-            let topContainer = this.dragLayer;
-            if (!topContainer && this.node.scene) {
+            let topContainer: Node | null = null;
+            if (this.node.scene) {
                 topContainer = this.node.scene.getChildByName('Canvas');
             }
 
