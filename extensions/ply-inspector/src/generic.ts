@@ -69,6 +69,10 @@ export const $ = { root: '#root' };
 export function update(this: any, dump: any) {
   const panel = this;
   panel.dump = dump;
+  // Editor luôn đưa dump mới nhất -> lấy lại uuid thật, bỏ cache cũ.
+  const freshUuid = dump.value && dump.value.uuid ? dump.value.uuid.value : null;
+  if (freshUuid !== panel.__uuid) panel.__compIndex = undefined;
+  panel.__uuid = freshUuid;
   const type = dump.type;
 
   if (Object.prototype.hasOwnProperty.call(CONFIG_CACHE, type)) {
@@ -138,9 +142,12 @@ function buildFromConfig(panel: any, root: HTMLElement, config: InspectorConfig)
       if (def.color) btn.setAttribute('type', def.color);
       btn.textContent = def.label;
       btn.addEventListener('confirm', async () => {
+        // Ghi nốt ô đang gõ dở / vừa tick trước khi gọi method, tránh mất thay đổi.
+        await flushPending(panel);
         await callMethod(panel, def.method, def.args || []);
-        // Thông báo editor cập nhật Hierarchy sau khi method thay đổi node.active
-        Editor.Message.send('scene', 'refresh');
+        // KHÔNG gọi Editor.Message.send('scene', 'refresh') ở đây:
+        // nó reload lại scene -> component bị tạo lại -> uuid đang cache chết
+        // ("Set property failed: ... does not exist") và mọi tick sau đó bị nuốt.
         await refresh(panel);
       });
       grid.appendChild(btn);
@@ -286,12 +293,12 @@ function buildRows(panel: any, state: any, count: number) {
       if (col.type === 'checkbox') {
         el = document.createElement('ui-checkbox');
         el.addEventListener('confirm', (e: any) => {
-          setProp(panel, `${def.arrayProp}.${index}.${col.field}`, 'Boolean', !!e.target.value);
+          track(panel, setProp(panel, `${def.arrayProp}.${index}.${col.field}`, 'Boolean', !!e.target.value));
         });
       } else {
         el = document.createElement('ui-input');
         el.addEventListener('confirm', (e: any) => {
-          setProp(panel, `${def.arrayProp}.${index}.${col.field}`, 'String', e.target.value || '');
+          track(panel, setProp(panel, `${def.arrayProp}.${index}.${col.field}`, 'String', e.target.value || ''));
         });
       }
       cells[col.field] = el;
@@ -347,7 +354,60 @@ function refreshAll(panel: any) {
 //  Giao tiếp scene
 // -----------------------------------------------------------------------------
 function compUuid(panel: any): string {
-  return panel.dump.value.uuid.value;
+  return panel.__uuid || panel.dump.value.uuid.value;
+}
+
+// uuid của NODE chứa component.
+function nodeUuid(panel: any): string | null {
+  const n = panel.dump && panel.dump.value && panel.dump.value.node;
+  return (n && n.value && n.value.uuid) || null;
+}
+
+// QUAN TRỌNG: 'set-property' được giải quyết qua NodeManager (xem stack lỗi:
+// NodeManager.setProperty <- GeneralSceneFacade.setNodeProperty). Nó tra uuid
+// trong bảng NODE, nên truyền uuid COMPONENT sẽ luôn báo
+// "Set property failed: <uuid> does not exist" và cú ghi bị nuốt mất.
+// Cách đúng: uuid = uuid của node, path = "__comps__.<index>.<path gốc>".
+async function compIndex(panel: any): Promise<number> {
+  if (typeof panel.__compIndex === 'number') return panel.__compIndex;
+
+  const nUuid = nodeUuid(panel);
+  if (!nUuid) return -1;
+
+  try {
+    const node = await Editor.Message.request('scene', 'query-node', nUuid);
+    const comps = (node && node.__comps__) || [];
+    const target = compUuid(panel);
+
+    for (let i = 0; i < comps.length; i++) {
+      const c = comps[i];
+      const uuid = c && c.value && c.value.uuid && c.value.uuid.value;
+      if (uuid === target) { panel.__compIndex = i; return i; }
+    }
+    // Không khớp uuid (scene vừa reload) -> khớp theo type.
+    for (let i = 0; i < comps.length; i++) {
+      if (comps[i] && comps[i].type === panel.dump.type) { panel.__compIndex = i; return i; }
+    }
+  } catch (_e) {
+    // trả -1 -> setProp sẽ thử fallback rồi báo lỗi rõ ràng
+  }
+  return -1;
+}
+
+// Gom các lệnh ghi đang bay, để nút bấm chờ ghi xong mới gọi method.
+function track(panel: any, p: Promise<any>) {
+  if (!panel.__pending) panel.__pending = [];
+  panel.__pending.push(p);
+  p.catch(() => { }).then(() => {
+    const i = panel.__pending.indexOf(p);
+    if (i !== -1) panel.__pending.splice(i, 1);
+  });
+}
+
+async function flushPending(panel: any) {
+  if (panel.__pending && panel.__pending.length) {
+    await Promise.all(panel.__pending.map((p: Promise<any>) => p.catch(() => { })));
+  }
 }
 
 async function queryConfig(panel: any): Promise<InspectorConfig | null> {
@@ -374,13 +434,36 @@ async function callMethod(panel: any, name: string, args: any[] = []) {
 }
 
 async function setProp(panel: any, path: string, type: string, value: any) {
+  // Cách chuẩn: uuid NODE + path có tiền tố __comps__.<index>
+  const nUuid = nodeUuid(panel);
+  const idx = await compIndex(panel);
+
+  if (nUuid && idx >= 0) {
+    try {
+      await Editor.Message.request('scene', 'set-property', {
+        uuid: nUuid,
+        path: `__comps__.${idx}.${path}`,
+        dump: { type, value },
+      });
+      return;
+    } catch (err) {
+      panel.__compIndex = undefined; // buộc dò lại index ở lần sau
+      console.error(`[ply-inspector] set-property "${path}" lỗi (dạng node):`, err);
+    }
+  }
+
+  // Dự phòng: vài bản editor chấp nhận thẳng uuid component.
   try {
     await Editor.Message.request('scene', 'set-property', {
       uuid: compUuid(panel), path, dump: { type, value },
     });
+    return;
   } catch (err) {
-    console.error(`[ply-inspector] Lỗi set-property "${path}":`, err);
+    console.error(`[ply-inspector] set-property "${path}" lỗi (dạng component):`, err);
   }
+
+  // Ghi KHÔNG thành công: cảnh báo rõ thay vì im lặng để UI hiện sai trạng thái.
+  console.warn(`[ply-inspector] Thay đổi "${path}" CHƯA được ghi vào component.`);
 }
 
 async function refresh(panel: any) {

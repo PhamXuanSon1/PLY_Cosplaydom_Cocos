@@ -334,8 +334,50 @@ export class CharacterManager extends Component {
         this.filterEquipmentSet();
     }
 
+    /**
+     * Đồng bộ hóa các thay đổi từ myEquipmentSet sang _allEquipmentSet
+     * để đảm bảo các nút Mặc Đồ Ngay / Lưu JSON luôn ghi nhận đúng isEnabled đã chỉnh sửa.
+     */
+    public syncEquipmentSet(): void {
+        if (!this.myEquipmentSet || this.myEquipmentSet.length === 0) return;
+
+        // Khi KHÔNG có từ khóa lọc, myEquipmentSet chính là danh sách đầy đủ &
+        // mới nhất (custom inspector chỉ ẩn hàng khi search, không lọc dữ liệu).
+        // -> Lấy THẲNG myEquipmentSet làm master để tránh giữ lại giá trị
+        //    isEnabled cũ (stale) trong _allEquipmentSet cưỡng chế bật lại slot
+        //    mà người dùng vừa tắt.
+        const keyword = (this._searchKeyword || "").trim();
+        if (!keyword) {
+            this._allEquipmentSet = [...this.myEquipmentSet];
+            return;
+        }
+
+        if (!this._allEquipmentSet || this._allEquipmentSet.length === 0) {
+            this._allEquipmentSet = [...this.myEquipmentSet];
+            return;
+        }
+
+        // Có lọc: chỉ cập nhật các phần tử đang hiển thị (khớp theo slotName),
+        // giữ nguyên các phần tử đã bị lọc ra khỏi tầm nhìn.
+        for (let i = 0; i < this.myEquipmentSet.length; i++) {
+            const item = this.myEquipmentSet[i];
+            if (!item || !item.slotName) continue;
+            const target = this._allEquipmentSet.find(p => p && p.slotName === item.slotName);
+            if (target) {
+                target.isEnabled = item.isEnabled;
+                if (item.attachmentName !== undefined) {
+                    target.attachmentName = item.attachmentName;
+                }
+            } else {
+                this._allEquipmentSet.push(item);
+            }
+        }
+    }
+
     // Lọc danh sách myEquipmentSet trực tiếp theo từ khóa Search Keyword
     public filterEquipmentSet(): void {
+        this.syncEquipmentSet();
+
         if ((!this._allEquipmentSet || this._allEquipmentSet.length === 0) && this.myEquipmentSet.length > 0) {
             this._allEquipmentSet = [...this.myEquipmentSet];
         }
@@ -359,20 +401,26 @@ export class CharacterManager extends Component {
 
     // Thêm 1 dòng trống vào bảng trang bị (dùng cho nút ＋ của custom inspector)
     public addEquipmentPair(): void {
+        this.syncEquipmentSet();
         const pair = new SlotAttachmentPair();
         this.myEquipmentSet.push(pair);
-        this._allEquipmentSet = [...this.myEquipmentSet];
+        this._allEquipmentSet.push(pair);
     }
 
     // Xoá 1 dòng theo index (dùng cho nút ✕ của custom inspector)
     public removeEquipmentPair(index: number): void {
+        this.syncEquipmentSet();
         if (index < 0 || index >= this.myEquipmentSet.length) return;
-        this.myEquipmentSet.splice(index, 1);
-        this._allEquipmentSet = [...this.myEquipmentSet];
+        const removed = this.myEquipmentSet.splice(index, 1)[0];
+        if (removed && this._allEquipmentSet) {
+            const idx = this._allEquipmentSet.indexOf(removed);
+            if (idx !== -1) this._allEquipmentSet.splice(idx, 1);
+        }
     }
 
     //Mặc thử trang bị trên Editor (Chỉ với Target Character)
     public onEditorEquip(): void {
+        this.syncEquipmentSet();
         const targetList = (this._allEquipmentSet && this._allEquipmentSet.length > 0) ? this._allEquipmentSet : this.myEquipmentSet;
         if (!targetList || !this.targetTestCharacter) return;
         for (let i = 0; i < targetList.length; i++) {
@@ -385,13 +433,16 @@ export class CharacterManager extends Component {
 
     //Tắt toàn bộ trang bị (Chỉ với Target Character)
     public disableAllItems(): void {
-        const targetList = (this._allEquipmentSet && this._allEquipmentSet.length > 0) ? this._allEquipmentSet : this.myEquipmentSet;
-        if (!targetList || !this.targetTestCharacter) return;
-        for (let i = 0; i < targetList.length; i++) {
-            const pair = targetList[i];
+        if (!this.myEquipmentSet || !this.targetTestCharacter) return;
+        // Tắt trực tiếp trên myEquipmentSet (nguồn dữ liệu chuẩn mà inspector hiển thị)
+        // để trạng thái checkbox và _allEquipmentSet đều được cập nhật đúng sau khi sync.
+        for (let i = 0; i < this.myEquipmentSet.length; i++) {
+            const pair = this.myEquipmentSet[i];
+            if (!pair) continue;
             pair.isEnabled = false;
             this.targetTestCharacter.turnSlotAttachment(pair.slotName, null);
         }
+        this.syncEquipmentSet();
         console.log("[CharacterManager] Đã tắt toàn bộ trang bị trên Target Character.");
     }
 
@@ -402,6 +453,7 @@ export class CharacterManager extends Component {
             return;
         }
 
+        this.syncEquipmentSet();
         const targetList = (this._allEquipmentSet && this._allEquipmentSet.length > 0) ? this._allEquipmentSet : this.myEquipmentSet;
         const rawPairs = targetList.map(pair => ({
             isEnabled: pair.isEnabled,

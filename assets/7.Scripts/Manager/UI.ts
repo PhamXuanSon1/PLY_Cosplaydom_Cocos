@@ -3,7 +3,6 @@ import { World } from './World';
 import { PointerController } from './PointerController';
 import { SoundType } from './SoundManager';
 import { Clock } from './Clock';
-import { ipm } from './InputManager';
 const { ccclass, property } = _decorator;
 
 export enum BindUIType {
@@ -48,7 +47,6 @@ export class UI extends Component {
 
     bindingToStore() {
         PointerController.ins.unBindingEvent();
-        ipm.offBinding();
         PointerController.ins.onStore();
     }
 
@@ -229,7 +227,7 @@ export class UI extends Component {
                 if (item) item.active = true;
             });
             this.adaptUIs.forEach((item) => {
-                if (item) item.scale = v3(1, 1, 1).multiplyScalar(2);
+                if (item) item.scale = v3(1, 1, 1);
             });
             this.gameplays.forEach((item) => {
                 if (item) item.scale = v3(1, 1, 1).multiplyScalar(1.1);

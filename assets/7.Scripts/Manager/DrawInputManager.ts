@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, Layers } from 'cc';
+import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, Layers, game } from 'cc';
 import { AppLovinAnalytics } from '../Tool/AppLovinAnalytics';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from './CharacterManager';
@@ -8,6 +8,9 @@ import { DrawItemMovement } from '../DrawItem/DrawItemMovement';
 import { DrawItemGraphic } from '../DrawItem/DrawItemGraphic';
 import { DipTarget } from '../DrawItem/DipTarget';
 import { MakeupTarget } from '../DrawItem/MakeupTarget';
+import { GameManager } from './GameManager';
+import { DrawItemManager } from './DrawItemManager';
+import { HandHintManager } from './HandHintManager';
 
 const { ccclass, property } = _decorator;
 
@@ -42,8 +45,51 @@ export class DrawInputManager extends Component {
     })
     public maxDistance: number = 100;
 
+    @property({
+        type: Node,
+        group: { name: '1. Layer Masks & Raycast', id: 'layerMasks' },
+        displayName: 'Drag Container / Canvas',
+        tooltip: 'Node Canvas hoặc Container chứa đồ vật khi đang kéo. Nếu để trống sẽ tự động tìm Canvas trong Scene.'
+    })
+    public dragContainer: Node | null = null;
+
+    @property({
+        type: CCFloat,
+        group: { name: '1. Layer Masks & Raycast', id: 'layerMasks' },
+        displayName: 'Dip Distance Threshold',
+        tooltip: 'Khoảng cách tối đa (pixel) giữa tipPoint và dipTarget để tính là đã chấm phấn.'
+    })
+    public dipDistanceThreshold: number = 100;
+
+    @property({
+        type: CCFloat,
+        group: { name: '1. Layer Masks & Raycast', id: 'layerMasks' },
+        displayName: 'Snap Radius Multiplier',
+        tooltip: 'Hệ số nhân bán kính dính Snap Radius (phù hợp UI 2D Pixel).'
+    })
+    public snapRadiusMultiplier: number = 50;
+
     // ==========================================
-    // UI
+    // 2. Drag & Drop Settings
+    // ==========================================
+    @property({
+        type: CCFloat,
+        group: { name: '2. Drag & Drop Settings', id: 'dragSettings' },
+        displayName: 'Drag Away Drop Duration',
+        tooltip: 'Thời gian rơi mờ dần cho loại DragAwayToFade.'
+    })
+    public dragAwayDropDuration: number = 0.5;
+
+    @property({
+        type: CCFloat,
+        group: { name: '2. Drag & Drop Settings', id: 'dragSettings' },
+        displayName: 'Drag Away Drop Y Offset',
+        tooltip: 'Khoảng cách rơi xuống trục Y khi thả cho loại DragAwayToFade.'
+    })
+    public dragAwayDropYOffset: number = 200;
+
+    // ==========================================
+    // 3. Progress UI
     // ==========================================
 
     @property({
@@ -63,10 +109,10 @@ export class DrawInputManager extends Component {
     public progressFillImage: Sprite | null = null;
 
     // ==========================================
-    // 3. Intro Settings
+    // 4. Intro Settings
     // ==========================================
     @property({
-        group: { name: '3. Intro Settings', id: 'introSettings' },
+        group: { name: '4. Intro Settings', id: 'introSettings' },
         displayName: 'Is Click First',
         tooltip: 'Biến này dùng để kiểm tra xem người chơi đã click lần đầu tiên chưa'
     })
@@ -74,19 +120,34 @@ export class DrawInputManager extends Component {
 
     @property({
         type: Node,
-        group: { name: '3. Intro Settings', id: 'introSettings' },
+        group: { name: '4. Intro Settings', id: 'introSettings' },
         displayName: 'Intro Animator / Node',
         tooltip: 'Node chứa Animation component cho Intro'
     })
     public introAnimator: Node | null = null;
 
+    @property({
+        group: { name: '4. Intro Settings', id: 'introSettings' },
+        displayName: 'Intro Clip Name',
+        tooltip: 'Tên Animation Clip cần phát khi bắt đầu Intro (VD: CircleIntro). Nếu để trống sẽ tự động lấy Default Clip của Animation component.'
+    })
+    public introClipName: string = '';
+
+    @property({
+        type: CCFloat,
+        group: { name: '4. Intro Settings', id: 'introSettings' },
+        displayName: 'Intro Custom Duration',
+        tooltip: 'Thời gian phát Intro (giây). Nếu > 0 sẽ ưu tiên dùng giá trị này thay cho độ dài clip.'
+    })
+    public introCustomDuration: number = 0;
+
     private isPlayingIntro: boolean = false;
 
     // ==========================================
-    // 4. Fake Store Settings
+    // 5. Fake Store Settings
     // ==========================================
     @property({
-        group: { name: '4. Fake Store Settings', id: 'storeSettings' },
+        group: { name: '5. Fake Store Settings', id: 'storeSettings' },
         displayName: 'Is Go To Store On Click Enabled',
         tooltip: 'Nếu bật, bất kỳ click nào cũng sẽ dẫn ra Store.'
     })
@@ -146,7 +207,7 @@ export class DrawInputManager extends Component {
         if (this.isGoToStoreOnClickEnabled) {
             AppLovinAnalytics.ctaClicked();
 
-            const gameMgr = (globalThis as any).GameManager?.instance || (window as any).GameManager?.instance;
+            const gameMgr = GameManager.instance || (globalThis as any).GameManager?.instance || (window as any).GameManager?.instance;
             if (gameMgr && typeof gameMgr.GotoStore === 'function') {
                 gameMgr.GotoStore();
             }
@@ -160,15 +221,40 @@ export class DrawInputManager extends Component {
             if (this.introAnimator) {
                 this.isPlayingIntro = true;
                 const anim = this.introAnimator.getComponent(Animation);
+                let duration = this.introCustomDuration;
+
                 if (anim) {
-                    anim.play('PlayIntro');
+                    const clipName = this.introClipName || (anim.defaultClip ? anim.defaultClip.name : '');
+                    if (clipName) {
+                        anim.play(clipName);
+                        const state = anim.getState(clipName);
+                        if (state && state.duration > 0 && duration <= 0) {
+                            duration = state.duration;
+                        }
+                    } else {
+                        anim.play();
+                        if (anim.defaultClip && anim.defaultClip.duration > 0 && duration <= 0) {
+                            duration = anim.defaultClip.duration;
+                        }
+                    }
+
+                    const onAnimFinish = () => {
+                        anim.off(Animation.EventType.FINISHED, onAnimFinish, this);
+                        this.turnOnMap1();
+                    };
+                    anim.on(Animation.EventType.FINISHED, onAnimFinish, this);
                 }
+
+                if (duration <= 0) duration = 0.5;
+
                 this.scheduleOnce(() => {
-                    this.turnOnMap1();
-                }, 0.5);
+                    if (this.isPlayingIntro) {
+                        this.turnOnMap1();
+                    }
+                }, duration);
                 return;
             } else {
-                const gameMgr = (globalThis as any).GameManager?.instance || (window as any).GameManager?.instance;
+                const gameMgr = GameManager.instance || (globalThis as any).GameManager?.instance || (window as any).GameManager?.instance;
                 if (gameMgr && typeof gameMgr.TurnOnMap1 === 'function') {
                     gameMgr.TurnOnMap1();
                 }
@@ -198,7 +284,7 @@ export class DrawInputManager extends Component {
         return new Vec3(uiWorldPos.x, uiWorldPos.y, 0);
     }
 
-    private raycastNodes<T extends Component>(event: EventTouch, type: { new(): T }): T[] {
+    private raycastNodes<T extends Component>(event: EventTouch, type: { new(): T }, layerMask: number = -1): T[] {
         const uiWorldPos = (event as any).getUIWorldPosition ? (event as any).getUIWorldPosition() : event.getUILocation();
         const touchVec2 = new Vec2(uiWorldPos.x, uiWorldPos.y);
         const results: T[] = [];
@@ -207,7 +293,13 @@ export class DrawInputManager extends Component {
         if (PhysicsSystem2D.instance) {
             const colliders2D = PhysicsSystem2D.instance.testPoint(touchVec2);
             for (let i = 0; i < colliders2D.length; i++) {
-                const comp = colliders2D[i].node.getComponent(type) || colliders2D[i].getComponent(type);
+                const colNode = colliders2D[i].node;
+
+                if (layerMask !== -1 && (colNode.layer & layerMask) === 0) {
+                    continue;
+                }
+
+                const comp = colNode.getComponent(type) || colliders2D[i].getComponent(type);
                 if (comp && results.indexOf(comp) === -1) {
                     results.push(comp);
                 }
@@ -218,14 +310,14 @@ export class DrawInputManager extends Component {
     }
 
     public mouseDown(event?: EventTouch): void {
-        const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
         if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
             handHintMgr.HideHintTemporarily();
         }
 
         if (!event) return;
 
-        const controllers = this.raycastNodes(event, DrawItemController);
+        const controllers = this.raycastNodes(event, DrawItemController, this.drawItemLayerMask);
         for (let i = 0; i < controllers.length; i++) {
             const controller = controllers[i];
 
@@ -257,7 +349,7 @@ export class DrawInputManager extends Component {
                     }
 
                     let mapChanged = false;
-                    const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                    const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                     if (drawItemMgr && typeof drawItemMgr.CheckMapCompletion === 'function') {
                         mapChanged = drawItemMgr.CheckMapCompletion();
                     }
@@ -287,7 +379,7 @@ export class DrawInputManager extends Component {
                 if (this.currentDrawItemController.itemType === DrawItemType.DirectDraw || this.currentDrawItemController.itemType === DrawItemType.DipAndDraw) {
                     if (this.progressContainer) {
                         this.progressContainer.active = true;
-                        const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                        const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                         if (drawItemMgr && typeof drawItemMgr.GetProgressUIPosForCurrentMap === 'function') {
                             const customPos = drawItemMgr.GetProgressUIPosForCurrentMap();
                             if (customPos) {
@@ -297,7 +389,7 @@ export class DrawInputManager extends Component {
                     }
 
                     if (this.progressFillImage) {
-                        const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                        const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                         if (drawItemMgr && typeof drawItemMgr.GetMakeupProgressInCurrentMap === 'function') {
                             this.progressFillImage.fillRange = drawItemMgr.GetMakeupProgressInCurrentMap(this.currentDrawItemController.makeupID);
                         }
@@ -374,7 +466,7 @@ export class DrawInputManager extends Component {
                 if (this.currentDrawItemController.isCompleted) {
                     this.progressContainer.active = false;
                 } else {
-                    const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                    const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                     if (drawItemMgr && typeof drawItemMgr.GetMakeupProgressInCurrentMap === 'function') {
                         this.progressFillImage.fillRange = drawItemMgr.GetMakeupProgressInCurrentMap(this.currentDrawItemController.makeupID);
                     }
@@ -390,7 +482,7 @@ export class DrawInputManager extends Component {
                     const dipWorldPos = this.currentDrawItemController.dipTarget.worldPosition;
                     const dist = Vec3.distance(tipWorldPos, dipWorldPos);
 
-                    if (dist < 100 && canDip) {
+                    if (dist < this.dipDistanceThreshold && canDip) {
                         this.currentDrawItemController.hasDipped = true;
                         this.currentDrawItemController.emitCompleteEvent();
                     }
@@ -403,7 +495,7 @@ export class DrawInputManager extends Component {
             let isHittingValidTarget = false;
 
             if (canDraw) {
-                const targets = this.raycastNodes(event, MakeupTarget);
+                const targets = this.raycastNodes(event, MakeupTarget, this.makeupTargetLayer);
                 this.currentFrameTargets = [];
                 let isWrongItem = false;
 
@@ -417,13 +509,14 @@ export class DrawInputManager extends Component {
                             break;
                         }
 
-                        const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                        const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                         const mapIndexBeforeApply = drawItemMgr ? drawItemMgr.currentMapIndex : 0;
                         this.currentFrameTargets.push(target);
 
                         const beforeDraws = target.CurrentDrawTimes;
                         const wasApplied = target.isApplied;
-                        target.applyMakeup(0.016, touchWorldPos);
+                        const dt = game.deltaTime > 0 ? game.deltaTime : 0.016;
+                        target.applyMakeup(dt, touchWorldPos);
                         const afterDraws = target.CurrentDrawTimes;
                         const isAppliedNow = target.isApplied;
 
@@ -459,12 +552,12 @@ export class DrawInputManager extends Component {
                     }
                 }
 
-                if (isHittingValidTarget && this.currentDrawItemController && !this.currentDrawItemController.isCompleted && this.currentDrawItemController.enableAutoComplete && (globalThis as any).DrawItemManager?.Instance) {
-                    const drawItemMgr = (globalThis as any).DrawItemManager.Instance;
-                    const progress = typeof drawItemMgr.GetMakeupProgressInCurrentMap === 'function' ? drawItemMgr.GetMakeupProgressInCurrentMap(this.currentDrawItemController.makeupID) : 0;
+                const drawItemMgrInstance = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance;
+                if (isHittingValidTarget && this.currentDrawItemController && !this.currentDrawItemController.isCompleted && this.currentDrawItemController.enableAutoComplete && drawItemMgrInstance) {
+                    const progress = typeof drawItemMgrInstance.GetMakeupProgressInCurrentMap === 'function' ? drawItemMgrInstance.GetMakeupProgressInCurrentMap(this.currentDrawItemController.makeupID) : 0;
 
                     if (progress >= this.currentDrawItemController.autoCompleteThreshold) {
-                        const mapConfig = drawItemMgr.mapConfigs ? drawItemMgr.mapConfigs[drawItemMgr.currentMapIndex] : null;
+                        const mapConfig = drawItemMgrInstance.mapConfigs ? drawItemMgrInstance.mapConfigs[drawItemMgrInstance.currentMapIndex] : null;
                         if (mapConfig && mapConfig.targetsInMap) {
                             for (const t of mapConfig.targetsInMap) {
                                 if (t && t.requiredMakeupID === this.currentDrawItemController.makeupID && !t.isApplied) {
@@ -474,7 +567,7 @@ export class DrawInputManager extends Component {
                         }
 
                         if (!this.currentDrawItemController.isCompleted) {
-                            if (typeof drawItemMgr.IsMakeupIDCompletedInCurrentMap === 'function' && drawItemMgr.IsMakeupIDCompletedInCurrentMap(this.currentDrawItemController.makeupID)) {
+                            if (typeof drawItemMgrInstance.IsMakeupIDCompletedInCurrentMap === 'function' && drawItemMgrInstance.IsMakeupIDCompletedInCurrentMap(this.currentDrawItemController.makeupID)) {
                                 this.currentDrawItemController.isCompleted = true;
                                 const progressMgr = (globalThis as any).ProgressTrackingManager?.Instance || (window as any).ProgressTrackingManager?.Instance;
                                 if (progressMgr && typeof progressMgr.AddProgress === 'function') progressMgr.AddProgress();
@@ -553,7 +646,7 @@ export class DrawInputManager extends Component {
                 if (this.currentDrawItemController && this.currentDrawItemController.itemType === DrawItemType.SnapToTarget) {
                     if (this.currentDrawItemController.snapTarget) {
                         const dist = Vec3.distance(this.currentDrawItem.node.worldPosition, this.currentDrawItemController.snapTarget.worldPosition);
-                        if (dist <= this.currentDrawItemController.snapRadius * 50) { // scale radius cho 2D pixels
+                        if (dist <= this.currentDrawItemController.snapRadius * this.snapRadiusMultiplier) { // scale radius cho 2D pixels
                             if (!this.currentDrawItemController.isUnlocked()) {
                                 this.handleWrongItem();
                                 return;
@@ -567,7 +660,7 @@ export class DrawInputManager extends Component {
                                 const progressMgr = (globalThis as any).ProgressTrackingManager?.Instance || (window as any).ProgressTrackingManager?.Instance;
                                 if (progressMgr && typeof progressMgr.AddProgress === 'function') progressMgr.AddProgress();
 
-                                const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                                const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                                 if (drawItemMgr) {
                                     const mapSpawnPos = typeof drawItemMgr.GetHeartSpawnPosForCurrentMap === 'function' ? drawItemMgr.GetHeartSpawnPosForCurrentMap() : null;
                                     if (mapSpawnPos && typeof drawItemMgr.SpawnHeartAt === 'function') {
@@ -579,12 +672,12 @@ export class DrawInputManager extends Component {
                             }
 
                             let mapChanged = false;
-                            const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                            const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                             if (drawItemMgr && typeof drawItemMgr.CheckMapCompletion === 'function') {
                                 mapChanged = drawItemMgr.CheckMapCompletion();
                             }
 
-                            const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+                            const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
                             if (handHintMgr) {
                                 if (mapChanged && typeof handHintMgr.ShowHintImmediately === 'function') {
                                     handHintMgr.ShowHintImmediately();
@@ -638,12 +731,12 @@ export class DrawInputManager extends Component {
                         if (progressMgr && typeof progressMgr.AddProgress === 'function') progressMgr.AddProgress();
 
                         let mapChanged = false;
-                        const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                        const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                         if (drawItemMgr && typeof drawItemMgr.CheckMapCompletion === 'function') {
                             mapChanged = drawItemMgr.CheckMapCompletion();
                         }
 
-                        const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+                        const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
                         if (handHintMgr) {
                             if (mapChanged && typeof handHintMgr.ShowHintImmediately === 'function') {
                                 handHintMgr.ShowHintImmediately();
@@ -657,8 +750,8 @@ export class DrawInputManager extends Component {
                     const colliders = this.currentDrawItem.getComponentsInChildren(Collider2D);
                     for (const col of colliders) col.enabled = false;
 
-                    const dropDuration = 0.5;
-                    const targetY = this.currentDrawItem.node.position.y - 200;
+                    const dropDuration = this.dragAwayDropDuration;
+                    const targetY = this.currentDrawItem.node.position.y - this.dragAwayDropYOffset;
                     tween(this.currentDrawItem.node)
                         .to(dropDuration, { position: new Vec3(this.currentDrawItem.node.position.x, targetY, this.currentDrawItem.node.position.z) }, { easing: 'quadIn' })
                         .start();
@@ -742,7 +835,7 @@ export class DrawInputManager extends Component {
             }
         }
 
-        const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
         if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
             handHintMgr.ShowHintWithDelay();
         }
@@ -862,9 +955,13 @@ export class DrawInputManager extends Component {
                 }
             }
 
-            let topContainer: Node | null = null;
-            if (this.node.scene) {
+            let topContainer: Node | null = this.dragContainer;
+            if (!topContainer && this.node.scene) {
                 topContainer = this.node.scene.getChildByName('Canvas');
+                if (!topContainer) {
+                    const canvasComp = this.node.scene.getComponentInChildren('cc.Canvas') as any;
+                    if (canvasComp) topContainer = canvasComp.node;
+                }
             }
 
             if (topContainer && root.parent !== topContainer) {
