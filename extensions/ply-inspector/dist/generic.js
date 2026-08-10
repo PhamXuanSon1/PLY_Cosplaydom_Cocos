@@ -116,6 +116,8 @@ function buildFromConfig(panel, root, config) {
             btn.textContent = def.label;
             btn.addEventListener('confirm', async () => {
                 await callMethod(panel, def.method, def.args || []);
+                // Thông báo editor cập nhật Hierarchy sau khi method thay đổi node.active
+                Editor.Message.send('scene', 'refresh');
                 await refresh(panel);
             });
             grid.appendChild(btn);

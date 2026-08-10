@@ -75,7 +75,7 @@ f = () => {
           sdkScript: '<script src="./mraid.js"></script>',
         },
         Unity: {
-          head: "\n<!--AndroidLink\n-->\n<!--IOSLink\n-->",
+          head: "\n<!--https://play.google.com/store/apps/details?id=com.abi.cosplaydom&gl=us\n-->\n<!--https://apps.apple.com/vn/app/cosplaydom/id6755667284\n-->",
           body: "<script>if(mraid.getState()==='loading'){mraid.addEventListener('ready',onSdkReady)}else{onSdkReady()}function viewableChangeHandler(viewable){if(viewable){}else{}}function onSdkReady(){mraid.addEventListener('viewableChange',viewableChangeHandler);if(mraid.isViewable()){showMyAd()}}var url='';var android='';function setStoreUrl(iosUrl, androidUrl){url=iosUrl;android=androidUrl;if(/android/i.test(navigator.userAgent)){url=android}};function redirectStore(){mraid.open(url)};function showMyAd(){}</script>",
           sdkScript: '<script src="./mraid.js"></script>',
         },
