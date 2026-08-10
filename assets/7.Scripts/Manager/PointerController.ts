@@ -2,6 +2,8 @@ import { _decorator, Camera, Component, EventKeyboard, EventTouch, geometry, Inp
 import { World } from './World';
 const { ccclass, property } = _decorator;
 
+export var pc: PointerController = null!;
+
 @ccclass('PointerController')
 export class PointerController extends Component {
 
@@ -25,6 +27,7 @@ export class PointerController extends Component {
     currentNode: Node = null!;
 
     onLoad() {
+        pc = this;
         PointerController.instance = this;
     }
 

@@ -3,7 +3,7 @@
   "general": {
     "designResolution": {
       "width": 1080,
-      "height": 1920,
+      "height": 2350,
       "fitHeight": true,
       "fitWidth": false
     }
@@ -17,5 +17,6 @@
       "name": "Makeup",
       "value": 2
     }
-  ]
+  ],
+  "custom_joint_texture_layouts": []
 }
