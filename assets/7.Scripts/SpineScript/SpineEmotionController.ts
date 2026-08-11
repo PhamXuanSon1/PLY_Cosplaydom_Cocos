@@ -49,13 +49,25 @@ export class SpineEmotionController extends Component {
     @property({ type: [EmotonSlotConfig], tooltip: "Danh sách các cặp slot và attachment để thay đổi khi tức giận" })
     public angrySlots: EmotonSlotConfig[] = [];
 
+    @property({ tooltip: "Tên animation mặc định (idle) để quay về sau cảm xúc. Nếu để trống, code sẽ tự lấy animation đang chạy trước đó." })
+    public defaultAnimationName: string = "";
+
     private charComponent: Character | null = null;
+    private _originalAnimName: string = "";
 
     start() {
         if (!this.skeletonAnimation) {
             this.skeletonAnimation = this.getComponent(sp.Skeleton);
         }
         this.charComponent = this.getComponent(Character);
+
+        // Lưu animation ban đầu (thường là idle)
+        if (this.skeletonAnimation) {
+            const current = this.skeletonAnimation.getCurrent(0);
+            if (current && current.animation) {
+                this._originalAnimName = current.animation.name;
+            }
+        }
     }
 
     public PlayHappyAnim(): void {
@@ -67,6 +79,16 @@ export class SpineEmotionController extends Component {
 
     public EmotionRoutine(animName: string, slots: EmotonSlotConfig[]): void {
         if (!this.skeletonAnimation || !this.charComponent) return;
+
+        // Lưu lại animation đang chạy ở track 0 trước khi chuyển sang emotion
+        const currentEntry = this.skeletonAnimation.getCurrent(0);
+        if (currentEntry && currentEntry.animation) {
+            this._originalAnimName = currentEntry.animation.name;
+        }
+
+        const revertAnimName = (this.defaultAnimationName && this.defaultAnimationName.trim() !== "")
+            ? this.defaultAnimationName
+            : this._originalAnimName;
 
         const revertActions: (() => void)[] = []; // Mảng lưu các hành động để quay về trạng thái ban đầu
 
@@ -111,10 +133,21 @@ export class SpineEmotionController extends Component {
         }
 
         if (animName && animName !== "") {
-            this.skeletonAnimation.setAnimation(this.animationTrack, animName, false);
-            this.skeletonAnimation.addAnimation(this.animationTrack, "", false, 0.2);
-        }
+            // Chạy animation cảm xúc (happy/angry) KHÔNG loop
+            const entry = this.skeletonAnimation.setAnimation(this.animationTrack, animName, false);
 
+            // Khi animation emotion chạy xong → tự động quay về animation ban đầu
+            if (entry) {
+                this.skeletonAnimation.setTrackCompleteListener(entry, () => {
+                    if (revertAnimName && revertAnimName !== "") {
+                        this.skeletonAnimation.setAnimation(this.animationTrack, revertAnimName, true);
+                        console.log(`[SpineEmotion] Animation '${animName}' xong → Quay về '${revertAnimName}'`);
+                    } else {
+                        this.skeletonAnimation.clearTrack(this.animationTrack);
+                    }
+                });
+            }
+        }
 
         // Đợi sau khoảng thời gian emotionDuration thì hoàn tác trả lại mặt ban đầu
         this.scheduleOnce(() => {

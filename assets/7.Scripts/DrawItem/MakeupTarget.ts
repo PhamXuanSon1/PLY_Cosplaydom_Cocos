@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat } from 'cc';
+import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum } from 'cc';
 import { Character } from '../SpineScript/Character';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from '../Manager/CharacterManager';
@@ -159,6 +159,14 @@ export class MakeupTarget extends Component {
         tooltip: 'Thời gian chà xát để hiển thị 100% (tính bằng giây). Dành riêng cho Continuous Mode.'
     })
     public continuousRequiredSeconds: number = 1;
+
+    @property({
+        type: CCFloat,
+        group: { name: '5. Draw Settings', id: 'drawSettings' },
+        displayName: 'Hint Circle Radius',
+        tooltip: 'Bán kính xoay của bàn tay gợi ý (0 = dùng mặc định của HandHintManager)'
+    })
+    public hintCircleRadius: number = 0;
 
     // Getters & Privates
     public get currentDrawTimesValue(): number {

@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, CCFloat, Animation, tween, Tween, Vec3 } from 'cc';
+import { _decorator, Component, Node, CCFloat, Animation, tween, Tween, Vec3, AnimationClip } from 'cc';
 import { DrawItemManager } from './DrawItemManager';
 import { DrawInputManager } from './DrawInputManager';
 import { DrawItemController, DrawItemType } from '../DrawItem/DrawItemController';
@@ -47,9 +47,17 @@ export class HandHintManager extends Component {
         type: Node,
         group: { name: '1. UI Objects', id: 'uiObjects' },
         displayName: 'Hand Animator',
-        tooltip: 'Node chứa Animation của bàn tay (clip "Click")'
+        tooltip: 'Node chứa Animation của bàn tay'
     })
     public handAnimator: Node | null = null;
+
+    @property({
+        type: AnimationClip,
+        group: { name: '1. UI Objects', id: 'uiObjects' },
+        displayName: 'Click Anim Clip',
+        tooltip: 'Clip animation nhấp ngón tay (Nhớ set Wrap Mode là Loop)'
+    })
+    public clickAnimationClip: AnimationClip | null = null;
 
     @property({ type: CCFloat, group: { name: '2. Hint Settings', id: 'hintSettings' }, displayName: 'Delay Before Hint' })
     public delayBeforeHint: number = 2.5;
@@ -67,6 +75,13 @@ export class HandHintManager extends Component {
         tooltip: 'Thời gian hoàn thành 1 vòng xoay (càng lớn thì xoay càng chậm)'
     })
     public circleDuration: number = 1.5;
+
+    @property({
+        type: CCFloat, group: { name: '2. Hint Settings', id: 'hintSettings' },
+        displayName: 'Drag Duration',
+        tooltip: 'Thời gian di chuyển tay từ đồ vật đến đích (càng lớn kéo càng chậm)'
+    })
+    public dragDuration: number = 1.5;
 
     @property({
         type: CCFloat, group: { name: '2. Hint Settings', id: 'hintSettings' },
@@ -97,8 +112,10 @@ export class HandHintManager extends Component {
 
     protected update(dt: number): void {
         // Chặn đếm giờ nếu người chơi đang cầm/kéo đồ vật
-        if (DrawInputManager.Instance != null && DrawInputManager.Instance.currentDrawItem != null) {
-            this.idleTime = 0;
+        const inputMgr = DrawInputManager.Instance || (globalThis as any).DrawInputManager?.Instance || (window as any).DrawInputManager?.Instance;
+        if (inputMgr != null && inputMgr.currentDrawItem != null) {
+            this.stopAllHintLogic();
+            if (this.handIcon != null) this.handIcon.active = false;
             return;
         }
 
@@ -203,9 +220,14 @@ export class HandHintManager extends Component {
 
         if (nextItem.itemType === DrawItemType.ClickOnly) {
             this.handIcon.setWorldPosition(startPos);
-            // Clip "Click" đã set Loop trong Animation, chỉ cần play sau 0.1s cho node kịp bật
+            // Chạy clip (đã set Loop) sau 0.1s
             this.scheduleOnce(() => {
-                if (handAnim) handAnim.play('Click');
+                if (handAnim && this.clickAnimationClip) {
+                    if (!handAnim.getState(this.clickAnimationClip.name)) {
+                        handAnim.createState(this.clickAnimationClip, this.clickAnimationClip.name);
+                    }
+                    handAnim.play(this.clickAnimationClip.name);
+                }
             }, 0.1);
         } else if (nextItem.itemType === DrawItemType.SnapToTarget) {
             if (nextItem.snapTarget != null) {
@@ -217,7 +239,7 @@ export class HandHintManager extends Component {
             const target = this.findTargetFor(nextItem.makeupID, mapIndex);
             if (target != null) {
                 const targetPos = this.getTargetPos(target);
-                if (target.continuousMode) this.animateDragAndCircle(startPos, targetPos);
+                if (target.continuousMode) this.animateDragAndCircle(startPos, targetPos, target.hintCircleRadius);
                 else this.animateDrag(startPos, targetPos);
             } else {
                 console.warn(`[HandHint] Không tìm thấy MakeupTarget có ID ${nextItem.makeupID}`);
@@ -227,7 +249,7 @@ export class HandHintManager extends Component {
             if (target != null && nextItem.dipTarget != null) {
                 const targetPos = this.getTargetPos(target);
                 const dipPos = nextItem.dipTarget.worldPosition.clone();
-                this.animateDipAndDraw(startPos, dipPos, targetPos, target.continuousMode);
+                this.animateDipAndDraw(startPos, dipPos, targetPos, target.continuousMode, target.hintCircleRadius);
             } else {
                 console.warn(`[HandHint] Thiếu MakeupTarget hoặc khay phấn cho ${nextItem.node.name}`);
             }
@@ -245,16 +267,16 @@ export class HandHintManager extends Component {
         if (this.handIcon == null) return;
         this.handIcon.setWorldPosition(start);
         tween(this.handIcon)
-            .to(1.5, { worldPosition: end }, { easing: 'sineInOut' })
+            .to(this.dragDuration, { worldPosition: end }, { easing: 'sineInOut' })
             .call(() => this.showHint())
             .start();
     }
 
-    private animateDragAndCircle(start: Vec3, end: Vec3): void {
+    private animateDragAndCircle(start: Vec3, end: Vec3, customRadius: number = 0): void {
         if (this.handIcon == null) return;
         this.handIcon.setWorldPosition(start);
 
-        const r = this.circleRadius;
+        const r = customRadius > 0 ? customRadius : this.circleRadius;
         const seg = this.circleDuration / 4;
         const path = [
             end.clone().add(new Vec3(0, r, 0)),
@@ -264,7 +286,7 @@ export class HandHintManager extends Component {
         ];
 
         let tw = tween(this.handIcon)
-            .to(1, { worldPosition: end.clone().add(new Vec3(r, 0, 0)) }, { easing: 'sineInOut' });
+            .to(this.dragDuration, { worldPosition: end.clone().add(new Vec3(r, 0, 0)) }, { easing: 'sineInOut' });
 
         // 2 vòng xoay (tương đương DOPath SetLoops(2))
         for (let loop = 0; loop < 2; loop++) {
@@ -276,16 +298,16 @@ export class HandHintManager extends Component {
         tw.call(() => this.showHint()).start();
     }
 
-    private animateDipAndDraw(start: Vec3, dip: Vec3, end: Vec3, circleAtEnd: boolean): void {
+    private animateDipAndDraw(start: Vec3, dip: Vec3, end: Vec3, circleAtEnd: boolean, customRadius: number = 0): void {
         if (this.handIcon == null) return;
         this.handIcon.setWorldPosition(start);
 
         let tw = tween(this.handIcon)
-            .to(1, { worldPosition: dip }, { easing: 'sineInOut' })
+            .to(this.dragDuration, { worldPosition: dip }, { easing: 'sineInOut' })
             .delay(0.2); // Nghỉ 1 chút ở điểm nhúng phấn
 
         if (circleAtEnd) {
-            const r = this.circleRadius;
+            const r = customRadius > 0 ? customRadius : this.circleRadius;
             const seg = this.circleDuration / 4;
             const path = [
                 end.clone().add(new Vec3(0, r, 0)),
@@ -293,14 +315,14 @@ export class HandHintManager extends Component {
                 end.clone().add(new Vec3(0, -r, 0)),
                 end.clone().add(new Vec3(r, 0, 0)),
             ];
-            tw = tw.to(1, { worldPosition: end.clone().add(new Vec3(r, 0, 0)) }, { easing: 'sineInOut' });
+            tw = tw.to(this.dragDuration, { worldPosition: end.clone().add(new Vec3(r, 0, 0)) }, { easing: 'sineInOut' });
             for (let loop = 0; loop < 2; loop++) {
                 for (const p of path) {
                     tw = tw.to(seg, { worldPosition: p });
                 }
             }
         } else {
-            tw = tw.to(1, { worldPosition: end }, { easing: 'sineInOut' });
+            tw = tw.to(this.dragDuration, { worldPosition: end }, { easing: 'sineInOut' });
         }
 
         tw.call(() => this.showHint()).start();

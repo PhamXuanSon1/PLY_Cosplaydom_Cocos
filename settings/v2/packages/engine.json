@@ -15,7 +15,7 @@
         "_value": true
       },
       "animation": {
-        "_value": false
+        "_value": true
       },
       "skeletal-animation": {
         "_value": true
@@ -52,7 +52,7 @@
         "_value": false
       },
       "physics-2d": {
-        "_value": false,
+        "_value": true,
         "_option": "physics-2d-box2d"
       },
       "physics-2d-box2d": {
@@ -80,7 +80,7 @@
         "_value": false
       },
       "particle-2d": {
-        "_value": false
+        "_value": true
       },
       "audio": {
         "_value": false
@@ -92,7 +92,7 @@
         "_value": false
       },
       "tween": {
-        "_value": false
+        "_value": true
       },
       "websocket": {
         "_value": false
@@ -123,11 +123,15 @@
       }
     },
     "includeModules": [
+      "animation",
       "base",
       "gfx-webgl",
       "gfx-webgl2",
+      "particle-2d",
+      "physics-2d-box2d",
       "skeletal-animation",
       "spine",
+      "tween",
       "ui"
     ],
     "noDeprecatedFeatures": {

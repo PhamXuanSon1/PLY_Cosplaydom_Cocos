@@ -127,22 +127,22 @@
       "attachmentName": "head/eye_back"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_jasmine_iris_R",
       "attachmentName": "head/old_jasmine_iris"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_jasmine_iris_R2",
       "attachmentName": "head/old_jasmine_iris"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_iris_R",
       "attachmentName": "head/new_jasmine_iris"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_iris_L",
       "attachmentName": "head/new_jasmine_iris"
     },
@@ -162,57 +162,57 @@
       "attachmentName": "head/face"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/mke_face_foundation2",
       "attachmentName": "makeup/makeup_foundation2"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_face_contour",
       "attachmentName": "makeup/makeup_new_contour"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_face_blush",
       "attachmentName": "makeup/makeup_new_blush"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyeshadow_R",
       "attachmentName": "makeup/new_eyeshadow_R"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyeshadow_L",
       "attachmentName": "makeup/new_eyeshadow_R"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_eyelid_d_R",
       "attachmentName": "head/old_lid_d"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_eyelid_d_R2",
       "attachmentName": "head/old_lid_d"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_eyeline_d_R",
       "attachmentName": "head/old_eyeline_R_d"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_eyeline_d_L",
       "attachmentName": "head/old_eyeline_R_d"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_eyelid_u_R",
       "attachmentName": "head/old_lid_u"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_eyelid_u_L",
       "attachmentName": "head/old_lid_u"
     },
@@ -222,62 +222,62 @@
       "attachmentName": "makeup/makeup_wet_face"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyelid_d_R",
       "attachmentName": "head/new_lid_d_R"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyelid_d_L",
       "attachmentName": "head/new_lid_d_L"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyeliner_d_R",
       "attachmentName": "head/new_eyeliner_R_d"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyeliner_d_L",
       "attachmentName": "head/new_eyeliner_R_d"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyelid_u_R",
       "attachmentName": "head/new_lid_u"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyelid_u_L",
       "attachmentName": "head/new_lid_u"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_eyeline_u_R",
       "attachmentName": "head/old_eyeline_R_u"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "head/old_eyeline_u_L",
       "attachmentName": "head/old_eyeline_R_u"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyeliner_u_R",
       "attachmentName": "head/new_eyeliner_R_u"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyeliner_u_L",
       "attachmentName": "head/new_eyeliner_R_u"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyebrows_R",
       "attachmentName": "head/new_eyebrows_R"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "head/new_eyebrows_L",
       "attachmentName": "head/new_eyebrows_R"
     },
@@ -292,7 +292,7 @@
       "attachmentName": "makeup/makeup_wet_ear"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "mk_face_dirty",
       "attachmentName": "makeup/face_dirt"
     },
@@ -302,12 +302,12 @@
       "attachmentName": "makeup/makeup_cleanser2"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "old_eyebrowsR",
       "attachmentName": "head/old_eyebrows"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "old_eyebrowsL",
       "attachmentName": "head/old_eyebrows"
     },
@@ -362,12 +362,12 @@
       "attachmentName": "makeup/makeup_contour1"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "new_face_highlight",
       "attachmentName": "makeup/makeup_new_highlight"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "old_mouth",
       "attachmentName": "head/mouth_01"
     },
@@ -422,7 +422,7 @@
       "attachmentName": "base/old_belt"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "makeup/old_hair_front1",
       "attachmentName": "base/old_hair_front1"
     },
@@ -437,7 +437,7 @@
       "attachmentName": "base/old_hair_front3"
     },
     {
-      "isEnabled": false,
+      "isEnabled": true,
       "slotName": "makeup/old_hair_front2",
       "attachmentName": "base/old_hair_front2"
     },

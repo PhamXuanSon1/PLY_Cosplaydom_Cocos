@@ -537,6 +537,7 @@ export class DrawInputManager extends Component {
 
                         isHittingValidTarget = true;
                         if (this.currentDrawItemController) {
+                            // console.log(`[DrawInputManager] TipPoint của ${this.currentDrawItemController.node.name} đang chạm vào Target Collider của ${target.node.name}!`);
                             this.currentDrawItemController.emitTipPointHitEvent();
                         }
 
@@ -965,6 +966,8 @@ export class DrawInputManager extends Component {
             }
 
             if (topContainer && root.parent !== topContainer) {
+                // Lưu Layer gốc của từng node TRƯỚC khi ghi đè, để lúc thả trả lại đúng Camera cũ
+                if (movement) movement.CaptureLayers();
                 root.setParent(topContainer, true);
                 // Đảm bảo Layer của đồ vật & các Node con (Added_Bangs) khớp với Layer của Canvas/Camera để Camera vẽ ra màn hình
                 this.setNodeAndChildrenLayer(root, topContainer.layer);
@@ -972,12 +975,19 @@ export class DrawInputManager extends Component {
                 root.setSiblingIndex(root.parent.children.length - 1);
             }
         } else {
-            // Khi thả tay & tween bay về spawn xong: Trả Node về cha ban đầu (originalParent), đồng bộ Layer của Parent và SiblingIndex cũ
+            // Khi thả tay & tween bay về spawn xong: Trả Node về cha ban đầu (originalParent), Layer gốc và SiblingIndex cũ
             if (movement) {
                 if (movement.originalParent && root.parent !== movement.originalParent) {
                     root.setParent(movement.originalParent, true);
                     root.setPosition(movement.SpawnLocalPos);
-                    this.setNodeAndChildrenLayer(root, movement.originalParent.layer);
+                }
+                // Trả lại Layer GỐC CỦA TỪNG NODE. Không được gán Layer của parent cho cả cây:
+                // node con chứa Sprite thường ở UI_2D (UICam), còn parent có thể ở Layer của ParticleCam
+                // (priority cao hơn -> vẽ sau) nên item sẽ đè lên mọi Node UI khác dù hierarchy đứng trước.
+                if (movement.originalLayers.size > 0) {
+                    movement.RestoreLayers();
+                } else if (movement.originalLayer !== 0) {
+                    root.layer = movement.originalLayer;
                 }
                 if (root.parent) {
                     root.setSiblingIndex(movement.originalSiblingIndex);

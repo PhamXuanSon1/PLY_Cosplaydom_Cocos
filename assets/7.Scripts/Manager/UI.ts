@@ -1,4 +1,4 @@
-import { _decorator, Animation, Camera, Color, Component, Director, Enum, EventTouch, Label, misc, Node, ParticleSystem2D, PhysicsSystem, size, Size, Sprite, toDegree, Tween, tween, UITransform, v2, v3, Vec2, Vec3, view, Widget } from 'cc';
+import { _decorator, Animation, Camera, Color, Component, Director, Enum, EventTouch, Label, misc, Node, ParticleSystem2D, PhysicsSystem, PhysicsSystem2D, Collider2D, RigidBody2D, size, Size, Sprite, toDegree, Tween, tween, UITransform, v2, v3, Vec2, Vec3, view, Widget } from 'cc';
 import { World } from './World';
 import { PointerController } from './PointerController';
 import { SoundType } from './SoundManager';
@@ -113,36 +113,47 @@ export class UI extends Component {
         }
     }
 
+    initialOffsets: Map<Node, Vec3> = new Map();
+    lastWidth: number = 0;
+    lastHeight: number = 0;
+
     bind() {
+        if (!this.uiCam) return;
         let pos = this.uiCam.node.position.clone();
-        {
-            this.topNode.binds[0].position = this.topNode.binds[0].position.clone();
-            this.topNode.binds[0].position = v3(this.topNode.binds[0].position.x + pos.x, 
-            this.height + pos.y, 
-            this.topNode.binds[0].position.z);
-
-            this.bottomNode.binds[0].position = this.bottomNode.binds[0].position.clone();
-            this.bottomNode.binds[0].position = v3(this.bottomNode.binds[0].position.x + pos.x, 
-            -this.height + pos.y, 
-            this.bottomNode.binds[0].position.z);
-
-            this.leftNode.binds[0].position = this.leftNode.binds[0].position.clone();
-            this.leftNode.binds[0].position = v3(-this.width + pos.x, 
-            this.leftNode.binds[0].position.y + pos.y, 
-            this.leftNode.binds[0].position.z);
-
-            this.rightNode.binds[0].position = this.rightNode.binds[0].position.clone();
-            this.rightNode.binds[0].position = v3(this.width + pos.x, 
-            this.rightNode.binds[0].position.y + pos.y, 
-            this.rightNode.binds[0].position.z);
+        
+        if (this.topNode?.binds?.[0]) {
+            let item = this.topNode.binds[0];
+            if (!this.initialOffsets.has(item)) this.initialOffsets.set(item, item.position.clone());
+            let initPos = this.initialOffsets.get(item)!;
+            item.position = v3(initPos.x + pos.x, this.height + pos.y, initPos.z);
         }
 
+        if (this.bottomNode?.binds?.[0]) {
+            let item = this.bottomNode.binds[0];
+            if (!this.initialOffsets.has(item)) this.initialOffsets.set(item, item.position.clone());
+            let initPos = this.initialOffsets.get(item)!;
+            item.position = v3(initPos.x + pos.x, -this.height + pos.y, initPos.z);
+        }
+
+        if (this.leftNode?.binds?.[0]) {
+            let item = this.leftNode.binds[0];
+            if (!this.initialOffsets.has(item)) this.initialOffsets.set(item, item.position.clone());
+            let initPos = this.initialOffsets.get(item)!;
+            item.position = v3(-this.width + pos.x, initPos.y + pos.y, initPos.z);
+        }
+
+        if (this.rightNode?.binds?.[0]) {
+            let item = this.rightNode.binds[0];
+            if (!this.initialOffsets.has(item)) this.initialOffsets.set(item, item.position.clone());
+            let initPos = this.initialOffsets.get(item)!;
+            item.position = v3(this.width + pos.x, initPos.y + pos.y, initPos.z);
+        }
 
         this.bindings.forEach(bind => {
             if (!bind || !bind.binds) return;
             bind.binds.forEach(item => {
                 if (!item || !item.parent) return;
-                item.position = item.position.clone();
+                if (!this.initialOffsets.has(item)) this.initialOffsets.set(item, item.position.clone());
                 let pos = item.getWorldPosition();
                 switch(bind.type) {
                     case BindUIType.Top:
@@ -160,8 +171,8 @@ export class UI extends Component {
                 }
                 let lpos = item.parent.inverseTransformPoint(v3(), pos);
                 item.position = lpos;
-            })            
-        })   
+            });
+        });
     }
 
     keepTap() {    
@@ -199,13 +210,20 @@ export class UI extends Component {
     resize(scale: number = this.scale) {
         this.scale = scale;
         let time = 0;
-        this.height = this.uiCam.orthoHeight + 0;
-        this.width = 1080/2350 * this.height * scale;  
-        console.log(this.width / this.height, this.width, this.height);
+        let visibleSize = view.getVisibleSize();
+        this.height = this.uiCam ? this.uiCam.orthoHeight : 960;
+        if (visibleSize.height > 0) {
+            this.width = (visibleSize.width / visibleSize.height) * this.height;
+        } else {
+            this.width = 1080/2350 * this.height * scale;
+        }
+        
         setTimeout(() => {            
             this.keepTap();          
         }, time);
-        if(this.width / this.height < 1.5) {
+
+        let isPortrait = visibleSize.width < visibleSize.height;
+        if (isPortrait) {
             scale = misc.clampf(scale, 0, 1.1); 
             this.portraitNodes.forEach((item) => {
                 if (item) item.active = true;
@@ -218,7 +236,7 @@ export class UI extends Component {
             });
             this.gameplays.forEach((item) => {
                 if (item) item.scale = v3(1, 1, 1).multiplyScalar(scale);
-            })      
+            });
         } else {
             this.portraitNodes.forEach((item) => {
                 if (item) item.active = false;
@@ -231,9 +249,47 @@ export class UI extends Component {
             });
             this.gameplays.forEach((item) => {
                 if (item) item.scale = v3(1, 1, 1).multiplyScalar(1.1);
-            })
+            });
         }
-        this.bind();          
+        this.bind();
+        this.syncPhysics();
+    }
+
+    /**
+     * Ép hệ thống Physics2D đồng bộ lại vị trí/kích thước collider
+     * sau khi UI.ts thay đổi scale/position của các Node.
+     * Fix lỗi collider bị lệch trên Chrome so với Editor.
+     */
+    private syncPhysics(): void {
+        // Cách 1: Gọi _updateTransformByRigidBody cho tất cả RigidBody2D
+        if (PhysicsSystem2D.instance) {
+            // Đợi 1 frame để transform đã cập nhật xong
+            this.scheduleOnce(() => {
+                // Duyệt qua tất cả gameplays + adaptUIs và sync lại collider
+                const nodesToSync = [...this.gameplays, ...this.adaptUIs];
+                for (const parentNode of nodesToSync) {
+                    if (!parentNode) continue;
+                    const colliders = parentNode.getComponentsInChildren(Collider2D);
+                    for (const col of colliders) {
+                        if (col && col.body) {
+                            // Ép RigidBody2D đồng bộ lại vị trí từ Node transform
+                            const body = col.body;
+                            if (body && (body as any)._body) {
+                                const b2body = (body as any)._body;
+                                const nodeWorldPos = col.node.worldPosition;
+                                if (typeof b2body.setPosition === 'function') {
+                                    b2body.setPosition(nodeWorldPos.x / 50, nodeWorldPos.y / 50);
+                                }
+                            }
+                        }
+                        // Thay thế: apply() sẽ rebuild collider shape theo transform hiện tại
+                        if (col && typeof (col as any).apply === 'function') {
+                            (col as any).apply();
+                        }
+                    }
+                }
+            }, 0);
+        }
     }
 
     handTap(node: Node) {
@@ -244,11 +300,8 @@ export class UI extends Component {
     }
 
     moveDir: number = 1;
-    // @property(Node)
     startHand: Node = null!;
-    // @property(Node)
     endHand: Node = null!;
-    // @property(Node)
     current: Node = null!;
     cTween: Tween<any> = null!;
     hTween: Tween<any> = null!;
@@ -268,15 +321,12 @@ export class UI extends Component {
             const hand = this.hand;
             let child = this.hand.children[0].getComponentInChildren(Sprite)!;
             child.color = new Color(255, 255, 255, 255);
-            // child.node.scale = v3(1, 1, 1).multiplyScalar(2);
             let pos = this.endHand.getWorldPosition();
             let delta = this.hand.worldPosition.clone().subtract(pos);
             
             if(this.moveDir == 0) {
-
                 let p = v3(pos.x, this.hand.worldPosition.y,  this.hand.worldPosition.z);
                 let time = delta.length() * 0.5;
-
 
                 this.hTween = tween(this.hand)
                 .delay(0.2)
@@ -298,7 +348,6 @@ export class UI extends Component {
                 .start();
 
             } else if (this.moveDir == 1) {
-
                 let p = v3(pos.x, pos.y, pos.z);
                 let time = delta.length() / 1000;
 
@@ -312,7 +361,6 @@ export class UI extends Component {
                     this.cTween = tween(child).delay(0.2).to(0.2, {}, {easing: 'smooth',
                         onUpdate(target, ratio) {
                             child.color = new Color(255, 255, 255, 255 * (1 - ratio));
-                            
                         },
                     })
                     .call(() => {
@@ -321,7 +369,6 @@ export class UI extends Component {
                     .start();   
                 })
                 .start();
-
             }
         })
         .start();
@@ -332,8 +379,10 @@ export class UI extends Component {
 
     update(dt: number) {
         let size = view.getVisibleSize();
-        let scale = size.width/1080;
-        if(scale != this.scale) {          
+        let scale = size.width / 1080;
+        if (scale != this.scale || size.width !== this.lastWidth || size.height !== this.lastHeight) {
+            this.lastWidth = size.width;
+            this.lastHeight = size.height;
             this.resize(scale);
         }
     }

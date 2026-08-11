@@ -34,10 +34,29 @@ export class DrawItemController extends Component {
     public isUnlocked(): boolean {
         if (this.requireItemsToUnlock && this.requireItemsToUnlock.length > 0) {
             for (let i = 0; i < this.requireItemsToUnlock.length; i++) {
-                if (this.requireItemsToUnlock[i] != null && !this.requireItemsToUnlock[i].isCompleted) {
-                    return false;
+                const reqObj = this.requireItemsToUnlock[i] as any;
+                if (reqObj != null) {
+                    let reqItem: DrawItemController | null = null;
+                    if (reqObj.isCompleted !== undefined) {
+                        reqItem = reqObj; // Đã là DrawItemController
+                    } else if (reqObj.node) {
+                        reqItem = reqObj.node.getComponent(DrawItemController); // Lấy từ Node
+                    } else if (reqObj.getComponent) {
+                        reqItem = reqObj.getComponent(DrawItemController);
+                    }
+
+                    if (reqItem != null) {
+                        // console.log(`[Debug Unlock] Check Item [${this.node.name}] -> Require: [${reqItem.node.name}], isCompleted: ${reqItem.isCompleted}`);
+                        if (!reqItem.isCompleted) {
+                            // console.log(`[Debug Unlock] => Item [${this.node.name}] BỊ KHÓA vì [${reqItem.node.name}] chưa hoàn thành!`);
+                            return false;
+                        }
+                    } else {
+                        console.warn(`[Debug Unlock] Yêu cầu ở vị trí ${i} của ${this.node.name} KHÔNG hợp lệ (Không tìm thấy DrawItemController).`);
+                    }
                 }
             }
+            // console.log(`[Debug Unlock] => Item [${this.node.name}] ĐÃ ĐƯỢC MỞ KHÓA (đủ điều kiện)!`);
         }
         return true;
     }
@@ -233,6 +252,10 @@ export class DrawItemController extends Component {
     }
 
     public set isCompleted(value: boolean) {
+        if (this._isCompleted !== value) {
+            // console.log(`[Debug Complete] Item [${this.node.name}] chuyển trạng thái isCompleted từ ${this._isCompleted} sang ${value}`);
+        }
+        
         // Chỉ phát âm thanh vào ĐÚNG KHOẢNH KHẮC nó chuyển từ false -> true
         if (!this._isCompleted && value) {
             if (this.playFxOnComplete && Ply_SoundManager.Ins != null) {
