@@ -867,7 +867,7 @@
       "attachmentName": "cos/new_arm_u"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "old_hand_beltR",
       "attachmentName": "base/old_hand_belt"
     },

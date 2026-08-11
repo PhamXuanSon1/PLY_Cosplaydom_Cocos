@@ -261,35 +261,43 @@ export class UI extends Component {
      * Fix lỗi collider bị lệch trên Chrome so với Editor.
      */
     private syncPhysics(): void {
-        // Cách 1: Gọi _updateTransformByRigidBody cho tất cả RigidBody2D
-        if (PhysicsSystem2D.instance) {
-            // Đợi 1 frame để transform đã cập nhật xong
-            this.scheduleOnce(() => {
-                // Duyệt qua tất cả gameplays + adaptUIs và sync lại collider
-                const nodesToSync = [...this.gameplays, ...this.adaptUIs];
-                for (const parentNode of nodesToSync) {
-                    if (!parentNode) continue;
-                    const colliders = parentNode.getComponentsInChildren(Collider2D);
-                    for (const col of colliders) {
-                        if (col && col.body) {
-                            // Ép RigidBody2D đồng bộ lại vị trí từ Node transform
-                            const body = col.body;
-                            if (body && (body as any)._body) {
-                                const b2body = (body as any)._body;
-                                const nodeWorldPos = col.node.worldPosition;
-                                if (typeof b2body.setPosition === 'function') {
-                                    b2body.setPosition(nodeWorldPos.x / 50, nodeWorldPos.y / 50);
-                                }
-                            }
-                        }
-                        // Thay thế: apply() sẽ rebuild collider shape theo transform hiện tại
-                        if (col && typeof (col as any).apply === 'function') {
-                            (col as any).apply();
-                        }
+        if (!PhysicsSystem2D.instance) return;
+
+        // Đợi 1 frame để transform đã cập nhật xong
+        this.scheduleOnce(() => {
+            const nodesToSync = [...this.gameplays, ...this.adaptUIs];
+            const activeBodies: RigidBody2D[] = [];
+            const activeColliders: Collider2D[] = [];
+
+            for (const parentNode of nodesToSync) {
+                if (!parentNode) continue;
+
+                const bodies = parentNode.getComponentsInChildren(RigidBody2D);
+                for (const body of bodies) {
+                    if (body && body.enabled) {
+                        activeBodies.push(body);
+                        body.enabled = false;
                     }
                 }
+                const colliders = parentNode.getComponentsInChildren(Collider2D);
+                for (const col of colliders) {
+                    if (col && col.enabled) {
+                        activeColliders.push(col);
+                        col.enabled = false;
+                    }
+                }
+            }
+
+            // Đợi thêm 1 frame nữa rồi bật lại để Box2D rebuild hoàn toàn
+            this.scheduleOnce(() => {
+                for (const body of activeBodies) {
+                    body.enabled = true;
+                }
+                for (const col of activeColliders) {
+                    col.enabled = true;
+                }
             }, 0);
-        }
+        }, 0);
     }
 
     handTap(node: Node) {
