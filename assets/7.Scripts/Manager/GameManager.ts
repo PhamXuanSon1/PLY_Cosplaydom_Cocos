@@ -112,27 +112,25 @@ export class GameManager extends Component {
     }
 
     protected start(): void {
-        this.applyGoogleBuildSettings();
+        if (this.isGoogleBuild) {
+            this.applyGoogleBuildSettings();
+        }
     }
 
-    /** Áp dụng các thiết lập ẩn object/behaviour cho Google Build */
     public applyGoogleBuildSettings(): void {
         if (!this.isGoogleBuild) return;
 
         for (const obj of this.googleDisabledObjects) {
             if (obj != null) obj.active = false;
         }
-
         for (const comp of this.googleDisabledBehaviours) {
             if (comp != null) {
                 comp.enabled = false;
 
-                // Tắt PlayOnLoad của Animation
+                // Tắt playOnLoad = false và stop() nếu là Animation
                 if ('playOnLoad' in comp) {
                     (comp as any).playOnLoad = false;
                 }
-
-                // Dừng clip Animation đang phát
                 if (typeof (comp as any).stop === 'function') {
                     (comp as any).stop();
                 }
@@ -141,13 +139,9 @@ export class GameManager extends Component {
                     const anim = comp.getComponent(Animation);
                     if (anim) {
                         anim.playOnLoad = false;
-                        anim.enabled = false;
-                        if (typeof anim.stop === 'function') anim.stop();
+                        anim.stop();
                     }
                     Tween.stopAllByTarget(comp.node);
-
-                    // Ẩn luôn Node chứa component này (ví dụ: Node tapToCosplayAnim)
-                    comp.node.active = false;
                 }
                 Tween.stopAllByTarget(comp);
             }
@@ -184,9 +178,6 @@ export class GameManager extends Component {
                 }
                 obj.active = isActive;
             }
-        }
-        if (isActive && this.isGoogleBuild) {
-            this.applyGoogleBuildSettings();
         }
     }
 
