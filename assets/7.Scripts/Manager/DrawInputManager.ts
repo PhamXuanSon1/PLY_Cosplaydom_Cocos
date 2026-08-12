@@ -157,14 +157,11 @@ export class DrawInputManager extends Component {
         this.isGoToStoreOnClickEnabled = true;
     }
 
-    public EnableGoToStoreOnClick(): void {
-        this.enableGoToStoreOnClick();
-    }
-
     @property({ type: Camera, displayName: 'Main Camera' })
     public cam: Camera | null = null;
 
     public currentDrawItem: DrawItemMovement | null = null;
+    public ignoreScrollInput: boolean = false;
     private currentDrawItemController: DrawItemController | null = null;
     private offset: Vec3 = new Vec3();
     private zCoord: number = 0;
@@ -203,6 +200,7 @@ export class DrawInputManager extends Component {
 
     private onTouchStart(event: EventTouch): void {
         if (this.isPlayingIntro) return;
+        if (this.ignoreScrollInput) return;
 
         if (this.isGoToStoreOnClickEnabled) {
             AppLovinAnalytics.ctaClicked();
@@ -289,17 +287,28 @@ export class DrawInputManager extends Component {
         const touchVec2 = new Vec2(uiWorldPos.x, uiWorldPos.y);
         const results: T[] = [];
 
+        const findComponentInHierarchy = (node: Node | null): T | null => {
+            let current: Node | null = node;
+            while (current) {
+                const comp = current.getComponent(type);
+                if (comp) return comp;
+                current = current.parent;
+            }
+            return null;
+        };
+
         // Chỉ dùng PhysicsSystem2D kiểm tra va chạm bằng 2D Collider (BoxCollider2D, PolygonCollider2D...)
         if (PhysicsSystem2D.instance) {
             const colliders2D = PhysicsSystem2D.instance.testPoint(touchVec2);
             for (let i = 0; i < colliders2D.length; i++) {
-                const colNode = colliders2D[i].node;
+                const colNode = colliders2D[i]?.node;
+                if (!colNode) continue;
 
                 if (layerMask !== -1 && (colNode.layer & layerMask) === 0) {
                     continue;
                 }
 
-                const comp = colNode.getComponent(type) || colliders2D[i].getComponent(type);
+                const comp = findComponentInHierarchy(colNode) || colliders2D[i].getComponent(type);
                 if (comp && results.indexOf(comp) === -1) {
                     results.push(comp);
                 }
