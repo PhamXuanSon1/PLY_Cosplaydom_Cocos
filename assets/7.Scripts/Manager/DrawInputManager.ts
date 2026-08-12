@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, Layers, game } from 'cc';
+import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game } from 'cc';
 import { AppLovinAnalytics } from '../Tool/AppLovinAnalytics';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from './CharacterManager';
@@ -11,6 +11,7 @@ import { MakeupTarget } from '../DrawItem/MakeupTarget';
 import { GameManager } from './GameManager';
 import { DrawItemManager } from './DrawItemManager';
 import { HandHintManager } from './HandHintManager';
+import { PhysicsSyncAfterAnim } from '../DrawItem/PhysicsSyncAfterAnim';
 
 const { ccclass, property } = _decorator;
 
@@ -199,6 +200,14 @@ export class DrawInputManager extends Component {
     }
 
     private onTouchStart(event: EventTouch): void {
+        // Bỏ qua chuột phải (button = 2) hoặc chuột giữa (button = 1) khi người chơi click mở Console
+        if ((event as any).getButton && (event as any).getButton() !== 0) return;
+
+        const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
+            handHintMgr.HideHintTemporarily();
+        }
+
         if (this.isPlayingIntro) return;
         if (this.ignoreScrollInput) return;
 
@@ -213,7 +222,6 @@ export class DrawInputManager extends Component {
         }
 
         if (!this.isClickFirst) {
-            this.isClickFirst = true;
             if (Ply_SoundManager.Ins != null) Ply_SoundManager.Ins.playBGM1();
 
             if (this.introAnimator) {
@@ -252,10 +260,8 @@ export class DrawInputManager extends Component {
                 }, duration);
                 return;
             } else {
-                const gameMgr = GameManager.instance || (globalThis as any).GameManager?.instance || (window as any).GameManager?.instance;
-                if (gameMgr && typeof gameMgr.TurnOnMap1 === 'function') {
-                    gameMgr.TurnOnMap1();
-                }
+                this.turnOnMap1();
+                return;
             }
         }
 
@@ -263,6 +269,11 @@ export class DrawInputManager extends Component {
     }
 
     private onTouchMove(event: EventTouch): void {
+        const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
+            handHintMgr.HideHintTemporarily();
+        }
+
         if (this.isPlayingIntro) return;
         this.mouseDrag(event);
     }
@@ -270,11 +281,19 @@ export class DrawInputManager extends Component {
     private onTouchEnd(event: EventTouch): void {
         if (this.isPlayingIntro) return;
         this.mouseUp();
+        const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
+            handHintMgr.ShowHintWithDelay();
+        }
     }
 
     private onTouchCancel(event: EventTouch): void {
         if (this.isPlayingIntro) return;
         this.mouseUp();
+        const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
+            handHintMgr.ShowHintWithDelay();
+        }
     }
 
     private getTouchWorldPos(event: EventTouch): Vec3 {
@@ -325,6 +344,9 @@ export class DrawInputManager extends Component {
         }
 
         if (!event) return;
+
+        // Chặn grab item mới nếu đang giữ item hoặc đang trong quá trình thả
+        if (this.currentDrawItem || this.isDropping) return;
 
         const controllers = this.raycastNodes(event, DrawItemController, this.drawItemLayerMask);
         for (let i = 0; i < controllers.length; i++) {
@@ -830,6 +852,7 @@ export class DrawInputManager extends Component {
                     .to(0.2, { worldPosition: spawnWorldPos })
                     .call(() => {
                         this.modifySortingOrder(itemNode, -10);
+                        this.forceSyncItemPhysics(itemNode);
                     })
                     .start();
 
@@ -859,10 +882,14 @@ export class DrawInputManager extends Component {
             const spawnParent = typeof drawItemMgr.GetHeartSpawnPosForCurrentMap === 'function' ? drawItemMgr.GetHeartSpawnPosForCurrentMap() : null;
             const spawnPos = spawnParent ? spawnParent.worldPosition : this.currentDrawItem.node.worldPosition;
             const heartUnit = Ply_Pool.Ins.spawn(PoolType.BreakHeart, spawnPos);
-            if (heartUnit && spawnParent) {
+            if (heartUnit) {
+                // Gắn vào spawnParent để hiển thị đúng trên UI layer
+                if (spawnParent) {
+                    heartUnit.node.setParent(spawnParent, true);
+                }
                 const prefab = Ply_Pool.Ins.getPrefab ? Ply_Pool.Ins.getPrefab(PoolType.BreakHeart) : null;
-                if (prefab) {
-                    heartUnit.node.setScale(prefab.data ? prefab.data.scale : heartUnit.node.scale);
+                if (prefab && prefab.data) {
+                    heartUnit.node.setScale(prefab.data.scale);
                 }
             }
         }
@@ -918,6 +945,7 @@ export class DrawInputManager extends Component {
                     if (col) col.enabled = true;
                 }
                 this.modifySortingOrder(itemNode, -10);
+                this.forceSyncItemPhysics(itemNode);
             })
             .start();
 
@@ -925,6 +953,47 @@ export class DrawInputManager extends Component {
         this.currentDrawItemController = null;
         this.isDropping = false;
     }
+
+    private forceSyncItemPhysics(itemNode: Node): void {
+        if (!itemNode) return;
+
+        const physicsSync = itemNode.getComponent(PhysicsSyncAfterAnim) || itemNode.getComponentInChildren(PhysicsSyncAfterAnim);
+        if (physicsSync) {
+            physicsSync.forceSync();
+            return;
+        }
+
+        const colliders = itemNode.getComponentsInChildren(Collider2D);
+        const bodies = itemNode.getComponentsInChildren(RigidBody2D);
+        const activeColliders: Collider2D[] = [];
+        const activeBodies: RigidBody2D[] = [];
+
+        for (const collider of colliders) {
+            if (collider && collider.enabled) {
+                activeColliders.push(collider);
+                collider.enabled = false;
+            }
+        }
+        for (const body of bodies) {
+            if (body && body.enabled) {
+                activeBodies.push(body);
+                body.enabled = false;
+            }
+        }
+
+        this.scheduleOnce(() => {
+            for (const body of activeBodies) {
+                if (body && body.isValid) {
+                    body.enabled = true;
+                }
+            }
+            for (const collider of activeColliders) {
+                if (collider && collider.isValid) {
+                    collider.enabled = true;
+                }
+            }
+        }, 0);
+    } 
 
     /** Tìm DrawItemGraphic trên chính node bị kéo, fallback xuống node con (Cocos getComponentInChildren không tính node hiện tại). */
     private getDrawGraphic(item: DrawItemMovement): DrawItemGraphic | null {
@@ -1038,7 +1107,16 @@ export class DrawInputManager extends Component {
     }
 
     public turnOnMap1(): void {
+        this.isClickFirst = true;
         this.isPlayingIntro = false;
+
+        const progressMgr = (globalThis as any).ProgressTrackingManager?.Instance || (window as any).ProgressTrackingManager?.Instance;
+        if (progressMgr && typeof progressMgr.StartChallenge === 'function') {
+            progressMgr.StartChallenge();
+        } else {
+            AppLovinAnalytics.challengeStarted();
+        }
+
         const gameMgr = (globalThis as any).GameManager?.instance || (window as any).GameManager?.instance;
         if (gameMgr && typeof gameMgr.TurnOnMap1 === 'function') {
             gameMgr.TurnOnMap1();

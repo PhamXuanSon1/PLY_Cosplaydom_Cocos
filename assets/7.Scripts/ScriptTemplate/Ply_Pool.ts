@@ -124,6 +124,12 @@ export class Ply_Pool extends Ply_Singleton {
     public despawn(poolType: PoolType, gameUnit: Ply_GameUnit) {
         gameUnit.node.active = false;
 
+        // Tra node ve lai Pool node de lan spawn tiep theo setPosition() hoat dong dung
+        // (tranh truong hop node van la con cua parent cu, dan den toa do local bi sai)
+        if (gameUnit.node.parent !== this.node) {
+            gameUnit.node.setParent(this.node, false);
+        }
+
         if (!this.dict.has(poolType)) {
             this.dict.set(poolType, []);
         }

@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, CCFloat, Animation, tween, Tween, Vec3, AnimationClip } from 'cc';
+import { _decorator, Component, Node, CCFloat, Animation, tween, Tween, Vec3, AnimationClip, Camera, view, director } from 'cc';
 import { DrawItemManager } from './DrawItemManager';
 import { DrawInputManager } from './DrawInputManager';
 import { DrawItemController, DrawItemType } from '../DrawItem/DrawItemController';
@@ -20,6 +20,12 @@ export class MapHintConfig {
         tooltip: 'Danh sách DrawItemController theo đúng thứ tự muốn hiện bàn tay gợi ý.'
     })
     public orderedHintItems: DrawItemController[] = [];
+
+    @property({
+        displayName: 'Sort Left To Right',
+        tooltip: 'BẬT: Bàn tay sẽ ưu tiên gợi ý món đồ ĐANG CHƯA HOÀN THÀNH nằm ở vị trí TRÁI NHẤT trên màn hình (dựa theo toạ độ X).\nTẮT: Gợi ý sẽ chạy đúng theo thứ tự trong mảng Ordered Hint Items ở trên.'
+    })
+    public sortLeftToRight: boolean = false;
 }
 
 /**
@@ -110,6 +116,10 @@ export class HandHintManager extends Component {
         if (this.handIcon != null) this.handIcon.active = false;
     }
 
+    private getDrawItemMgr(): DrawItemManager | null {
+        return DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance || null;
+    }
+
     protected update(dt: number): void {
         // Chặn đếm giờ nếu người chơi đang cầm/kéo đồ vật
         const inputMgr = DrawInputManager.Instance || (globalThis as any).DrawInputManager?.Instance || (window as any).DrawInputManager?.Instance;
@@ -117,6 +127,18 @@ export class HandHintManager extends Component {
             this.stopAllHintLogic();
             if (this.handIcon != null) this.handIcon.active = false;
             return;
+        }
+
+        const drawItemMgr = this.getDrawItemMgr();
+
+        // Ở Map 3 (currentMapIndex = 2): Không bao giờ chờ delay, hiện hint ngay
+        if (drawItemMgr && drawItemMgr.currentMapIndex === 2) {
+            if (this.isCounting) {
+                this.isCounting = false;
+                this.idleTime = 0;
+                this.showHint();
+                return;
+            }
         }
 
         if (this.isCounting) {
@@ -147,6 +169,12 @@ export class HandHintManager extends Component {
 
     public ShowHintWithDelay(): void {
         this.stopAllHintLogic();
+        const drawItemMgr = this.getDrawItemMgr();
+        if (drawItemMgr && drawItemMgr.currentMapIndex === 2) {
+            // Ở Map 3 (Index = 2): Hiện handhint ngay lập tức, không đếm ngược delay
+            this.showHint();
+            return;
+        }
         this.isCounting = true;
         this.idleTime = 0;
         this.currentStatus = 'Bắt đầu đếm thời gian: 0s';
@@ -164,11 +192,36 @@ export class HandHintManager extends Component {
         this.currentStatus = 'Đã dừng (đang cầm đồ hoặc ẩn)';
     }
 
+    public isItemVisibleOnScreen(item: DrawItemController): boolean {
+        if (!item || !item.node || !item.node.activeInHierarchy) return false;
+
+        const drawInputMgr = DrawInputManager.Instance || (globalThis as any).DrawInputManager?.Instance || (window as any).DrawInputManager?.Instance;
+        const cam: Camera | null = (drawInputMgr && drawInputMgr.cam) ? drawInputMgr.cam : (director.getScene() ? director.getScene()!.getComponentInChildren(Camera) : null);
+
+        if (cam) {
+            const screenPos = new Vec3();
+            cam.worldToScreen(item.node.worldPosition, screenPos);
+            const visibleSize = view.getVisibleSize();
+            const viewport = view.getViewportRect();
+
+            const minX = viewport ? viewport.x : 0;
+            const maxX = viewport ? (viewport.x + viewport.width) : visibleSize.width;
+            const minY = viewport ? viewport.y : 0;
+            const maxY = viewport ? (viewport.y + viewport.height) : visibleSize.height;
+
+            const margin = 20;
+            return screenPos.x >= (minX + margin) && screenPos.x <= (maxX - margin) &&
+                   screenPos.y >= (minY + margin) && screenPos.y <= (maxY - margin);
+        }
+
+        return true;
+    }
+
     private showHint(): void {
         this.isCounting = false;
         this.idleTime = 0;
 
-        const drawItemMgr = DrawItemManager.Instance;
+        const drawItemMgr = this.getDrawItemMgr();
         if (drawItemMgr == null) { this.currentStatus = 'LỖI: Không có DrawItemManager!'; return; }
         if (this.handIcon == null) { this.currentStatus = 'LỖI: Chưa gán Hand Icon!'; return; }
 
@@ -183,23 +236,45 @@ export class HandHintManager extends Component {
         if (config == null) { this.currentStatus = `Bỏ qua: không có cài đặt cho Map ${mapIndex}`; return; }
 
         let nextItem: DrawItemController | null = null;
+        let uncompletedItems: DrawItemController[] = [];
 
         for (const item of config.orderedHintItems) {
             if (item == null) continue;
 
+            let isUncompleted = false;
             if (item.itemType === DrawItemType.ClickOnly ||
                 item.itemType === DrawItemType.SnapToTarget ||
                 item.itemType === DrawItemType.DragAwayToFade) {
                 if (!item.isCompleted) {
-                    nextItem = item;
-                    break;
+                    isUncompleted = true;
                 }
             } else { // DirectDraw, DipAndDraw
                 const target = this.findTargetFor(item.makeupID, mapIndex);
                 if (target != null && !target.isApplied) {
-                    nextItem = item;
-                    break;
+                    isUncompleted = true;
                 }
+            }
+
+            if (isUncompleted) {
+                uncompletedItems.push(item);
+            }
+        }
+
+        if (uncompletedItems.length > 0) {
+            // Lọc ra các item ĐANG HIỂN THỊ TRÊN MÀN HÌNH
+            const visibleUncompleted = uncompletedItems.filter(item => this.isItemVisibleOnScreen(item));
+
+            if (visibleUncompleted.length > 0) {
+                if (config.sortLeftToRight) {
+                    visibleUncompleted.sort((a, b) => a.node.worldPosition.x - b.node.worldPosition.x);
+                }
+                nextItem = visibleUncompleted[0];
+            } else {
+                // Nếu không có item nào trên màn hình, chọn item đầu tiên trong danh sách chưa hoàn thành
+                if (config.sortLeftToRight) {
+                    uncompletedItems.sort((a, b) => a.node.worldPosition.x - b.node.worldPosition.x);
+                }
+                nextItem = uncompletedItems[0];
             }
         }
 
@@ -329,7 +404,7 @@ export class HandHintManager extends Component {
     }
 
     private findTargetFor(makeupID: string, mapIndex: number): MakeupTarget | null {
-        const drawItemMgr = DrawItemManager.Instance;
+        const drawItemMgr = this.getDrawItemMgr();
         if (drawItemMgr == null || mapIndex >= drawItemMgr.mapConfigs.length) return null;
 
         const targets = drawItemMgr.mapConfigs[mapIndex].targetsInMap;

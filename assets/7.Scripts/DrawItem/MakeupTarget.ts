@@ -354,19 +354,26 @@ export class MakeupTarget extends Component {
                         }
 
                         if (Ply_Pool.Ins != null) {
-                            let spawnPos = this.node.worldPosition;
+                            let spawnParent: Node | null = null;
                             if (drawItemMgr && typeof drawItemMgr.GetHeartSpawnPosForCurrentMap === 'function') {
-                                const spawnParent = drawItemMgr.GetHeartSpawnPosForCurrentMap();
-                                if (spawnParent) {
-                                    spawnPos = spawnParent.worldPosition || spawnParent.position;
-                                }
+                                spawnParent = drawItemMgr.GetHeartSpawnPosForCurrentMap();
                             }
-
-                            const heartUnit = Ply_Pool.Ins.spawn(PoolType.Heart, spawnPos);
-                            if (heartUnit) {
-                                const prefab = Ply_Pool.Ins.getPrefab ? Ply_Pool.Ins.getPrefab(PoolType.Heart) : null;
-                                if (prefab) {
-                                    heartUnit.node.setScale(prefab.data ? prefab.data.scale : heartUnit.node.scale);
+                            
+                            // Nếu không có spawnParent từ Map, dùng chính target này làm parent
+                            if (!spawnParent) {
+                                spawnParent = this.node;
+                            }
+                            
+                            if (drawItemMgr && typeof drawItemMgr.SpawnHeartAt === 'function') {
+                                drawItemMgr.SpawnHeartAt(spawnParent);
+                            } else {
+                                const heartUnit = Ply_Pool.Ins.spawn(PoolType.Heart, spawnParent.worldPosition);
+                                if (heartUnit) {
+                                    heartUnit.node.setParent(spawnParent, true);
+                                    const prefab = Ply_Pool.Ins.getPrefab ? Ply_Pool.Ins.getPrefab(PoolType.Heart) : null;
+                                    if (prefab) {
+                                        heartUnit.node.setScale(prefab.data ? prefab.data.scale : heartUnit.node.scale);
+                                    }
                                 }
                             }
                         }

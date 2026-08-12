@@ -14,11 +14,12 @@
 //     CTA_CLICKED
 // }
 
-import { Director, director, DirectorEvent } from "cc";
+import { Director, director } from "cc";
 
 export class AppLovinAnalytics {
 
     static track(event: string) {
+        console.log(`%c[AppLovinAnalytics] Event: ${event}`, 'color: #00ffcc; font-weight: bold; background: #222; padding: 2px 6px; border-radius: 3px;');
         const analytics = (window as any).ALPlayableAnalytics;
         if (analytics) {
             analytics.trackEvent(event);

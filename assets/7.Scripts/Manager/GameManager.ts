@@ -1,7 +1,9 @@
-import { _decorator, Component, Node, CCFloat, Animation, EventHandler } from 'cc';
+import { _decorator, Component, Node, CCFloat, Animation, EventHandler, Tween } from 'cc';
 import { DrawItemManager } from './DrawItemManager';
 import { DrawInputManager } from './DrawInputManager';
 import { HandHintManager } from './HandHintManager';
+import { GameController } from '../Tool/GameController';
+import { AppLovinAnalytics } from '../Tool/AppLovinAnalytics';
 
 const { ccclass, property } = _decorator;
 
@@ -101,20 +103,74 @@ export class GameManager extends Component {
         GameManager.instance = this;
         (globalThis as any).GameManager = GameManager;
 
-        if (this.isGoogleBuild) {
-            for (const obj of this.googleDisabledObjects) {
-                if (obj != null) obj.active = false;
-            }
-            for (const comp of this.googleDisabledBehaviours) {
-                if (comp != null) comp.enabled = false;
+        // Tự động nhận diện Google Build nếu build qua Playable Ads Adapter (injected window.IS_GOOGLE_BUILD hoặc window.clickTag)
+        if (typeof window !== 'undefined' && ((window as any).IS_GOOGLE_BUILD === true || typeof (window as any).clickTag !== 'undefined')) {
+            this.isGoogleBuild = true;
+        }
+
+        this.applyGoogleBuildSettings();
+    }
+
+    protected start(): void {
+        this.applyGoogleBuildSettings();
+    }
+
+    /** Áp dụng các thiết lập ẩn object/behaviour cho Google Build */
+    public applyGoogleBuildSettings(): void {
+        if (!this.isGoogleBuild) return;
+
+        for (const obj of this.googleDisabledObjects) {
+            if (obj != null) obj.active = false;
+        }
+
+        for (const comp of this.googleDisabledBehaviours) {
+            if (comp != null) {
+                comp.enabled = false;
+
+                // Tắt PlayOnLoad của Animation
+                if ('playOnLoad' in comp) {
+                    (comp as any).playOnLoad = false;
+                }
+
+                // Dừng clip Animation đang phát
+                if (typeof (comp as any).stop === 'function') {
+                    (comp as any).stop();
+                }
+
+                if (comp.node) {
+                    const anim = comp.getComponent(Animation);
+                    if (anim) {
+                        anim.playOnLoad = false;
+                        anim.enabled = false;
+                        if (typeof anim.stop === 'function') anim.stop();
+                    }
+                    Tween.stopAllByTarget(comp.node);
+
+                    // Ẩn luôn Node chứa component này (ví dụ: Node tapToCosplayAnim)
+                    comp.node.active = false;
+                }
+                Tween.stopAllByTarget(comp);
             }
         }
     }
 
-    /** CTA ra Store. Luna (LifeCycle.GameEnded + Playable.InstallFullGame) & AppLovinAnalytics đã bị bỏ. */
+    @property({ type: GameController, group: { name: '1. Build Settings', id: 'buildSettings' }, displayName: 'Game Controller' })
+    public gameController: GameController | null = null;
+
+    /** CTA ra Store. */
     public GotoStore(): void {
-        // TODO: nối lại logic mở Store / kết thúc game cho nền tảng đích ở đây.
-        console.log('[GameManager] GotoStore() được gọi (đã bỏ Luna & AppLovinAnalytics).');
+        console.log("Gotostore");
+        AppLovinAnalytics.ctaClicked();
+        if (this.gameController) {
+            this.gameController.redirectToStore();
+        } else {
+            const gc = this.getComponent(GameController);
+            if (gc) {
+                gc.redirectToStore();
+            } else {
+                console.warn("[GameManager] Không tìm thấy GameController để gọi redirectToStore!");
+            }
+        }
     }
 
     /** Bật/tắt cả 1 danh sách Node (tôn trọng googleDisabledObjects khi bật). */
@@ -128,6 +184,9 @@ export class GameManager extends Component {
                 }
                 obj.active = isActive;
             }
+        }
+        if (isActive && this.isGoogleBuild) {
+            this.applyGoogleBuildSettings();
         }
     }
 
@@ -220,7 +279,7 @@ export class GameManager extends Component {
     public getInspectorConfig() {
         return {
             sections: [
-                { header: '1. Build Settings', props: ['isGoogleBuild', 'googleDisabledObjects', 'googleDisabledBehaviours'] },
+                { header: '1. Build Settings', props: ['isGoogleBuild', 'googleDisabledObjects', 'googleDisabledBehaviours', 'gameController'] },
                 { header: '2. Map Objects', props: ['listObjectInIntro', 'listObjectInMap1', 'listObjectInMap2', 'listObjectInMap3', 'listObjectInMap4'] },
                 { header: '3. Map2 → Map3 Sequence', props: ['autoSwitchToMap3AtEnd', 'map2ToMap3Sequence'] },
             ],

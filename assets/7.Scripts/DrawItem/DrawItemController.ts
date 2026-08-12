@@ -166,6 +166,9 @@ export class DrawItemController extends Component {
     })
     public playLoopFxOnDrag: boolean = false;
 
+    // Trạng thái đang được kéo
+    public isBeingDragged: boolean = false;
+
     @property({
         type: Enum(FxType),
         group: { name: '4. Audio & Events', id: 'audioEvents' },
@@ -273,10 +276,12 @@ export class DrawItemController extends Component {
 
     // Helper trigger các sự kiện
     public emitGrabEvent(): void {
+        this.isBeingDragged = true;
         EventHandler.emitEvents(this.OnGrabEvent);
     }
 
     public emitDropEvent(): void {
+        this.isBeingDragged = false;
         EventHandler.emitEvents(this.OnDropEvent);
     }
 

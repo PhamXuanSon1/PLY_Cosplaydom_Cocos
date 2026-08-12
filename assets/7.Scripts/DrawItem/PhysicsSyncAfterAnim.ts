@@ -1,48 +1,62 @@
-import { _decorator, Component, Animation, Collider2D, RigidBody2D } from 'cc';
+import { _decorator, Component, Animation, Collider2D, RigidBody2D, sp } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
  * PhysicsSyncAfterAnim
  * 
- * Gắn component này vào bất kỳ node nào có Animation + Collider2D/RigidBody2D.
- * Sau mỗi lần Animation chạy xong (hoặc mỗi frame nếu bật alwaysSync),
+ * Gắn component này vào bất kỳ node nào có Animation/Spine + Collider2D/RigidBody2D.
+ * Sau mỗi lần Animation/Spine chạy xong (hoặc mỗi frame nếu bật alwaysSync),
  * nó sẽ tự động disable → re-enable collider để Box2D rebuild đúng vị trí.
  */
 @ccclass('PhysicsSyncAfterAnim')
 export class PhysicsSyncAfterAnim extends Component {
 
     @property({
-        tooltip: 'Bật nếu muốn sync collider liên tục mỗi frame (dùng khi animation đang loop di chuyển).'
+        tooltip: 'Bật nếu muốn sync collider liên tục mỗi vài frame (dùng cho MakeupTarget trên Spine).'
     })
     public alwaysSync: boolean = false;
 
     @property({
-        tooltip: 'Bật nếu muốn tự động sync khi Animation FINISHED.'
+        tooltip: 'Số frame giữa mỗi lần sync khi alwaysSync = true. Giá trị 1 = sync mỗi frame, 3 = cứ 3 frame sync 1 lần.',
+        min: 1,
+        max: 30,
+        step: 1,
+        visible: function (this: any) { return this.alwaysSync; }
+    })
+    public syncInterval: number = 3;
+
+    @property({
+        tooltip: 'Bật nếu muốn tự động sync khi Animation/Spine FINISHED.'
     })
     public syncOnAnimFinished: boolean = true;
 
     private _anim: Animation | null = null;
-    private _needSync: boolean = false;
-    private _lastWorldX: number = 0;
-    private _lastWorldY: number = 0;
-    private _lastScaleX: number = 0;
-    private _lastScaleY: number = 0;
+    private _spine: sp.Skeleton | null = null;
+    private _frameCounter: number = 0;
+
+    // Dùng để phát hiện collider đang trong chu kỳ rebuild (đã disable, chờ enable lại)
+    private _isSyncing: boolean = false;
 
     protected onLoad(): void {
         this._anim = this.getComponent(Animation);
+        this._spine = this.getComponent(sp.Skeleton);
     }
 
     protected start(): void {
-        if (this._anim && this.syncOnAnimFinished) {
-            this._anim.on(Animation.EventType.FINISHED, this._onAnimFinished, this);
-            this._anim.on(Animation.EventType.LASTFRAME, this._onAnimFinished, this);
+        if (this.syncOnAnimFinished) {
+            // Đăng ký event cho Cocos Animation
+            if (this._anim) {
+                this._anim.on(Animation.EventType.FINISHED, this._onAnimFinished, this);
+                this._anim.on(Animation.EventType.LASTFRAME, this._onAnimFinished, this);
+            }
+            // Đăng ký event cho Spine Animation (dùng setTrackCompleteListener thay vì setCompleteListener để tránh bị ghi đè)
+            // Không dùng setCompleteListener vì script khác (VD: SpineEmotionController) sẽ ghi đè listener đó
         }
 
-        // Lưu vị trí ban đầu
-        this._lastWorldX = this.node.worldPosition.x;
-        this._lastWorldY = this.node.worldPosition.y;
-        this._lastScaleX = this.node.worldScale.x;
-        this._lastScaleY = this.node.worldScale.y;
+        // Sync 1 lần khi start để chắc chắn collider khớp vị trí ban đầu
+        this.scheduleOnce(() => {
+            this._doSync();
+        }, 0.1);
     }
 
     protected onDestroy(): void {
@@ -59,26 +73,20 @@ export class PhysicsSyncAfterAnim extends Component {
     protected lateUpdate(dt: number): void {
         if (!this.alwaysSync) return;
 
-        // Chỉ sync khi transform thực sự thay đổi (tránh sync vô nghĩa)
-        const wp = this.node.worldPosition;
-        const ws = this.node.worldScale;
-        if (wp.x !== this._lastWorldX || wp.y !== this._lastWorldY ||
-            ws.x !== this._lastScaleX || ws.y !== this._lastScaleY) {
-            this._lastWorldX = wp.x;
-            this._lastWorldY = wp.y;
-            this._lastScaleX = ws.x;
-            this._lastScaleY = ws.y;
-            this._needSync = true;
-        }
+        // Nếu đang trong chu kỳ rebuild (chờ scheduleOnce bật lại collider) thì bỏ qua
+        if (this._isSyncing) return;
 
-        if (this._needSync) {
-            this._needSync = false;
+        this._frameCounter++;
+        if (this._frameCounter >= this.syncInterval) {
+            this._frameCounter = 0;
             this._doSync();
         }
     }
 
     /** Ép collider rebuild bằng cách tắt/bật lại */
     private _doSync(): void {
+        if (this._isSyncing) return; // Tránh gọi chồng
+
         // Thu thập cả trên chính node lẫn con
         const colliders = this.getComponentsInChildren(Collider2D);
         const bodies = this.getComponentsInChildren(RigidBody2D);
@@ -100,14 +108,19 @@ export class PhysicsSyncAfterAnim extends Component {
             }
         }
 
+        if (activeBodies.length === 0 && activeColliders.length === 0) return;
+
+        this._isSyncing = true;
+
         // Bật lại frame sau để Box2D rebuild hoàn toàn
         this.scheduleOnce(() => {
             for (const body of activeBodies) {
-                body.enabled = true;
+                if (body && body.isValid) body.enabled = true;
             }
             for (const col of activeColliders) {
-                col.enabled = true;
+                if (col && col.isValid) col.enabled = true;
             }
+            this._isSyncing = false;
         }, 0);
     }
 

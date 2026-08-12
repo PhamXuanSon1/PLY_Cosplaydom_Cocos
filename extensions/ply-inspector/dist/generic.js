@@ -21,8 +21,6 @@
 // =============================================================================
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.close = exports.update = exports.$ = exports.style = exports.template = void 0;
-// Cache config theo tên component type (config là tĩnh theo type).
-const CONFIG_CACHE = {};
 exports.template = `<div id="root" class="ply-inspector"></div>`;
 exports.style = `
 .ply-inspector { padding: 4px 2px; }
@@ -53,14 +51,17 @@ function update(dump) {
         panel.__compIndex = undefined;
     panel.__uuid = freshUuid;
     const type = dump.type;
-    if (Object.prototype.hasOwnProperty.call(CONFIG_CACHE, type)) {
-        ensureStructure(panel, type, CONFIG_CACHE[type]);
+    // Đã dựng UI cho type này trong panel hiện tại -> chỉ cần refresh giá trị,
+    // KHÔNG cache config theo type ở phạm vi module (từng gây bug: sửa
+    // getInspectorConfig() trong code rồi mà inspector vẫn hiện bản cũ cho tới
+    // khi restart Editor, vì cache đó không bao giờ hết hạn/khớp lại).
+    if (panel.__structKey === type) {
         refreshAll(panel);
+        return;
     }
-    else if (!panel.__fetching) {
+    if (!panel.__fetching) {
         panel.__fetching = true;
         queryConfig(panel).then((cfg) => {
-            CONFIG_CACHE[type] = cfg;
             panel.__fetching = false;
             if (panel.dump && panel.dump.type === type) {
                 ensureStructure(panel, type, cfg);

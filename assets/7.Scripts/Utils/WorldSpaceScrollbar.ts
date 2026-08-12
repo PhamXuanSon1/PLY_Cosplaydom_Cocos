@@ -58,6 +58,11 @@ export class WorldSpaceScrollbar extends Component {
     }
 
     private onTouchStart(event: EventTouch) {
+        const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
+            handHintMgr.HideHintTemporarily();
+        }
+
         const inputMgr = DrawInputManager.Instance || (globalThis as any).DrawInputManager?.Instance || (window as any).DrawInputManager?.Instance;
         if (inputMgr && inputMgr.isGoToStoreOnClickEnabled) {
             this.isDragging = false;
@@ -81,6 +86,11 @@ export class WorldSpaceScrollbar extends Component {
     }
 
     private onTouchMove(event: EventTouch) {
+        const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
+            handHintMgr.HideHintTemporarily();
+        }
+
         if (this.isDragging) {
             this.updateHandlePosition(event);
         }
@@ -91,6 +101,11 @@ export class WorldSpaceScrollbar extends Component {
         const inputMgr = DrawInputManager.Instance || (globalThis as any).DrawInputManager?.Instance || (window as any).DrawInputManager?.Instance;
         if (inputMgr) {
             inputMgr.ignoreScrollInput = false;
+        }
+
+        const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
+        if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
+            handHintMgr.ShowHintWithDelay();
         }
     }
 

@@ -1,8 +1,9 @@
-import { _decorator, Component, Node, Camera, Label, view, math, CCFloat, CCBoolean, CCString, director } from 'cc';
+import { _decorator, Component, Node, Camera, Label, view, math, CCFloat, CCBoolean, CCString, director, Collider2D, RigidBody2D } from 'cc';
 import { WorldSpaceScrollbar } from './WorldSpaceScrollbar';
 import { HandHintManager } from '../Manager/HandHintManager';
 import { DrawItemController } from '../DrawItem/DrawItemController';
 import { DrawItemMovement } from '../DrawItem/DrawItemMovement';
+import { PhysicsSyncAfterAnim } from '../DrawItem/PhysicsSyncAfterAnim';
 
 const { ccclass, property, executeInEditMode } = _decorator;
 
@@ -126,7 +127,10 @@ export class ItemArranger extends Component {
         for (let i = 0; i < this.itemsToArrange.length; i++) {
             const item = this.itemsToArrange[i];
             if (item && item.itemTransform && item.itemTransform.activeInHierarchy) {
-                currentActiveCount++;
+                const controller = item.itemTransform.getComponent(DrawItemController);
+                if (!controller || !controller.isBeingDragged) {
+                    currentActiveCount++;
+                }
             }
         }
 
@@ -186,11 +190,14 @@ export class ItemArranger extends Component {
         for (let i = 0; i < this.itemsToArrange.length; i++) {
             const item = this.itemsToArrange[i];
             if (item && item.itemTransform && item.itemTransform.activeInHierarchy) {
-                if (!firstActiveItem) firstActiveItem = item.itemTransform;
-                activeCount++;
-                
-                if (i < this.itemsToArrange.length - 1) {
-                    totalItemsWidth += item.spacingToNext;
+                const controller = item.itemTransform.getComponent(DrawItemController);
+                if (!controller || !controller.isBeingDragged) {
+                    if (!firstActiveItem) firstActiveItem = item.itemTransform;
+                    activeCount++;
+                    
+                    if (i < this.itemsToArrange.length - 1) {
+                        totalItemsWidth += item.spacingToNext;
+                    }
                 }
             }
         }
@@ -243,16 +250,62 @@ export class ItemArranger extends Component {
         for (let i = 0; i < this.itemsToArrange.length; i++) {
             const item = this.itemsToArrange[i];
             if (item && item.itemTransform && item.itemTransform.activeInHierarchy) {
-                item.itemTransform.setWorldPosition(new math.Vec3(currentX, targetY, item.itemTransform.worldPosition.z));
-                
-                const movement = item.itemTransform.getComponent(DrawItemMovement);
-                if (movement) {
-                    movement.UpdateSpawnPos();
-                }
+                const controller = item.itemTransform.getComponent(DrawItemController);
+                if (!controller || !controller.isBeingDragged) {
+                    item.itemTransform.setWorldPosition(new math.Vec3(currentX, targetY, item.itemTransform.worldPosition.z));
+                    
+                    const movement = item.itemTransform.getComponent(DrawItemMovement);
+                    if (movement) {
+                        movement.UpdateSpawnPos();
+                    }
 
-                currentX += item.spacingToNext;
+                    const physicsSync = item.itemTransform.getComponent(PhysicsSyncAfterAnim) || item.itemTransform.getComponentInChildren(PhysicsSyncAfterAnim);
+                    if (physicsSync) {
+                        physicsSync.forceSync();
+                    } else {
+                        this.syncCollidersForItem(item.itemTransform);
+                    }
+                    
+                    currentX += item.spacingToNext;
+                }
             }
         }
+    }
+
+    private syncCollidersForItem(itemNode: Node): void {
+        if (!itemNode) return;
+
+        const colliders = itemNode.getComponentsInChildren(Collider2D);
+        const bodies = itemNode.getComponentsInChildren(RigidBody2D);
+        const activeColliders: Collider2D[] = [];
+        const activeBodies: RigidBody2D[] = [];
+
+        for (const collider of colliders) {
+            if (collider && collider.enabled) {
+                activeColliders.push(collider);
+                collider.enabled = false;
+            }
+        }
+
+        for (const body of bodies) {
+            if (body && body.enabled) {
+                activeBodies.push(body);
+                body.enabled = false;
+            }
+        }
+
+        this.scheduleOnce(() => {
+            for (const body of activeBodies) {
+                if (body && body.isValid) {
+                    body.enabled = true;
+                }
+            }
+            for (const collider of activeColliders) {
+                if (collider && collider.isValid) {
+                    collider.enabled = true;
+                }
+            }
+        }, 0);
     }
 
     // Cocos không hỗ trợ ContextMenu giống hệt Unity, nhưng ta có thể dùng property getter/setter hoặc executeInEditMode.

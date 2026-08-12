@@ -30,7 +30,7 @@ var u = {
   },
 };
 const p = "playable-ads-adapter",
-f = () => {
+  f = () => {
     return {
       buildPlatform: "web-mobile",
       exportChannels: [
@@ -55,9 +55,9 @@ f = () => {
           sdkScript: "",
         },
         Google: {
-          head: "<meta name='ad.size' content=\"width=320,height=480\" >",
+          head: "<script>window.IS_GOOGLE_BUILD=true;</script><meta name='ad.size' content=\"width=320,height=480\" >",
           sdkScript: "",
-          body: "<script>var clickTag='';var android='';function setStoreUrl(iosUrl, androidUrl){clickTag=iosUrl;android=androidUrl;if(/android/i.test(navigator.userAgent)){clickTag=android}};function redirectStore(){window.open(clickTag)}</script>",
+          body: "<script>window.IS_GOOGLE_BUILD=true;var clickTag='';var android='';function setStoreUrl(iosUrl, androidUrl){clickTag=iosUrl;android=androidUrl;if(/android/i.test(navigator.userAgent)){clickTag=android}};function redirectStore(){window.open(clickTag)}</script>",
         },
         Mintegral: {
           head: "",
@@ -101,43 +101,43 @@ f = () => {
   };
 var m = require("path").join(__dirname + "/3x-a98eea0b.js");
 const P = (e) =>
-    new Promise((r, t) => {
-      let o = Editor.App.path;
-      const a = (() => {
-        const e = s.default.platform();
-        return "win32" === e
-          ? "WINDOWS"
-          : "darwin" === e
-            ? "MAC"
-            : e.toUpperCase();
-      })();
-      "MAC" === a
-        ? (o = o.replace("/Resources/app.asar", "/MacOS/CocosCreator"))
-        : "WINDOWS" === a
-          ? (o = ((e) => {
-              let r = e;
-              return (-1 !== r.indexOf("\\") && (r = r.replace(/\\/g, "/")), r);
-            })(o).replace("/resources/app.asar", "/CocosCreator.exe"))
-          : t(`不支持${a}平台构建`);
-      u.run(
-        `${o} --project ${Editor.Project.path} --build "platform=${e}"`,
-        (e, t, o) => {
-          (console.log(e, t, o), r());
-        },
-      ).stdout.on("data", (e) => {
-        console.log(e);
-      });
-    }),
+  new Promise((r, t) => {
+    let o = Editor.App.path;
+    const a = (() => {
+      const e = s.default.platform();
+      return "win32" === e
+        ? "WINDOWS"
+        : "darwin" === e
+          ? "MAC"
+          : e.toUpperCase();
+    })();
+    "MAC" === a
+      ? (o = o.replace("/Resources/app.asar", "/MacOS/CocosCreator"))
+      : "WINDOWS" === a
+        ? (o = ((e) => {
+          let r = e;
+          return (-1 !== r.indexOf("\\") && (r = r.replace(/\\/g, "/")), r);
+        })(o).replace("/resources/app.asar", "/CocosCreator.exe"))
+        : t(`不支持${a}平台构建`);
+    u.run(
+      `${o} --project ${Editor.Project.path} --build "platform=${e}"`,
+      (e, t, o) => {
+        (console.log(e, t, o), r());
+      },
+    ).stdout.on("data", (e) => {
+      console.log(e);
+    });
+  }),
   j = async (e) => {
     (console.log(`${p} 进行预构建处理`), console.log(`${p} 跳过预构建处理`));
   },
   b = (e) =>
     new Promise(async (r, t) => {
       const {
-          projectRootPath: o,
-          projectBuildPath: i,
-          adapterBuildConfig: l,
-        } = h(),
+        projectRootPath: o,
+        projectBuildPath: i,
+        adapterBuildConfig: l,
+      } = h(),
         s = a.join(o, i);
       console.info(`${p} 开始适配，导出平台 ${e.platform}`);
       const c = new Date().getTime(),

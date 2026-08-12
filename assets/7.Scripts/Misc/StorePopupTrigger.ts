@@ -1,5 +1,7 @@
 import { _decorator, Component, EventHandler, input, Input, EventTouch, CCInteger, Node } from 'cc';
 import { DrawItemManager } from '../Manager/DrawItemManager';
+import { AppLovinAnalytics } from '../Tool/AppLovinAnalytics';
+import { GameManager } from '../Manager/GameManager';
 
 const { ccclass, property } = _decorator;
 
@@ -37,12 +39,12 @@ export class StorePopupTrigger extends Component {
     private hasTriggeredStore: boolean = false;
 
     protected onEnable(): void {
-        // Đăng ký sự kiện touch toàn cục để bắt click chuột/chạm tay
-        input.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
+        // Đăng ký sự kiện touch toàn cục để bắt thả chuột/chạm tay
+        input.on(Input.EventType.TOUCH_END, this.onTouchEnd, this);
     }
 
     protected onDisable(): void {
-        input.off(Input.EventType.TOUCH_START, this.onTouchStart, this);
+        input.off(Input.EventType.TOUCH_END, this.onTouchEnd, this);
     }
 
     protected update(dt: number): void {
@@ -64,12 +66,18 @@ export class StorePopupTrigger extends Component {
                 if (this.triggerImmediately) {
                     this.hasTriggeredStore = true;
                     EventHandler.emitEvents(this.onOpenStore);
+
+                    if (GameManager.instance) {
+                        GameManager.instance.GotoStore();
+                    } else if ((globalThis as any).GameManager?.instance) {
+                        (globalThis as any).GameManager.instance.GotoStore();
+                    }
                 }
             }
         }
     }
 
-    private onTouchStart(event: EventTouch): void {
+    private onTouchEnd(event: EventTouch): void {
         // Nếu triggerImmediately = true thì logic đã chạy trong update rồi
         if (this.triggerImmediately) return; 
 
@@ -83,6 +91,13 @@ export class StorePopupTrigger extends Component {
             if (!this.hasTriggeredStore) {
                 this.hasTriggeredStore = true;
                 EventHandler.emitEvents(this.onOpenStore);
+
+                const progressMgr = (globalThis as any).ProgressTrackingManager?.Instance || (window as any).ProgressTrackingManager?.Instance;
+                if (progressMgr && typeof progressMgr.NotifyEndcardShown === 'function') {
+                    progressMgr.NotifyEndcardShown();
+                } else {
+                    AppLovinAnalytics.endcardShown();
+                }
             }
         }
     }
@@ -99,7 +114,7 @@ export class StorePopupTrigger extends Component {
         // 1. Đếm các Item trực tiếp trong danh sách Items In Map (DrawItemController / SnapToTarget)
         if (currentConfig.itemsInMap != null) {
             for (const item of currentConfig.itemsInMap) {
-                if (item != null && (item.isCompleted || !item.node.active)) {
+                if (item != null && item.isCompleted) {
                     count++;
                 }
             }
