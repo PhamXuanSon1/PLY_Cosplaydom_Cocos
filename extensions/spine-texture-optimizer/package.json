@@ -1,0 +1,46 @@
+{
+  "package_version": 2,
+  "name": "spine-texture-optimizer",
+  "version": "1.0.0",
+  "description": "Downscale Spine texture pages (PNG) and rewrite the .atlas accordingly. Keeps in-game display size, reduces disk size + VRAM.",
+  "author": "PLY",
+  "editor": ">=3.7.0",
+  "main": "./main.js",
+  "panels": {
+    "default": {
+      "title": "Spine Texture Optimizer",
+      "type": "dockable",
+      "main": "./src/panels/default.js",
+      "size": {
+        "min-width": 520,
+        "min-height": 480,
+        "width": 620,
+        "height": 760
+      }
+    }
+  },
+  "contributions": {
+    "menu": [
+      {
+        "path": "Tool",
+        "label": "Spine Texture Optimizer",
+        "message": "open-panel"
+      },
+      {
+        "path": "i18n:menu.panel/Spine Texture Optimizer",
+        "label": "Open Panel",
+        "message": "open-panel"
+      }
+    ],
+    "messages": {
+      "open-panel": { "methods": ["openPanel"] },
+      "analyze": { "methods": ["analyze"] },
+      "generate": { "methods": ["generate"] },
+      "browse-atlas": { "methods": ["browseAtlas"] },
+      "progress-status": { "methods": ["progressStatus"] },
+      "cancel": { "methods": ["cancel"] },
+      "to-fs-path": { "methods": ["toFsPath"] },
+      "reveal": { "methods": ["reveal"] }
+    }
+  }
+}

@@ -1,0 +1,145 @@
+:host {
+    display: flex;
+    height: 100%;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    width: 100%;
+    overflow-y: auto;
+    font-size: 12px;
+    color: var(--color-normal-contrast-emphasis, #ccc);
+}
+
+header h2 {
+    margin: 0 0 2px 0;
+    font-size: 14px;
+}
+
+.hint {
+    color: var(--color-normal-contrast-weakest, #888);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.grow {
+    flex: 1;
+    min-width: 0;
+}
+
+.checks {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 0 2px 4px;
+}
+
+.actions {
+    margin-top: 6px;
+}
+
+ui-button.green {
+    --color-default-fill: var(--color-success-fill, #4a7a3a);
+}
+
+.panel {
+    border: 1px solid var(--color-normal-border, #2c2c2c);
+    border-radius: 3px;
+    padding: 8px;
+    background: var(--color-normal-fill-emphasis, #2a2a2a);
+}
+
+.panel h3 {
+    margin: 0 0 6px 0;
+    font-size: 12px;
+}
+
+.hidden {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 2px 4px;
+    vertical-align: top;
+}
+
+td.k {
+    color: var(--color-normal-contrast-weakest, #888);
+    width: 118px;
+    white-space: nowrap;
+}
+
+.delta-good {
+    color: #6cc36c;
+}
+
+.delta-bad {
+    color: #d08b46;
+}
+
+.issue {
+    display: flex;
+    gap: 6px;
+    padding: 3px 0;
+    line-height: 1.4;
+    border-top: 1px solid var(--color-normal-border, #2c2c2c);
+}
+
+.issue:first-of-type {
+    border-top: none;
+}
+
+.tag {
+    flex: 0 0 52px;
+    text-align: center;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #111;
+}
+
+.tag.error {
+    background: #d05c5c;
+}
+
+.tag.warning {
+    background: #d0a949;
+}
+
+.tag.info {
+    background: #5c9cd0;
+}
+
+pre#log {
+    margin: 0;
+    max-height: 180px;
+    overflow: auto;
+    font-family: Consolas, monospace;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--color-normal-contrast-weakest, #999);
+    white-space: pre-wrap;
+}

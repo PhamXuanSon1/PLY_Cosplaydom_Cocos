@@ -1,0 +1,77 @@
+<div id="app">
+    <header>
+        <h2>Spine Texture Optimizer</h2>
+        <span class="hint">Downscale texture pages and rewrite the .atlas. The source folder is never modified.</span>
+    </header>
+
+    <section class="form">
+        <ui-prop>
+            <ui-label slot="label" value="Source .atlas"></ui-label>
+            <div slot="content" class="row">
+                <ui-input id="atlas" class="grow" placeholder="db://assets/spine/hero/hero.atlas"></ui-input>
+                <ui-button id="browse">Browse</ui-button>
+            </div>
+        </ui-prop>
+
+        <ui-prop>
+            <ui-label slot="label" value="Scale"></ui-label>
+            <ui-select slot="content" id="scale" class="grow">
+                <option value="1">100% (copy only)</option>
+                <option value="0.75">75%</option>
+                <option value="0.5" selected>50%</option>
+                <option value="0.25">25%</option>
+            </ui-select>
+        </ui-prop>
+
+        <ui-prop>
+            <ui-label slot="label" value="Resize filter"></ui-label>
+            <ui-select slot="content" id="filter" class="grow">
+                <option value="lanczos3" selected>Lanczos3 (sharp, default)</option>
+                <option value="mitchell">Mitchell (softer)</option>
+                <option value="triangle">Triangle / bilinear</option>
+                <option value="box">Box</option>
+                <option value="nearest">Nearest (pixel art)</option>
+            </ui-select>
+        </ui-prop>
+
+        <ui-prop>
+            <ui-label slot="label" value="Output folder"></ui-label>
+            <ui-input slot="content" id="output" class="grow" placeholder="db://assets/spine-generated/hero_50"></ui-input>
+        </ui-prop>
+
+        <ui-prop>
+            <ui-label slot="label" value="Mode"></ui-label>
+            <ui-select slot="content" id="mode" class="grow">
+                <option value="A" selected>A - keep character display size (recommended)</option>
+                <option value="B">B - also shrink the character (manual compensation)</option>
+            </ui-select>
+        </ui-prop>
+
+        <div class="checks">
+            <ui-checkbox id="backup" checked>Backup an existing output folder</ui-checkbox>
+            <ui-checkbox id="overwrite">Overwrite output folder if not empty</ui-checkbox>
+            <ui-checkbox id="refresh" checked>Refresh asset database when finished</ui-checkbox>
+            <ui-checkbox id="mipmaps">Count mipmaps in the VRAM estimate</ui-checkbox>
+        </div>
+
+        <div class="row actions">
+            <ui-button id="analyze">Analyze</ui-button>
+            <ui-button id="generate" class="green">Generate</ui-button>
+            <ui-button id="cancelBtn" disabled>Cancel</ui-button>
+            <span class="grow"></span>
+            <ui-button id="reveal" disabled>Show output</ui-button>
+        </div>
+
+        <div id="progressWrap" class="hidden">
+            <ui-progress id="progress" value="0"></ui-progress>
+            <div id="progressText" class="hint"></div>
+        </div>
+    </section>
+
+    <section id="summary" class="panel hidden"></section>
+    <section id="issues" class="panel hidden"></section>
+    <section id="logWrap" class="panel hidden">
+        <h3>Log</h3>
+        <pre id="log"></pre>
+    </section>
+</div>
