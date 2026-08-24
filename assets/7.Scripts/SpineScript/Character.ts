@@ -39,12 +39,22 @@ export class Character extends Component {
 
     //Thay đổi attachment cho 1 slot cụ thể và lưu vào trạng thái ép buộc 
     public turnSlotAttachment(slotName: string, attachmentName: string | null = null): void {
+        if(!this.spineSkeleton){
+            this.spineSkeleton = this.getComponent(sp.Skeleton);
+        }
         if(!this.spineSkeleton) return;
 
         try{
             // Nếu attachmentName là rỗng, đặt thành null để tắt attachment
             const targetAttachment = (!attachmentName || attachmentName.trim() === '') ? null : attachmentName;
-            this.spineSkeleton.setAttachment(slotName, targetAttachment);
+            this.spineSkeleton.setAttachment(slotName, targetAttachment as any);
+            const skeleton = (this.spineSkeleton as any)._skeleton;
+            if (skeleton) {
+                const slot = skeleton.findSlot(slotName);
+                if (slot) {
+                    slot.setAttachment(targetAttachment ? skeleton.getAttachmentByName(slotName, targetAttachment) : null);
+                }
+            }
             // Lưu lại trạng thái ép buộc
             this.forcedAttachments.set(slotName, targetAttachment);
         } catch (error) {
@@ -120,11 +130,19 @@ export class Character extends Component {
 
     //Chỉnh độ trong suốt (Alpha 0..1) của 1 Slot
     public setSlotAlpha(slotName: string, alpha: number): void {
+        if(!this.spineSkeleton){
+            this.spineSkeleton = this.getComponent(sp.Skeleton);
+        }
         if(!this.spineSkeleton) return;
 
-        const slot = this.spineSkeleton.findSlot(slotName);
+        const skeleton = (this.spineSkeleton as any)._skeleton;
+        const slot = this.spineSkeleton.findSlot(slotName) || (skeleton ? skeleton.findSlot(slotName) : null);
         if(slot){
-            slot.color.a = alpha;
+            if (slot.color) {
+                slot.color.a = alpha;
+            } else if (typeof slot.a !== 'undefined') {
+                slot.a = alpha;
+            }
         } else {
             console.warn(`Không tìm thấy slot "${slotName}" trong Spine Skeleton để chỉnh độ trong suốt.`);
         }

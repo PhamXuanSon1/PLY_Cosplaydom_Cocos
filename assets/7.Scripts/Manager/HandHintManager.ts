@@ -1,10 +1,10 @@
-import { _decorator, Component, Node, CCFloat, Animation, tween, Tween, Vec3, AnimationClip, Camera, view, director } from 'cc';
+import { _decorator, Component, Node, CCFloat, Animation, tween, Tween, Vec3, AnimationClip, Camera, view, director, Graphics, Color, UITransform } from 'cc';
 import { DrawItemManager } from './DrawItemManager';
 import { DrawInputManager } from './DrawInputManager';
 import { DrawItemController, DrawItemType } from '../DrawItem/DrawItemController';
 import { MakeupTarget } from '../DrawItem/MakeupTarget';
 
-const { ccclass, property } = _decorator;
+const { ccclass, property, executeInEditMode } = _decorator;
 
 /**
  * Cấu hình thứ tự gợi ý cho từng Map (port từ HandHintManager.MapHintConfig).
@@ -37,6 +37,7 @@ export class MapHintConfig {
  * còn Cocos 2D dùng "pixel" nên các giá trị này cần chỉnh lại (to hơn) trong Inspector cho hợp màn hình.
  */
 @ccclass('HandHintManager')
+@executeInEditMode
 export class HandHintManager extends Component {
 
     public static Instance: HandHintManager | null = null;
@@ -96,6 +97,13 @@ export class HandHintManager extends Component {
     })
     public dragAwayHintDistance: number = 200;
 
+    @property({
+        group: { name: '2. Hint Settings', id: 'hintSettings' },
+        displayName: 'Show Hint Path',
+        tooltip: 'Bật ô này để hiển thị toàn bộ đường bay/quỹ đạo kéo và vòng xoay gợi ý của Map hiện tại trên Editor/Game.'
+    })
+    public showHintPath: boolean = false;
+
     @property({ group: { name: '3. Hints Per Map', id: 'hintsPerMap' }, type: MapHintConfig, displayName: 'Map 1 Hints' })
     public map1_Hints: MapHintConfig = new MapHintConfig();
     @property({ group: { name: '3. Hints Per Map', id: 'hintsPerMap' }, type: MapHintConfig, displayName: 'Map 2 Hints' })
@@ -121,6 +129,12 @@ export class HandHintManager extends Component {
     }
 
     protected update(dt: number): void {
+        if (this.showHintPath) {
+            this.updateHintPathDebug();
+        } else {
+            this.removeHintPathDebug();
+        }
+
         // Chặn đếm giờ nếu người chơi đang cầm/kéo đồ vật
         const inputMgr = DrawInputManager.Instance || (globalThis as any).DrawInputManager?.Instance || (window as any).DrawInputManager?.Instance;
         if (inputMgr != null && inputMgr.currentDrawItem != null) {
@@ -150,6 +164,14 @@ export class HandHintManager extends Component {
                 this.showHint();
             }
         }
+    }
+
+    protected onDisable(): void {
+        this.removeHintPathDebug();
+    }
+
+    protected onDestroy(): void {
+        this.removeHintPathDebug();
     }
 
     public ShowHintImmediately(): void {
@@ -415,5 +437,157 @@ export class HandHintManager extends Component {
             }
         }
         return null;
+    }
+
+    /**
+     * Tự vẽ toàn bộ đường đi và quỹ đạo gợi ý của các item trong Map hiện tại
+     */
+    private updateHintPathDebug(): void {
+        let gNode = this.node.getChildByName('__HandHintManagerDebug__');
+        if (!gNode) {
+            gNode = new Node('__HandHintManagerDebug__');
+            this.node.addChild(gNode);
+            if (!gNode.getComponent(UITransform)) {
+                gNode.addComponent(UITransform);
+            }
+            gNode.layer = this.node.layer;
+        }
+
+        let g = gNode.getComponent(Graphics);
+        if (!g) {
+            g = gNode.addComponent(Graphics);
+        }
+
+        g.clear();
+
+        const drawItemMgr = this.getDrawItemMgr();
+        const mapIndex = drawItemMgr ? drawItemMgr.currentMapIndex : 0;
+
+        let config: MapHintConfig | null = null;
+        if (mapIndex === 0) config = this.map1_Hints;
+        else if (mapIndex === 1) config = this.map2_Hints;
+        else if (mapIndex === 2) config = this.map3_Hints;
+        else if (mapIndex === 3) config = this.map4_Hints;
+
+        if (!config || !config.orderedHintItems || config.orderedHintItems.length === 0) return;
+
+        const myWorldPos = this.node.worldPosition;
+
+        for (let i = 0; i < config.orderedHintItems.length; i++) {
+            const item = config.orderedHintItems[i];
+            if (!item || !item.node || !item.node.isValid) continue;
+
+            const startWorld = item.node.worldPosition;
+            const startLocal = new Vec3(startWorld.x - myWorldPos.x, startWorld.y - myWorldPos.y, 0);
+
+            // Vẽ điểm bắt đầu (vị trí item)
+            g.strokeColor = new Color(255, 180, 0, 240);
+            g.fillColor = new Color(255, 180, 0, 240);
+            g.lineWidth = 3;
+            g.circle(startLocal.x, startLocal.y, 8);
+            g.fill();
+            g.stroke();
+
+            if (item.itemType === DrawItemType.ClickOnly) {
+                // Click only: vòng tròn tỏa ra
+                g.strokeColor = new Color(0, 255, 120, 240);
+                g.lineWidth = 2;
+                g.circle(startLocal.x, startLocal.y, 18);
+                g.stroke();
+            } else if (item.itemType === DrawItemType.SnapToTarget) {
+                if (item.snapTarget && item.snapTarget.isValid) {
+                    const endWorld = item.snapTarget.worldPosition;
+                    const endLocal = new Vec3(endWorld.x - myWorldPos.x, endWorld.y - myWorldPos.y, 0);
+                    this.drawDebugArrow(g, startLocal, endLocal, new Color(0, 200, 255, 240));
+
+                    // Vẽ vòng tròn đích snap
+                    const multiplier = (globalThis as any).DrawInputManager?.Instance?.snapRadiusMultiplier ?? 50;
+                    const radius = Math.max(1, item.snapRadius * multiplier);
+                    g.fillColor = new Color(0, 200, 255, 35);
+                    g.strokeColor = new Color(0, 200, 255, 200);
+                    g.lineWidth = 2;
+                    g.circle(endLocal.x, endLocal.y, radius);
+                    g.fill();
+                    g.stroke();
+                }
+            } else if (item.itemType === DrawItemType.DirectDraw) {
+                const target = this.findTargetFor(item.makeupID, mapIndex);
+                if (target && target.node && target.node.isValid) {
+                    const endWorld = target.node.worldPosition;
+                    const endLocal = new Vec3(endWorld.x - myWorldPos.x, endWorld.y - myWorldPos.y, 0);
+                    this.drawDebugArrow(g, startLocal, endLocal, new Color(255, 200, 0, 240));
+
+                    // Vẽ vòng xoay tại MakeupTarget
+                    const r = target.hintCircleRadius > 0 ? target.hintCircleRadius : this.circleRadius;
+                    g.fillColor = new Color(255, 200, 0, 35);
+                    g.strokeColor = new Color(255, 200, 0, 200);
+                    g.lineWidth = 2;
+                    g.circle(endLocal.x, endLocal.y, r);
+                    g.fill();
+                    g.stroke();
+                }
+            } else if (item.itemType === DrawItemType.DipAndDraw) {
+                const target = this.findTargetFor(item.makeupID, mapIndex);
+                if (item.dipTarget && item.dipTarget.isValid) {
+                    const dipWorld = item.dipTarget.worldPosition;
+                    const dipLocal = new Vec3(dipWorld.x - myWorldPos.x, dipWorld.y - myWorldPos.y, 0);
+                    this.drawDebugArrow(g, startLocal, dipLocal, new Color(255, 120, 0, 240));
+
+                    if (target && target.node && target.node.isValid) {
+                        const endWorld = target.node.worldPosition;
+                        const endLocal = new Vec3(endWorld.x - myWorldPos.x, endWorld.y - myWorldPos.y, 0);
+                        this.drawDebugArrow(g, dipLocal, endLocal, new Color(255, 200, 0, 240));
+
+                        const r = target.hintCircleRadius > 0 ? target.hintCircleRadius : this.circleRadius;
+                        g.fillColor = new Color(255, 200, 0, 35);
+                        g.strokeColor = new Color(255, 200, 0, 200);
+                        g.lineWidth = 2;
+                        g.circle(endLocal.x, endLocal.y, r);
+                        g.fill();
+                        g.stroke();
+                    }
+                }
+            } else if (item.itemType === DrawItemType.DragAwayToFade) {
+                const endLocal = new Vec3(startLocal.x + this.dragAwayHintDistance, startLocal.y, 0);
+                this.drawDebugArrow(g, startLocal, endLocal, new Color(255, 80, 80, 240));
+            }
+        }
+    }
+
+    private drawDebugArrow(g: Graphics, from: Vec3, to: Vec3, color: Color = new Color(255, 200, 0, 240)): void {
+        g.strokeColor = color;
+        g.lineWidth = 3;
+        g.moveTo(from.x, from.y);
+        g.lineTo(to.x, to.y);
+        g.stroke();
+
+        // Mũi tên ở điểm đến
+        const dir = new Vec3(to.x - from.x, to.y - from.y, 0);
+        const len = dir.length();
+        if (len > 5) {
+            dir.normalize();
+            const normal = new Vec3(-dir.y, dir.x, 0);
+            const arrowSize = 14;
+            const p1 = new Vec3(to.x - dir.x * arrowSize + normal.x * (arrowSize * 0.5), to.y - dir.y * arrowSize + normal.y * (arrowSize * 0.5), 0);
+            const p2 = new Vec3(to.x - dir.x * arrowSize - normal.x * (arrowSize * 0.5), to.y - dir.y * arrowSize - normal.y * (arrowSize * 0.5), 0);
+
+            g.moveTo(to.x, to.y);
+            g.lineTo(p1.x, p1.y);
+            g.moveTo(to.x, to.y);
+            g.lineTo(p2.x, p2.y);
+            g.stroke();
+        }
+    }
+
+    private removeHintPathDebug(): void {
+        const gNode = this.node.getChildByName('__HandHintManagerDebug__');
+        if (gNode) gNode.destroy();
+
+        const allDebugs = this.node.getComponentsInChildren(Graphics);
+        for (const g of allDebugs) {
+            if (g.node && g.node.name === '__HandHintManagerDebug__') {
+                g.node.destroy();
+            }
+        }
     }
 }

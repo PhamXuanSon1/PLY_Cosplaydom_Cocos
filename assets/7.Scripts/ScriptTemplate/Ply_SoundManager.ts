@@ -103,6 +103,10 @@ export class Ply_SoundManager extends Ply_Singleton {
         Ply_SoundManager.Ins = this;
     }
 
+    start() {
+        this.playBGM1();
+    }
+
     /**
      * Phat am thanh hieu ung ngay lap tuc.
      * Neu dang phat, no se phat lai tu dau.

@@ -1,10 +1,10 @@
-import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum } from 'cc';
+import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum, Graphics, Color, UITransform } from 'cc';
 import { Character } from '../SpineScript/Character';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from '../Manager/CharacterManager';
 import { Ply_Pool, PoolType } from '../ScriptTemplate/Ply_Pool';
 
-const { ccclass, property } = _decorator;
+const { ccclass, property, executeInEditMode } = _decorator;
 
 @ccclass('MakeupSlotConfig')
 export class MakeupSlotConfig {
@@ -22,6 +22,7 @@ export class MakeupSlotConfig {
 }
 
 @ccclass('MakeupTarget')
+@executeInEditMode
 export class MakeupTarget extends Component {
 
     // ==========================================
@@ -168,6 +169,13 @@ export class MakeupTarget extends Component {
     })
     public hintCircleRadius: number = 0;
 
+    @property({
+        group: { name: '5. Draw Settings', id: 'drawSettings' },
+        displayName: 'Show Hint Path',
+        tooltip: 'Bật ô này để hiển thị đường vẽ / vòng xoay quỹ đạo di chuyển của bàn tay gợi ý (Hand Hint) cho mục tiêu này.'
+    })
+    public showHintPath: boolean = false;
+
     // Getters & Privates
     public get currentDrawTimesValue(): number {
         return this.currentDrawTimes;
@@ -190,32 +198,37 @@ export class MakeupTarget extends Component {
     private isAttachmentTurnedOff: boolean = false;
 
     protected start(): void {
-        if (this.targetCharacter && this.targetCharacter.spineSkeleton) {
-            const skeletonComp = this.targetCharacter.spineSkeleton;
-            const skeleton = (skeletonComp as any)._skeleton;
+        this.ensureSlotsCached();
+    }
 
-            if (skeletonComp && skeleton) {
-                if (this.slotName) {
-                    this.cachedSlot = skeletonComp.findSlot(this.slotName) || skeleton.findSlot(this.slotName);
+    private ensureSlotsCached(): void {
+        if (!this.targetCharacter) return;
+        if (!this.targetCharacter.spineSkeleton) {
+            this.targetCharacter.spineSkeleton = this.targetCharacter.getComponent(sp.Skeleton);
+        }
+        const skeletonComp = this.targetCharacter.spineSkeleton;
+        if (!skeletonComp) return;
+        const skeleton = (skeletonComp as any)._skeleton;
+
+        if (this.slotName && !this.cachedSlot) {
+            this.cachedSlot = skeletonComp.findSlot(this.slotName) || (skeleton ? skeleton.findSlot(this.slotName) : null);
+        }
+        if (this.slotNameToTurnOff && !this.cachedSlotOff) {
+            this.cachedSlotOff = skeletonComp.findSlot(this.slotNameToTurnOff) || (skeleton ? skeleton.findSlot(this.slotNameToTurnOff) : null);
+        }
+        if (this.multipleTurnOnSlots && this.multipleTurnOnSlots.length > 0 && this.cachedMultipleSlotsOn.length === 0) {
+            for (const config of this.multipleTurnOnSlots) {
+                if (config && config.slotName) {
+                    const slot = skeletonComp.findSlot(config.slotName) || (skeleton ? skeleton.findSlot(config.slotName) : null);
+                    if (slot) this.cachedMultipleSlotsOn.push(slot);
                 }
-                if (this.slotNameToTurnOff) {
-                    this.cachedSlotOff = skeletonComp.findSlot(this.slotNameToTurnOff) || skeleton.findSlot(this.slotNameToTurnOff);
-                }
-                if (this.multipleTurnOnSlots && this.multipleTurnOnSlots.length > 0) {
-                    for (const config of this.multipleTurnOnSlots) {
-                        if (config && config.slotName) {
-                            const slot = skeletonComp.findSlot(config.slotName) || skeleton.findSlot(config.slotName);
-                            if (slot) this.cachedMultipleSlotsOn.push(slot);
-                        }
-                    }
-                }
-                if (this.multipleTurnOffSlots && this.multipleTurnOffSlots.length > 0) {
-                    for (const slotNameOff of this.multipleTurnOffSlots) {
-                        if (slotNameOff) {
-                            const slot = skeletonComp.findSlot(slotNameOff) || skeleton.findSlot(slotNameOff);
-                            if (slot) this.cachedMultipleSlotsOff.push(slot);
-                        }
-                    }
+            }
+        }
+        if (this.multipleTurnOffSlots && this.multipleTurnOffSlots.length > 0 && this.cachedMultipleSlotsOff.length === 0) {
+            for (const slotNameOff of this.multipleTurnOffSlots) {
+                if (slotNameOff) {
+                    const slot = skeletonComp.findSlot(slotNameOff) || (skeleton ? skeleton.findSlot(slotNameOff) : null);
+                    if (slot) this.cachedMultipleSlotsOff.push(slot);
                 }
             }
         }
@@ -232,6 +245,8 @@ export class MakeupTarget extends Component {
 
     public applyMakeup(dt: number = 0.016, currentMousePos?: Vec3): void {
         if (this.isApplied || !this.targetCharacter) return;
+
+        this.ensureSlotsCached();
 
         if (this.continuousMode && currentMousePos) {
             const mouseDelta = Vec3.squaredDistance(currentMousePos, this.lastMousePos);
@@ -288,8 +303,16 @@ export class MakeupTarget extends Component {
                     this.targetCharacter.setSlotAlpha(this.slotName, targetAlpha);
                 }
 
-                for (const slot of this.cachedMultipleSlotsOn) {
-                    this.setSlotAlphaValue(slot, targetAlpha);
+                if (this.cachedMultipleSlotsOn.length > 0) {
+                    for (const slot of this.cachedMultipleSlotsOn) {
+                        this.setSlotAlphaValue(slot, targetAlpha);
+                    }
+                } else if (this.multipleTurnOnSlots) {
+                    for (const config of this.multipleTurnOnSlots) {
+                        if (config && config.slotName) {
+                            this.targetCharacter.setSlotAlpha(config.slotName, targetAlpha);
+                        }
+                    }
                 }
             }
 
@@ -305,8 +328,16 @@ export class MakeupTarget extends Component {
                         this.targetCharacter.setSlotAlpha(this.slotNameToTurnOff, 1.0 - targetAlpha);
                     }
 
-                    for (const slotOff of this.cachedMultipleSlotsOff) {
-                        this.setSlotAlphaValue(slotOff, 1.0 - targetAlpha);
+                    if (this.cachedMultipleSlotsOff.length > 0) {
+                        for (const slotOff of this.cachedMultipleSlotsOff) {
+                            this.setSlotAlphaValue(slotOff, 1.0 - targetAlpha);
+                        }
+                    } else if (this.multipleTurnOffSlots) {
+                        for (const slotNameOff of this.multipleTurnOffSlots) {
+                            if (slotNameOff) {
+                                this.targetCharacter.setSlotAlpha(slotNameOff, 1.0 - targetAlpha);
+                            }
+                        }
                     }
                 }
 
@@ -400,13 +431,9 @@ export class MakeupTarget extends Component {
         if (this.isApplied || !this.targetCharacter) return;
 
         const targetMaxDraws = this.continuousMode ? this.continuousRequiredSeconds : this.requiredDrawTimes;
-
-        let safetyCounter = 0;
-        while (!this.isApplied && this.currentDrawTimes < targetMaxDraws && safetyCounter < 100) {
-            this.isBeingHovered = false;
-            this.applyMakeup();
-            safetyCounter++;
-        }
+        this.currentDrawTimes = targetMaxDraws;
+        this.isBeingHovered = false;
+        this.applyMakeup(targetMaxDraws);
     }
 
     public ForceComplete(): void {
@@ -419,5 +446,118 @@ export class MakeupTarget extends Component {
 
     public OnBrushExit(): void {
         this.onBrushExit();
+    }
+
+    protected update(dt: number): void {
+        if (this.showHintPath) {
+            this.updateHintDebug();
+        } else {
+            this.removeHintDebug();
+        }
+    }
+
+    protected onDisable(): void {
+        this.removeHintDebug();
+    }
+
+    protected onDestroy(): void {
+        this.removeHintDebug();
+    }
+
+    /**
+     * Tự vẽ vòng tròn/quỹ đạo di chuyển của Hand Hint quanh điểm Makeup này
+     */
+    private updateHintDebug(): void {
+        let gNode = this.node.getChildByName('__MakeupTargetHintDebug__');
+        if (!gNode) {
+            gNode = new Node('__MakeupTargetHintDebug__');
+            this.node.addChild(gNode);
+            if (!gNode.getComponent(UITransform)) {
+                gNode.addComponent(UITransform);
+            }
+            gNode.layer = this.node.layer;
+        }
+
+        let g = gNode.getComponent(Graphics);
+        if (!g) {
+            g = gNode.addComponent(Graphics);
+        }
+
+        g.clear();
+
+        const defaultRadius = (globalThis as any).HandHintManager?.Instance?.circleRadius ?? 100;
+        const radius = this.hintCircleRadius > 0 ? this.hintCircleRadius : defaultRadius;
+
+        // Vùng tròn di chuyển của bàn tay (HandHint)
+        g.fillColor = new Color(255, 200, 0, 35);
+        g.strokeColor = new Color(255, 200, 0, 230);
+        g.lineWidth = 2.5;
+        g.circle(0, 0, radius);
+        g.fill();
+        g.stroke();
+
+        // Tâm điểm MakeupTarget
+        g.fillColor = new Color(255, 100, 0, 240);
+        g.strokeColor = new Color(255, 255, 255, 240);
+        g.lineWidth = 1.5;
+        g.circle(0, 0, 6);
+        g.fill();
+        g.stroke();
+
+        // Chữ thập tâm
+        g.strokeColor = new Color(255, 255, 255, 200);
+        g.lineWidth = 1.5;
+        g.moveTo(-10, 0);
+        g.lineTo(10, 0);
+        g.moveTo(0, -10);
+        g.lineTo(0, 10);
+        g.stroke();
+
+        // Vẽ 4 mũi tên chỉ hướng quỹ đạo xoay tròn của HandHint (Top -> Left -> Bottom -> Right)
+        g.strokeColor = new Color(255, 230, 0, 240);
+        g.lineWidth = 2;
+        const arrowLen = Math.min(15, radius * 0.25);
+
+        // Đỉnh trên (0, radius): hướng sang trái
+        g.moveTo(arrowLen, radius);
+        g.lineTo(-arrowLen, radius);
+        g.lineTo(-arrowLen + 6, radius + 5);
+        g.moveTo(-arrowLen, radius);
+        g.lineTo(-arrowLen + 6, radius - 5);
+
+        // Đỉnh trái (-radius, 0): hướng xuống dưới
+        g.moveTo(-radius, arrowLen);
+        g.lineTo(-radius, -arrowLen);
+        g.lineTo(-radius + 5, -arrowLen + 6);
+        g.moveTo(-radius, -arrowLen);
+        g.lineTo(-radius - 5, -arrowLen + 6);
+
+        // Đỉnh dưới (0, -radius): hướng sang phải
+        g.moveTo(-arrowLen, -radius);
+        g.lineTo(arrowLen, -radius);
+        g.lineTo(arrowLen - 6, -radius + 5);
+        g.moveTo(arrowLen, -radius);
+        g.lineTo(arrowLen - 6, -radius - 5);
+
+        // Đỉnh phải (radius, 0): hướng lên trên
+        g.moveTo(radius, -arrowLen);
+        g.lineTo(radius, arrowLen);
+        g.lineTo(radius + 5, arrowLen - 6);
+        g.moveTo(radius, arrowLen);
+        g.lineTo(radius - 5, arrowLen - 6);
+
+        g.stroke();
+    }
+
+    private removeHintDebug(): void {
+        const gNode = this.node.getChildByName('__MakeupTargetHintDebug__');
+        if (gNode) gNode.destroy();
+
+        const allDebugs = this.node.getComponentsInChildren(Graphics);
+        for (const g of allDebugs) {
+            if (g.node && g.node.name === '__MakeupTargetHintDebug__') {
+                g.node.destroy();
+            }
+        }
     }
 }

@@ -1,7 +1,8 @@
-import { _decorator, Component, Node, Enum, CCString, CCBoolean, CCFloat, EventHandler } from 'cc';
+import { _decorator, Component, Node, Enum, CCString, CCBoolean, CCFloat, EventHandler, Graphics, Color, UITransform } from 'cc';
+import { EDITOR } from 'cc/env';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 
-const { ccclass, property } = _decorator;
+const { ccclass, property, executeInEditMode } = _decorator;
 
 export enum DrawItemType {
     ClickOnly = 0,
@@ -13,6 +14,7 @@ export enum DrawItemType {
 Enum(DrawItemType);
 
 @ccclass('DrawItemController')
+@executeInEditMode
 export class DrawItemController extends Component {
 
     @property({
@@ -89,6 +91,24 @@ export class DrawItemController extends Component {
     public tipPoint: Node | null = null;
 
     @property({
+        group: { name: '2. Interaction Setup', id: 'interactionSetup' },
+        displayName: 'Show Tip Point',
+        tooltip: "Bật ô này để hiển thị 1 điểm đỏ (Red Dot) tại vị trí Tip Point để dễ dàng căn chỉnh trên Editor hoặc trong Game."
+    })
+    public showTipPoint: boolean = false;
+
+    @property({
+        type: CCFloat,
+        group: { name: '2. Interaction Setup', id: 'interactionSetup' },
+        displayName: 'Tip Point Dot Size',
+        tooltip: "Kích thước bán kính của điểm đỏ (pixel) hiển thị cho Tip Point.",
+        visible(this: any) {
+            return this.showTipPoint;
+        }
+    })
+    public tipPointDebugSize: number = 8;
+
+    @property({
         type: Node,
         group: { name: '2. Interaction Setup', id: 'interactionSetup' },
         displayName: 'Dip Target',
@@ -118,6 +138,13 @@ export class DrawItemController extends Component {
         tooltip: "Khoảng cách bắt dính (hút). Nếu thả đồ vật cách đích nhỏ hơn bán kính này, nó sẽ tự dính vào và tính là hoàn thành."
     })
     public snapRadius: number = 1.0;
+
+    @property({
+        group: { name: '2. Interaction Setup', id: 'interactionSetup' },
+        displayName: 'Show Snap Radius',
+        tooltip: "Bật ô này để hiển thị vòng tròn bán kính Snap Radius quanh Snap Target để dễ dàng căn chỉnh trên Editor hoặc trong Game."
+    })
+    public showSnapRadius: boolean = false;
 
     @property({
         type: Node,
@@ -268,10 +295,199 @@ export class DrawItemController extends Component {
         this._isCompleted = value;
     }
 
+    private _lastDebugTipPointNode: Node | null = null;
+    private _lastDebugSnapTargetNode: Node | null = null;
+
     protected onLoad(): void {
-        // Reset lại trạng thái ban đầu để tránh bị lưu đè data trên Scene/Prefab (vì biến này từng là public)
-        this.isCompleted = false;
-        this.hasDipped = false;
+        if (!EDITOR) {
+            // Reset lại trạng thái ban đầu để tránh bị lưu đè data trên Scene/Prefab (vì biến này từng là public)
+            this.isCompleted = false;
+            this.hasDipped = false;
+        }
+    }
+
+    protected start(): void {
+        if (this.showTipPoint) {
+            this.updateTipPointDebug();
+        }
+        if (this.showSnapRadius) {
+            this.updateSnapRadiusDebug();
+        }
+    }
+
+    protected update(dt: number): void {
+        if (this.showTipPoint) {
+            this.updateTipPointDebug();
+        } else {
+            this.removeTipPointDebug();
+        }
+
+        if (this.showSnapRadius) {
+            this.updateSnapRadiusDebug();
+        } else {
+            this.removeSnapRadiusDebug();
+        }
+    }
+
+    protected onDisable(): void {
+        this.removeTipPointDebug();
+        this.removeSnapRadiusDebug();
+    }
+
+    protected onDestroy(): void {
+        this.removeTipPointDebug();
+        this.removeSnapRadiusDebug();
+    }
+
+    /**
+     * Tự vẽ điểm đỏ hiển thị vị trí Tip Point
+     */
+    private updateTipPointDebug(): void {
+        if (!this.tipPoint || !this.tipPoint.isValid) {
+            if (this._lastDebugTipPointNode && this._lastDebugTipPointNode.isValid) {
+                const old = this._lastDebugTipPointNode.getChildByName('__TipPointDebug__');
+                if (old) old.destroy();
+            }
+            this._lastDebugTipPointNode = null;
+            return;
+        }
+
+        if (this._lastDebugTipPointNode && this._lastDebugTipPointNode !== this.tipPoint && this._lastDebugTipPointNode.isValid) {
+            const old = this._lastDebugTipPointNode.getChildByName('__TipPointDebug__');
+            if (old) old.destroy();
+        }
+        this._lastDebugTipPointNode = this.tipPoint;
+
+        let gNode = this.tipPoint.getChildByName('__TipPointDebug__');
+        if (!gNode) {
+            gNode = new Node('__TipPointDebug__');
+            this.tipPoint.addChild(gNode);
+            if (!gNode.getComponent(UITransform)) {
+                gNode.addComponent(UITransform);
+            }
+            gNode.layer = this.tipPoint.layer;
+        }
+
+        let g = gNode.getComponent(Graphics);
+        if (!g) {
+            g = gNode.addComponent(Graphics);
+        }
+
+        g.clear();
+        const dotRadius = this.tipPointDebugSize > 0 ? this.tipPointDebugSize : 8;
+
+        // Vẽ điểm tròn đỏ
+        g.fillColor = new Color(255, 0, 0, 240);
+        g.strokeColor = new Color(255, 255, 255, 255);
+        g.lineWidth = 2;
+        g.circle(0, 0, dotRadius);
+        g.fill();
+        g.stroke();
+
+        // Vẽ chữ thập tâm màu trắng để dễ căn góc/tâm
+        g.strokeColor = new Color(255, 255, 255, 220);
+        g.lineWidth = 1.5;
+        g.moveTo(-dotRadius * 0.6, 0);
+        g.lineTo(dotRadius * 0.6, 0);
+        g.moveTo(0, -dotRadius * 0.6);
+        g.lineTo(0, dotRadius * 0.6);
+        g.stroke();
+    }
+
+    private removeTipPointDebug(): void {
+        if (this.tipPoint && this.tipPoint.isValid) {
+            const gNode = this.tipPoint.getChildByName('__TipPointDebug__');
+            if (gNode) gNode.destroy();
+        }
+        if (this._lastDebugTipPointNode && this._lastDebugTipPointNode.isValid) {
+            const gNode = this._lastDebugTipPointNode.getChildByName('__TipPointDebug__');
+            if (gNode) gNode.destroy();
+        }
+        this._lastDebugTipPointNode = null;
+
+        const allDebugs = this.node.getComponentsInChildren(Graphics);
+        for (const g of allDebugs) {
+            if (g.node && g.node.name === '__TipPointDebug__') {
+                g.node.destroy();
+            }
+        }
+    }
+
+    /**
+     * Tự vẽ vòng tròn bán kính Snap Radius quanh Snap Target
+     */
+    private updateSnapRadiusDebug(): void {
+        if (!this.snapTarget || !this.snapTarget.isValid) {
+            if (this._lastDebugSnapTargetNode && this._lastDebugSnapTargetNode.isValid) {
+                const old = this._lastDebugSnapTargetNode.getChildByName('__SnapRadiusDebug__');
+                if (old) old.destroy();
+            }
+            this._lastDebugSnapTargetNode = null;
+            return;
+        }
+
+        if (this._lastDebugSnapTargetNode && this._lastDebugSnapTargetNode !== this.snapTarget && this._lastDebugSnapTargetNode.isValid) {
+            const old = this._lastDebugSnapTargetNode.getChildByName('__SnapRadiusDebug__');
+            if (old) old.destroy();
+        }
+        this._lastDebugSnapTargetNode = this.snapTarget;
+
+        let gNode = this.snapTarget.getChildByName('__SnapRadiusDebug__');
+        if (!gNode) {
+            gNode = new Node('__SnapRadiusDebug__');
+            this.snapTarget.addChild(gNode);
+            if (!gNode.getComponent(UITransform)) {
+                gNode.addComponent(UITransform);
+            }
+            gNode.layer = this.snapTarget.layer;
+        }
+
+        let g = gNode.getComponent(Graphics);
+        if (!g) {
+            g = gNode.addComponent(Graphics);
+        }
+
+        g.clear();
+        // Bán kính snap thực tế: snapRadius * multiplier (mặc định 50)
+        const multiplier = (globalThis as any).DrawInputManager?.Instance?.snapRadiusMultiplier ?? 50;
+        const radius = Math.max(1, this.snapRadius * multiplier);
+
+        // Vùng tròn bán kính snap
+        g.fillColor = new Color(0, 200, 255, 40);
+        g.strokeColor = new Color(0, 200, 255, 220);
+        g.lineWidth = 2.5;
+        g.circle(0, 0, radius);
+        g.fill();
+        g.stroke();
+
+        // Tâm chữ thập
+        g.strokeColor = new Color(0, 200, 255, 180);
+        g.lineWidth = 1.5;
+        const crossSize = Math.min(10, radius * 0.5);
+        g.moveTo(-crossSize, 0);
+        g.lineTo(crossSize, 0);
+        g.moveTo(0, -crossSize);
+        g.lineTo(0, crossSize);
+        g.stroke();
+    }
+
+    private removeSnapRadiusDebug(): void {
+        if (this.snapTarget && this.snapTarget.isValid) {
+            const gNode = this.snapTarget.getChildByName('__SnapRadiusDebug__');
+            if (gNode) gNode.destroy();
+        }
+        if (this._lastDebugSnapTargetNode && this._lastDebugSnapTargetNode.isValid) {
+            const gNode = this._lastDebugSnapTargetNode.getChildByName('__SnapRadiusDebug__');
+            if (gNode) gNode.destroy();
+        }
+        this._lastDebugSnapTargetNode = null;
+
+        const allDebugs = this.node.getComponentsInChildren(Graphics);
+        for (const g of allDebugs) {
+            if (g.node && g.node.name === '__SnapRadiusDebug__') {
+                g.node.destroy();
+            }
+        }
     }
 
     // Helper trigger các sự kiện

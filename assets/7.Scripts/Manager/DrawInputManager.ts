@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game } from 'cc';
+import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game, BoxCollider2D, CircleCollider2D, PolygonCollider2D, Intersection2D, director } from 'cc';
 import { AppLovinAnalytics } from '../Tool/AppLovinAnalytics';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from './CharacterManager';
@@ -222,8 +222,6 @@ export class DrawInputManager extends Component {
         }
 
         if (!this.isClickFirst) {
-            if (Ply_SoundManager.Ins != null) Ply_SoundManager.Ins.playBGM1();
-
             if (this.introAnimator) {
                 this.isPlayingIntro = true;
                 const anim = this.introAnimator.getComponent(Animation);
@@ -301,8 +299,42 @@ export class DrawInputManager extends Component {
         return new Vec3(uiWorldPos.x, uiWorldPos.y, 0);
     }
 
+    private isPointInCollider(col: Collider2D, worldPoint: Vec3): boolean {
+        if (!col || !col.node || !col.node.activeInHierarchy || !col.enabled) return false;
+        const uiTransform = col.node.getComponent(UITransform);
+        if (!uiTransform) return false;
+
+        const localPos = uiTransform.convertToNodeSpaceAR(worldPoint);
+
+        if (col instanceof BoxCollider2D) {
+            const offset = col.offset;
+            const size = col.size;
+            const minX = offset.x - size.width * 0.5;
+            const maxX = offset.x + size.width * 0.5;
+            const minY = offset.y - size.height * 0.5;
+            const maxY = offset.y + size.height * 0.5;
+            return localPos.x >= minX && localPos.x <= maxX && localPos.y >= minY && localPos.y <= maxY;
+        } else if (col instanceof CircleCollider2D) {
+            const dx = localPos.x - col.offset.x;
+            const dy = localPos.y - col.offset.y;
+            return (dx * dx + dy * dy) <= (col.radius * col.radius);
+        } else if (col instanceof PolygonCollider2D) {
+            const pt = new Vec2(localPos.x - col.offset.x, localPos.y - col.offset.y);
+            return Intersection2D.pointInPolygon(pt, col.points);
+        } else {
+            const size = uiTransform.contentSize;
+            const anchor = uiTransform.anchorPoint;
+            const minX = -anchor.x * size.width;
+            const maxX = (1 - anchor.x) * size.width;
+            const minY = -anchor.y * size.height;
+            const maxY = (1 - anchor.y) * size.height;
+            return localPos.x >= minX && localPos.x <= maxX && localPos.y >= minY && localPos.y <= maxY;
+        }
+    }
+
     private raycastNodes<T extends Component>(event: EventTouch, type: { new(): T }, layerMask: number = -1): T[] {
         const uiWorldPos = (event as any).getUIWorldPosition ? (event as any).getUIWorldPosition() : event.getUILocation();
+        const touchWorldVec3 = new Vec3(uiWorldPos.x, uiWorldPos.y, 0);
         const touchVec2 = new Vec2(uiWorldPos.x, uiWorldPos.y);
         const results: T[] = [];
 
@@ -316,7 +348,7 @@ export class DrawInputManager extends Component {
             return null;
         };
 
-        // Chỉ dùng PhysicsSystem2D kiểm tra va chạm bằng 2D Collider (BoxCollider2D, PolygonCollider2D...)
+        // 1. Dùng PhysicsSystem2D kiểm tra va chạm bằng 2D Collider (BoxCollider2D, PolygonCollider2D...)
         if (PhysicsSystem2D.instance) {
             const colliders2D = PhysicsSystem2D.instance.testPoint(touchVec2);
             for (let i = 0; i < colliders2D.length; i++) {
@@ -329,6 +361,49 @@ export class DrawInputManager extends Component {
 
                 const comp = findComponentInHierarchy(colNode) || colliders2D[i].getComponent(type);
                 if (comp && results.indexOf(comp) === -1) {
+                    results.push(comp);
+                }
+            }
+        }
+
+        // 2. Fallback trực tiếp bằng Geometric Local Transform (phòng trường hợp Physics2D engine bị delay/chưa kịp sync sau khi đổi Map/Intro)
+        const scene = director.getScene();
+        if (scene) {
+            const candidates = scene.getComponentsInChildren(type);
+            for (let i = 0; i < candidates.length; i++) {
+                const comp = candidates[i];
+                if (!comp || !comp.node || !comp.node.activeInHierarchy || results.indexOf(comp) !== -1) continue;
+
+                if (layerMask !== -1 && (comp.node.layer & layerMask) === 0) {
+                    continue;
+                }
+
+                let hit = false;
+                const colliders = comp.node.getComponentsInChildren(Collider2D);
+                if (colliders && colliders.length > 0) {
+                    for (const col of colliders) {
+                        if (this.isPointInCollider(col, touchWorldVec3)) {
+                            hit = true;
+                            break;
+                        }
+                    }
+                } else {
+                    const uiTransform = comp.node.getComponent(UITransform);
+                    if (uiTransform) {
+                        const localPos = uiTransform.convertToNodeSpaceAR(touchWorldVec3);
+                        const size = uiTransform.contentSize;
+                        const anchor = uiTransform.anchorPoint;
+                        const minX = -anchor.x * size.width;
+                        const maxX = (1 - anchor.x) * size.width;
+                        const minY = -anchor.y * size.height;
+                        const maxY = (1 - anchor.y) * size.height;
+                        if (localPos.x >= minX && localPos.x <= maxX && localPos.y >= minY && localPos.y <= maxY) {
+                            hit = true;
+                        }
+                    }
+                }
+
+                if (hit) {
                     results.push(comp);
                 }
             }

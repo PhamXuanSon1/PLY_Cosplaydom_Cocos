@@ -1,4 +1,4 @@
-import { _decorator, Component, Collider2D, Node } from 'cc';
+import { _decorator, Component, Collider2D, Node, Animation } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('ActiveColliderVsNode')
@@ -160,5 +160,93 @@ export class ActiveColliderVsNode extends Component {
         if (!hasCustomTarget) {
             this.node.active = active;
         }
+    }
+
+    /**
+     * Bật chạy Animation (Play).
+     * @param customEventData Tên clip muốn chạy (để trống sẽ chạy defaultClip hoặc clip đầu tiên).
+     */
+    public playAnim(customEventData?: string): void {
+        const anim = (this.targetNode ? this.targetNode.getComponent(Animation) : null) 
+            || this.getComponent(Animation) 
+            || this.getComponentInChildren(Animation);
+        if (!anim) return;
+
+        const clipName = (customEventData && customEventData.trim() !== '') ? customEventData.trim() : '';
+        if (clipName) {
+            anim.play(clipName);
+        } else {
+            anim.play();
+        }
+    }
+
+    /**
+     * Dừng Animation.
+     * @param customEventData Tên clip muốn dừng (để trống sẽ dừng tất cả animation).
+     */
+    public stopAnim(customEventData?: string): void {
+        const anim = (this.targetNode ? this.targetNode.getComponent(Animation) : null) 
+            || this.getComponent(Animation) 
+            || this.getComponentInChildren(Animation);
+        if (!anim) return;
+
+        const clipName = (customEventData && customEventData.trim() !== '') ? customEventData.trim() : '';
+        if (clipName) {
+            anim.stop(clipName);
+        } else {
+            anim.stop();
+        }
+    }
+
+    /**
+     * Dừng Animation và khôi phục lại trạng thái ban đầu (Frame 0).
+     * Dùng hàm này trong On Drop Event trên Inspector để khi thả tay ra đồ vật sẽ đóng/trả về dáng ban đầu.
+     * @param customEventData Tên clip (để trống sẽ tự động lấy defaultClip hoặc tất cả clips).
+     */
+    public stopAnimAndReset(customEventData?: string): void {
+        const anim = (this.targetNode ? this.targetNode.getComponent(Animation) : null) 
+            || this.getComponent(Animation) 
+            || this.getComponentInChildren(Animation);
+        if (!anim) return;
+
+        anim.stop();
+
+        const clipName = (customEventData && customEventData.trim() !== '') ? customEventData.trim() : '';
+        if (clipName) {
+            const state = anim.getState(clipName);
+            if (state) {
+                state.setTime(0);
+                state.sample();
+            }
+        } else {
+            const defaultClip = anim.defaultClip;
+            if (defaultClip) {
+                const state = anim.getState(defaultClip.name);
+                if (state) {
+                    state.setTime(0);
+                    state.sample();
+                }
+            }
+            const clips = anim.clips;
+            if (clips && clips.length > 0) {
+                for (let i = 0; i < clips.length; i++) {
+                    const c = clips[i];
+                    if (c) {
+                        const state = anim.getState(c.name);
+                        if (state) {
+                            state.setTime(0);
+                            state.sample();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Reset Animation về Frame 0 mà không dừng (hoặc để chuẩn bị chạy lại).
+     */
+    public resetAnim(customEventData?: string): void {
+        this.stopAnimAndReset(customEventData);
     }
 }
