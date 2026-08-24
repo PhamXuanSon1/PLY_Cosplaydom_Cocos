@@ -89,7 +89,7 @@
         "_value": false
       },
       "webview": {
-        "_value": false
+        "_value": true
       },
       "tween": {
         "_value": true
@@ -132,7 +132,8 @@
       "skeletal-animation",
       "spine",
       "tween",
-      "ui"
+      "ui",
+      "webview"
     ],
     "noDeprecatedFeatures": {
       "value": false,
