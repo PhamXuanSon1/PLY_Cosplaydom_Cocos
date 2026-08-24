@@ -6,13 +6,13 @@
         "_value": true
       },
       "graphcis": {
-        "_value": true
+        "_value": false
       },
       "gfx-webgl": {
         "_value": true
       },
       "gfx-webgl2": {
-        "_value": true
+        "_value": false
       },
       "animation": {
         "_value": true
@@ -127,7 +127,6 @@
       "audio",
       "base",
       "gfx-webgl",
-      "gfx-webgl2",
       "particle-2d",
       "physics-2d-box2d",
       "skeletal-animation",

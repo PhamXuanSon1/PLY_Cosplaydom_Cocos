@@ -1,0 +1,1505 @@
+{
+  "skeletonDataFileName": "Harpy",
+  "slotAttachmentPairs": [
+    {
+      "isEnabled": false,
+      "slotName": "Bg",
+      "attachmentName": "Bg"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "trails_body2",
+      "attachmentName": "trails_body"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails_body4",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails_body6",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow55",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow2",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow56",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow3",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow57",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow4",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow58",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow5",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow59",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow6",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow60",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow7",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow61",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow8",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow62",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow9",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow63",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow10",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow64",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow11",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow65",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow12",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow66",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow13",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow67",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow14",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow68",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow15",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow69",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow16",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow70",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow17",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow71",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow18",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow72",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow19",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow73",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "flare_back",
+      "attachmentName": "fx/flare2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "shadow",
+      "attachmentName": "fx/shadow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "smoke",
+      "attachmentName": "fx/smoke"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "smoke2",
+      "attachmentName": "fx/smoke"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_tail",
+      "attachmentName": "cos/tail"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_back_dress",
+      "attachmentName": "cos/new_back_dress"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_back_wing_dR",
+      "attachmentName": "cos/new_wing_d2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_back_wing_dL",
+      "attachmentName": "cos/new_wing_d2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base body/old_back_hair_0",
+      "attachmentName": "base/back_hair_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair0",
+      "attachmentName": "base/old_back_hair0"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair1",
+      "attachmentName": "base/old_back_hair1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair2L",
+      "attachmentName": "base/old_back_hair2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair2R",
+      "attachmentName": "base/old_back_hair2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair3R",
+      "attachmentName": "base/old_back_hair3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair3L",
+      "attachmentName": "base/old_back_hair3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair4R",
+      "attachmentName": "base/old_back_hair4"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair4L",
+      "attachmentName": "base/old_back_hair4"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair_dirty",
+      "attachmentName": "makeup/old_back_hair_dirty"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_hair_wet",
+      "attachmentName": "makeup/old_back_hair_wet"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/old_back_shampoo",
+      "attachmentName": "makeup/old_back_shampoo"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_back_hair",
+      "attachmentName": "cos/new_back_hair"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_back_feather",
+      "attachmentName": "cos/new_back_feather"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base body/legR",
+      "attachmentName": "base body/leg"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base body/legL",
+      "attachmentName": "base body/leg"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base body/arm",
+      "attachmentName": "base body/arm"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base body/arm2",
+      "attachmentName": "base body/arm"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_wing_dR",
+      "attachmentName": "cos/new_wing_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_wing_dL",
+      "attachmentName": "cos/new_wing_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_wing_gold_dR",
+      "attachmentName": "zcos/new_wing_gold_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_wing_gold_dR_adt",
+      "attachmentName": "zcos/new_wing_gold_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_wing_gold_dL",
+      "attachmentName": "zcos/new_wing_gold_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base body/new_wing_gold_dL_adt",
+      "attachmentName": "zcos/new_wing_gold_d"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base body/body_base",
+      "attachmentName": "base body/body_base"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/Eyes_white",
+      "attachmentName": "head/Eyes_white"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_iris1",
+      "attachmentName": "head/old_iris"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_iris2",
+      "attachmentName": "head/old_iris"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/new_irisR",
+      "attachmentName": "head/new_iris"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/new_irisL",
+      "attachmentName": "head/new_iris"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/iris_glowR",
+      "attachmentName": "fx/glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/iris_glowL",
+      "attachmentName": "fx/glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/iris_glow2",
+      "attachmentName": "fx/glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/iris_glow3",
+      "attachmentName": "fx/glow"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/ear",
+      "attachmentName": "head/ear"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/ear2",
+      "attachmentName": "head/ear"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/face",
+      "attachmentName": "head/face"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/new_blush",
+      "attachmentName": "makeup/blush"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/face_dirty",
+      "attachmentName": "makeup/face_dirty"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/face_freckles",
+      "attachmentName": "makeup/face_freckles"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/endgame_blush",
+      "attachmentName": "makeup/endgame_blush"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_ebrow",
+      "attachmentName": "head/old_ebrow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_ebrow2",
+      "attachmentName": "head/old_ebrow"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/new_ebrowR",
+      "attachmentName": "head/new_ebrow"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "head/new_ebrowL",
+      "attachmentName": "head/new_ebrow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_elid_d",
+      "attachmentName": "head/old_elid_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_elid_d2",
+      "attachmentName": "head/old_elid_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_eline_d",
+      "attachmentName": "head/old_eline_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_eline_d2",
+      "attachmentName": "head/old_eline_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_elid_u",
+      "attachmentName": "head/old_elid_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_elid_u2",
+      "attachmentName": "head/old_elid_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/face_wet",
+      "attachmentName": "makeup/face_wet"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_eline_u",
+      "attachmentName": "head/old_eline_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "head/old_eline_u2",
+      "attachmentName": "head/old_eline_u"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_trousers1",
+      "attachmentName": "base/trousers1"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_trousers2",
+      "attachmentName": "base/trousers1"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_armR",
+      "attachmentName": "base/arm"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_armL",
+      "attachmentName": "base/arm"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_shirt",
+      "attachmentName": "base/shirt"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_socks1",
+      "attachmentName": "base/socks"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_socks2",
+      "attachmentName": "base/socks"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_shoes1",
+      "attachmentName": "base/shoes"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_shoes2",
+      "attachmentName": "base/shoes"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_trousers0",
+      "attachmentName": "base/trousers0"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_belt",
+      "attachmentName": "base/belt"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/forearm2",
+      "attachmentName": "base body/forearm"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_handL",
+      "attachmentName": "base body/hand1"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/forearm",
+      "attachmentName": "base body/forearm"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base/old_handR",
+      "attachmentName": "base body/hand1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base/foundationL",
+      "attachmentName": "makeup/foundation"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base/foundationR",
+      "attachmentName": "makeup/foundation"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/foundation_02",
+      "attachmentName": "makeup/foundation_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/conclear_03",
+      "attachmentName": "makeup/conclear_03"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/conclear_02",
+      "attachmentName": "makeup/conclear_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/conclear_04",
+      "attachmentName": "makeup/conclear_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/conclear_01",
+      "attachmentName": "makeup/conclear_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/contour_a01",
+      "attachmentName": "makeup/contour_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/contour_a02",
+      "attachmentName": "makeup/contour_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/contour_a03",
+      "attachmentName": "makeup/contour_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/contour_a04",
+      "attachmentName": "makeup/contour_01"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "makeup/contour_03",
+      "attachmentName": "makeup/contour_03"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/highlight",
+      "attachmentName": "makeup/highlight"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/face_wash_03",
+      "attachmentName": "makeup/face_wash_03"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/face_wash_02",
+      "attachmentName": "makeup/face_wash_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/face_wash_04",
+      "attachmentName": "makeup/face_wash_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/face_wash_01",
+      "attachmentName": "makeup/face_wash_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/face_wash",
+      "attachmentName": "makeup/face_wash"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "makeup/new_e_sd_R",
+      "attachmentName": "head/new_e_sd"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "makeup/new_e_sd_L",
+      "attachmentName": "head/new_e_sd"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/new_epaintR",
+      "attachmentName": "makeup/new_epaint"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup/new_epaintL",
+      "attachmentName": "makeup/new_epaint"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "old_mouth",
+      "attachmentName": "head/old_mouth1"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_mouth",
+      "attachmentName": "head/new_mouth1"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_elid_dR",
+      "attachmentName": "head/new_elid_d"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_elid_dL",
+      "attachmentName": "head/new_elid_d"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_eline_dR",
+      "attachmentName": "head/new_eline_d"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_eline_dL",
+      "attachmentName": "head/new_eline_d"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_elid_uR",
+      "attachmentName": "head/new_elid_u"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_eline_uR",
+      "attachmentName": "head/new_eline_u"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_elid_uL",
+      "attachmentName": "head/new_elid_u"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "new_eline_uL",
+      "attachmentName": "head/new_eline_u"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "old_hair_front_0",
+      "attachmentName": "base/old_hair_front_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "new_back_featherR",
+      "attachmentName": "cos/new_back_featjer_head"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "new_back_featherL",
+      "attachmentName": "cos/new_back_featjer_head"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "old_hair_front_headband",
+      "attachmentName": "base/old_hair_front_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "old_hair_front_01",
+      "attachmentName": "base/old_hair_front_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "old_hair_front_02",
+      "attachmentName": "base/old_hair_front_03"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "old_hair_front_03",
+      "attachmentName": "base/old_hair_front_04"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "front_hair_dirty",
+      "attachmentName": "makeup/dust_front"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "front_hair_dirty_headband",
+      "attachmentName": "makeup/dust_front"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "old_hair_front_wet",
+      "attachmentName": "makeup/old_hair_front_wet"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_front_shampoo",
+      "attachmentName": "makeup/hair_front_shampoo"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "glass",
+      "attachmentName": "base/glass"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_hair_front",
+      "attachmentName": "cos/new_hair_front"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_leg_dR",
+      "attachmentName": "cos/new_leg_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_leg_dL",
+      "attachmentName": "cos/new_leg_d"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_legR",
+      "attachmentName": "cos/new_leg"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_legL",
+      "attachmentName": "cos/new_leg"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_legR",
+      "attachmentName": "zcos/new_gold_leg"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_legR_adt",
+      "attachmentName": "zcos/new_gold_leg"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_legL",
+      "attachmentName": "zcos/new_gold_leg"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_legL_adt",
+      "attachmentName": "zcos/new_gold_leg"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_featherR",
+      "attachmentName": "zcos/new_wing_feather"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_featherL",
+      "attachmentName": "zcos/new_wing_feather"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_dress",
+      "attachmentName": "cos/new_dress"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_neckle",
+      "attachmentName": "zcos/new_neckle"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_neckle__adt",
+      "attachmentName": "zcos/new_neckle"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_ear_R4",
+      "attachmentName": "zcos/new_gold_ear4"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_ear_L4",
+      "attachmentName": "zcos/new_gold_ear4"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_ear_R3",
+      "attachmentName": "zcos/new_gold_ear3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_ear_L3",
+      "attachmentName": "zcos/new_gold_ear3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_ear_R2",
+      "attachmentName": "zcos/new_gold_ear2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_ear_L2",
+      "attachmentName": "zcos/new_gold_ear2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_ear_R1",
+      "attachmentName": "zcos/new_gold_ear1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_gold_ear_L1",
+      "attachmentName": "zcos/new_gold_ear1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_feather0",
+      "attachmentName": "zcos/new_feather0"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_crown",
+      "attachmentName": "zcos/new_crown"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_crown_adt",
+      "attachmentName": "zcos/new_crown"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_feather_earR2",
+      "attachmentName": "zcos/new_feather_ear2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_feather_earL2",
+      "attachmentName": "zcos/new_feather_ear2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_feather_earR1",
+      "attachmentName": "zcos/new_feather_ear1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_feather_earL1",
+      "attachmentName": "zcos/new_feather_ear1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_uR",
+      "attachmentName": "cos/new_wing_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_uR_adt",
+      "attachmentName": "cos/new_wing_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_uL",
+      "attachmentName": "cos/new_wing_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/gold_wingL",
+      "attachmentName": "zcos/gold_wing"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/gold_wingR",
+      "attachmentName": "zcos/gold_wing"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_uL_adt",
+      "attachmentName": "cos/new_wing_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_gold_uR",
+      "attachmentName": "zcos/new_wing_gold_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_gold_uR_adt",
+      "attachmentName": "zcos/new_wing_gold_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_gold_uL",
+      "attachmentName": "zcos/new_wing_gold_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos/new_wing_gold_uL_adt",
+      "attachmentName": "zcos/new_wing_gold_u"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "flare2",
+      "attachmentName": "fx/flare2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow20",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow74",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow21",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow75",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow22",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow76",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow23",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow77",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow24",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow78",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow25",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow79",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow26",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow80",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow27",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow81",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow28",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow82",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow29",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow83",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow30",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow84",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow31",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow85",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow32",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow86",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow33",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow87",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow34",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow88",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow35",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow89",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow36",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow90",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow37",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow91",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow38",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow92",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow39",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow93",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow40",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow94",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow41",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow95",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow42",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow96",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow43",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow97",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow44",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow98",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow45",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow99",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow46",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow100",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow47",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow101",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow48",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow102",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow49",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow103",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow50",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow104",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow51",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow105",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow52",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow106",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow53",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow107",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow54",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "snow108",
+      "attachmentName": "fx/snow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "feather",
+      "attachmentName": "fx/feather"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "feather2",
+      "attachmentName": "fx/feather"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "feather3",
+      "attachmentName": "fx/feather"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails5",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails6",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails7",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails8",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails9",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails10",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails2",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails3",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails4",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "breath2",
+      "attachmentName": "fx/breath2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "breath1",
+      "attachmentName": "fx/breath2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "breath3",
+      "attachmentName": "fx/breath3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "buzz",
+      "attachmentName": "fx/buzz"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "buzz3",
+      "attachmentName": "fx/buzz"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "buzz2",
+      "attachmentName": "fx/buzz"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "buzz4",
+      "attachmentName": "fx/buzz"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "rotate",
+      "attachmentName": "fx/1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "rotate3",
+      "attachmentName": "fx/1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "rotate2",
+      "attachmentName": "fx/Circle0"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "trails_body",
+      "attachmentName": "trails_body"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails_body3",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "trails_body5",
+      "attachmentName": "fx/trails"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "headband",
+      "attachmentName": "makeup/headband_02"
+    }
+  ]
+}
