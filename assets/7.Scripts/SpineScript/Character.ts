@@ -27,10 +27,14 @@ export class Character extends Component {
     // áp dụng lại các attachment đã ép buộc cho các slot
     public applyForcedAttachments(): void {
         if(!this.spineSkeleton) return;
+        const skeleton = (this.spineSkeleton as any)._skeleton;
 
         for(const [slotName, attachmentName] of this.forcedAttachments.entries()){
             try{
-                this.spineSkeleton.setAttachment(slotName, attachmentName);
+                if (skeleton && typeof skeleton.findSlot === 'function' && !skeleton.findSlot(slotName)) {
+                    continue;
+                }
+                this.spineSkeleton.setAttachment(slotName, attachmentName as any);
             } catch (error) {
                 // Bỏ qua log warning ở update loop để tránh spam console
             }
@@ -45,10 +49,19 @@ export class Character extends Component {
         if(!this.spineSkeleton) return;
 
         try{
+            const skeleton = (this.spineSkeleton as any)._skeleton;
+            // Kiểm tra an toàn xem slot có thực sự tồn tại trong bộ Spine này không
+            if (skeleton && typeof skeleton.findSlot === 'function') {
+                const slot = skeleton.findSlot(slotName);
+                if (!slot) {
+                    // Slot không tồn tại trong Skeleton này -> bỏ qua an toàn
+                    return;
+                }
+            }
+
             // Nếu attachmentName là rỗng, đặt thành null để tắt attachment
             const targetAttachment = (!attachmentName || attachmentName.trim() === '') ? null : attachmentName;
             this.spineSkeleton.setAttachment(slotName, targetAttachment as any);
-            const skeleton = (this.spineSkeleton as any)._skeleton;
             if (skeleton) {
                 const slot = skeleton.findSlot(slotName);
                 if (slot) {
