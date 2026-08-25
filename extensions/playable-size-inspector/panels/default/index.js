@@ -1136,8 +1136,8 @@ function wireSelectionRows(root) {
           } else {
             this.state.selectedAssetPaths.add(filePath);
           }
-        } else {
-          this.state.selectedAssetPaths.clear();
+        } else if (!this.state.selectedAssetPaths || this.state.selectedAssetPaths.size === 0) {
+          this.state.selectedAssetPaths = new Set();
           if (filePath) this.state.selectedAssetPaths.add(filePath);
         }
       }
