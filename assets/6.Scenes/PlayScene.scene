@@ -864,7 +864,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 163.553,
-      "y": -745.314,
+      "y": -816.597,
       "z": 0
     },
     "_lrot": {
@@ -17926,6 +17926,7 @@
   {
     "__type__": "MapHintConfig",
     "mapName": "Map1",
+    "customDelayBeforeHint": -1,
     "orderedHintItems": [
       {
         "__id__": 269
@@ -17951,6 +17952,7 @@
   {
     "__type__": "MapHintConfig",
     "mapName": "Map2",
+    "customDelayBeforeHint": -1,
     "orderedHintItems": [
       {
         "__id__": 384
@@ -17973,6 +17975,7 @@
   {
     "__type__": "MapHintConfig",
     "mapName": "Map3",
+    "customDelayBeforeHint": 0.8,
     "orderedHintItems": [
       {
         "__id__": 248
@@ -17983,6 +17986,7 @@
   {
     "__type__": "MapHintConfig",
     "mapName": "New Map",
+    "customDelayBeforeHint": -1,
     "orderedHintItems": [],
     "sortLeftToRight": false
   },

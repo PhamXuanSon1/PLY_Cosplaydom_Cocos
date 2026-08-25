@@ -54,6 +54,8 @@ module.exports = Editor.Panel.define({
       assetFilter: 'all',
       selectedKind: 'asset',
       selectedIndex: -1,
+      selectedAssetPaths: new Set(),
+      batchProgress: null,
       typeRows: [],
       assetRows: [],
       importRows: [],
@@ -87,6 +89,26 @@ module.exports = Editor.Panel.define({
       event.preventDefault();
       moveAssetSelection.call(this, event.key === 'ArrowDown' ? 1 : -1);
     });
+
+    if (this.$.btnSelectAll) {
+      this.$.btnSelectAll.addEventListener('click', () => {
+        const rows = getFilteredAssetRows(this);
+        for (const r of rows) {
+          this.state.selectedAssetPaths.add(r.relativePath);
+        }
+        renderAssetResults.call(this);
+        renderDetail.call(this);
+      });
+    }
+
+    if (this.$.btnDeselectAll) {
+      this.$.btnDeselectAll.addEventListener('click', () => {
+        this.state.selectedAssetPaths.clear();
+        this.state.batchProgress = null;
+        renderAssetResults.call(this);
+        renderDetail.call(this);
+      });
+    }
 
     for (const button of [this.$.tabOverview, this.$.tabTypes, this.$.tabAssets, this.$.tabImports]) {
       button.addEventListener('click', () => {
@@ -815,17 +837,29 @@ function renderTypeResults() {
 
 function renderAssetResults() {
   const rows = getFilteredAssetRows(this);
+  if (!this.state.selectedAssetPaths) {
+    this.state.selectedAssetPaths = new Set();
+  }
+
+  if (this.$.assetSelectionCount) {
+    this.$.assetSelectionCount.textContent = `${this.state.selectedAssetPaths.size} selected`;
+  }
+
   if (!rows.length) {
     this.$.assetResults.className = 'panel-content empty';
     this.$.assetResults.textContent = 'No built assets found for this filter.';
     return;
   }
 
+  const allFilteredSelected = rows.length > 0 && rows.every(r => this.state.selectedAssetPaths.has(r.relativePath));
+  const someFilteredSelected = !allFilteredSelected && rows.some(r => this.state.selectedAssetPaths.has(r.relativePath));
+
   this.$.assetResults.className = 'panel-content';
   this.$.assetResults.innerHTML = `
     <table class="result-table">
       <thead>
         <tr>
+          <th class="cb-cell"><input type="checkbox" id="asset-select-all-cb" ${allFilteredSelected ? 'checked' : ''}></th>
           <th>#</th>
           <th>Built File</th>
           <th>Type</th>
@@ -835,8 +869,12 @@ function renderAssetResults() {
         </tr>
       </thead>
       <tbody>
-        ${rows.map((entry, index) => `
-          <tr class="result-row ${isSelected(this, 'asset', index) ? 'selected' : ''}" data-kind="asset" data-index="${index}">
+        ${rows.map((entry, index) => {
+          const isRowSelected = isSelected(this, 'asset', index);
+          const isChecked = this.state.selectedAssetPaths.has(entry.relativePath);
+          return `
+          <tr class="result-row ${isRowSelected ? 'selected' : ''} ${isChecked ? 'checked' : ''}" data-kind="asset" data-index="${index}" data-path="${escapeHtml(entry.relativePath)}">
+            <td class="cb-cell"><input type="checkbox" class="asset-row-cb" data-path="${escapeHtml(entry.relativePath)}" data-index="${index}" ${isChecked ? 'checked' : ''}></td>
             <td>${index + 1}</td>
             <td class="build-file">${escapeHtml(entry.relativePath)}</td>
             <td>${escapeHtml(typeLabel(entry.category))}</td>
@@ -844,10 +882,49 @@ function renderAssetResults() {
             <td class="build-file">${escapeHtml(formatAssetSourceLabel(entry, this.state.assetFilter))}</td>
             <td class="dependency-cell" title="${escapeHtml((entry.includedBy || []).join('\n'))}">${escapeHtml(entry.includedBy && entry.includedBy[0] || 'No prefab chain')}</td>
           </tr>
-        `).join('')}
+        `;
+        }).join('')}
       </tbody>
     </table>
   `;
+
+  const selectAllCb = this.$.assetResults.querySelector('#asset-select-all-cb');
+  if (selectAllCb) {
+    selectAllCb.indeterminate = someFilteredSelected;
+    selectAllCb.addEventListener('change', (e) => {
+      e.stopPropagation();
+      if (selectAllCb.checked) {
+        for (const r of rows) {
+          this.state.selectedAssetPaths.add(r.relativePath);
+        }
+      } else {
+        for (const r of rows) {
+          this.state.selectedAssetPaths.delete(r.relativePath);
+        }
+      }
+      renderAssetResults.call(this);
+      renderDetail.call(this);
+    });
+  }
+
+  for (const cb of this.$.assetResults.querySelectorAll('.asset-row-cb')) {
+    cb.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+    cb.addEventListener('change', (e) => {
+      e.stopPropagation();
+      const p = cb.dataset.path;
+      if (cb.checked) {
+        this.state.selectedAssetPaths.add(p);
+      } else {
+        this.state.selectedAssetPaths.delete(p);
+      }
+      this.state.selectedKind = 'asset';
+      this.state.selectedIndex = Number(cb.dataset.index);
+      renderAssetResults.call(this);
+      renderDetail.call(this);
+    });
+  }
 
   wireSelectionRows.call(this, this.$.assetResults);
 }
@@ -888,6 +965,11 @@ function renderImportResults() {
 }
 
 function renderDetail() {
+  if (this.state.selectedKind === 'asset' && this.state.selectedAssetPaths && this.state.selectedAssetPaths.size > 1) {
+    renderBatchAssetDetail.call(this);
+    return;
+  }
+
   const selection = getSelectedEntry(this);
   if (!selection) {
     this.$.detail.className = 'detail empty';
@@ -1039,19 +1121,35 @@ function renderImportDetail(entry) {
 
 function wireSelectionRows(root) {
   for (const row of root.querySelectorAll('.result-row')) {
-    row.addEventListener('click', () => {
+    row.addEventListener('click', (event) => {
+      if (event.target.tagName === 'INPUT') return;
+
       this.state.selectedKind = row.dataset.kind;
       this.state.selectedIndex = Number(row.dataset.index);
+
       if (row.dataset.kind === 'asset') {
         this.$.assetResults.focus({ preventScroll: true });
+        const filePath = row.dataset.path;
+        if (event.shiftKey || event.ctrlKey || event.metaKey) {
+          if (this.state.selectedAssetPaths.has(filePath)) {
+            this.state.selectedAssetPaths.delete(filePath);
+          } else {
+            this.state.selectedAssetPaths.add(filePath);
+          }
+        } else {
+          this.state.selectedAssetPaths.clear();
+          if (filePath) this.state.selectedAssetPaths.add(filePath);
+        }
       }
+
       renderTypeResults.call(this);
       renderAssetResults.call(this);
       renderImportResults.call(this);
       renderDetail.call(this);
     });
 
-    row.addEventListener('dblclick', () => {
+    row.addEventListener('dblclick', (event) => {
+      if (event.target.tagName === 'INPUT') return;
       this.state.selectedKind = row.dataset.kind;
       this.state.selectedIndex = Number(row.dataset.index);
       renderTypeResults.call(this);
@@ -1485,6 +1583,293 @@ async function runAssetResetAction(entry) {
     setStatus.call(this, error.message || String(error));
   }
 
+  renderDetail.call(this);
+}
+
+function renderBatchAssetDetail() {
+  const selectedPaths = this.state.selectedAssetPaths || new Set();
+  const allRows = this.state.assetRows || [];
+  const selectedRows = allRows.filter((r) => selectedPaths.has(r.relativePath));
+
+  if (!selectedRows.length) {
+    this.$.detail.className = 'detail empty';
+    this.$.detail.textContent = 'No assets selected.';
+    return;
+  }
+
+  const totalBytes = selectedRows.reduce((sum, r) => sum + Number(r.size || 0), 0);
+  const textures = selectedRows.filter((r) => r.category === 'texture');
+  const audios = selectedRows.filter((r) => r.category === 'audio');
+  const otherFiles = selectedRows.filter((r) => r.category !== 'texture' && r.category !== 'audio');
+  const optimizableRows = selectedRows.filter((r) => r.canOptimizeDirectly);
+
+  const batchState = this.state.batchProgress || null;
+
+  let progressHtml = '';
+  if (batchState) {
+    const percent = batchState.total > 0 ? Math.round((batchState.current / batchState.total) * 100) : 0;
+    const isRunning = batchState.running;
+    const totalSaved = Math.max(0, batchState.totalBefore - batchState.totalAfter);
+
+    progressHtml = `
+      <div class="batch-controls-section">
+        <div class="batch-controls-title">${isRunning ? 'Optimizing in progress...' : 'Batch Optimization Complete'}</div>
+        <div class="detail-note">${isRunning ? `Processing [${batchState.current}/${batchState.total}]: ${escapeHtml(batchState.currentFile)}` : `Finished ${batchState.total} assets. Total saved: ${formatBytes(totalSaved)}`}</div>
+        <div class="batch-progress-bar">
+          <div class="batch-progress-fill" style="width: ${percent}%;"></div>
+        </div>
+        ${batchState.results && batchState.results.length ? `
+          <ul class="batch-file-list" style="margin-top: 8px;">
+            ${batchState.results.map((res) => {
+              if (res.success) {
+                const rep = res.report || {};
+                const saved = (rep.beforeBytes || 0) - (rep.afterBytes || 0);
+                const isSaved = saved > 0;
+                return `
+                  <li class="batch-file-item ${isSaved ? 'saved' : 'skipped'}">
+                    <span>${escapeHtml(res.relativePath)}</span>
+                    <span>${formatBytes(rep.beforeBytes || 0)} -> ${formatBytes(rep.afterBytes || 0)} (${isSaved ? `-${formatBytes(saved)}` : 'kept'})</span>
+                  </li>
+                `;
+              } else {
+                return `
+                  <li class="batch-file-item error">
+                    <span>${escapeHtml(res.relativePath)}</span>
+                    <span style="color: #ffaca8;">Error: ${escapeHtml(res.error || 'failed')}</span>
+                  </li>
+                `;
+              }
+            }).join('')}
+          </ul>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  let textureControlsHtml = '';
+  if (textures.length > 0) {
+    textureControlsHtml = `
+      <div class="batch-controls-section">
+        <div class="batch-controls-title">Texture Settings (${textures.length} textures)</div>
+        <div class="optimize-controls" style="grid-template-columns: 1fr 1fr;">
+          <label class="inline-field optimize-inline-field">
+            <span>PNG Quality</span>
+            <select id="batch-png-quality">
+              <option value="80-95">High 80-95</option>
+              <option value="65-85" selected>Balanced 65-85</option>
+              <option value="45-70">Aggressive 45-70</option>
+            </select>
+          </label>
+          <label class="inline-field optimize-inline-field">
+            <span>JPG Quality</span>
+            <input id="batch-jpeg-quality" type="number" min="30" max="95" value="82">
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  let audioControlsHtml = '';
+  if (audios.length > 0) {
+    audioControlsHtml = `
+      <div class="batch-controls-section">
+        <div class="batch-controls-title">Audio Settings (${audios.length} audio files)</div>
+        <div class="optimize-controls" style="grid-template-columns: 1fr;">
+          <label class="inline-field optimize-inline-field">
+            <span>Audio Bitrate</span>
+            <select id="batch-audio-bitrate">
+              ${renderAudioBitrateOptions(96)}
+            </select>
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  this.$.detail.className = 'detail';
+  this.$.detail.innerHTML = `
+    <div class="detail-body batch-card">
+      <div class="detail-block">
+        <div class="detail-title">Batch Selection</div>
+        <div class="batch-stats-grid">
+          <div class="batch-stat">
+            <div class="batch-stat-label">Total Assets</div>
+            <div class="batch-stat-value">${selectedRows.length}</div>
+          </div>
+          <div class="batch-stat">
+            <div class="batch-stat-label">Total Size</div>
+            <div class="batch-stat-value">${formatBytes(totalBytes)}</div>
+          </div>
+          <div class="batch-stat">
+            <div class="batch-stat-label">Optimizable</div>
+            <div class="batch-stat-value" style="color: #5bd1a1;">${optimizableRows.length}</div>
+          </div>
+        </div>
+        <div class="built-file-chips" style="margin-top: 4px;">
+          ${textures.length ? `<span>${textures.length} Textures</span>` : ''}
+          ${audios.length ? `<span>${audios.length} Audios</span>` : ''}
+          ${otherFiles.length ? `<span>${otherFiles.length} Other</span>` : ''}
+        </div>
+      </div>
+
+      ${textureControlsHtml}
+      ${audioControlsHtml}
+
+      <div class="batch-buttons-row">
+        <button id="batch-apply-optimize" class="action-button" ${optimizableRows.length === 0 || (batchState && batchState.running) ? 'disabled' : ''} style="flex: 1;">
+          Apply To Output Copy (${optimizableRows.length})
+        </button>
+        <button id="batch-reset-optimize" class="action-button reset-button" ${batchState && batchState.running ? 'disabled' : ''}>
+          Reset Selected (${selectedRows.length})
+        </button>
+        <button id="batch-deselect-all" class="mini-button" style="padding: 8px 12px;">
+          Deselect All
+        </button>
+      </div>
+
+      ${progressHtml}
+    </div>
+  `;
+
+  const applyBtn = this.$.detail.querySelector('#batch-apply-optimize');
+  const resetBtn = this.$.detail.querySelector('#batch-reset-optimize');
+  const deselectBtn = this.$.detail.querySelector('#batch-deselect-all');
+  const pngQualitySelect = this.$.detail.querySelector('#batch-png-quality');
+  const jpegQualityInput = this.$.detail.querySelector('#batch-jpeg-quality');
+  const audioBitrateSelect = this.$.detail.querySelector('#batch-audio-bitrate');
+
+  if (applyBtn) {
+    applyBtn.addEventListener('click', () => {
+      void runBatchAssetOptimizeAction.call(this, {
+        pngQuality: pngQualitySelect ? String(pngQualitySelect.value || '65-85') : '65-85',
+        jpegQuality: jpegQualityInput ? clampInteger(Number(jpegQualityInput.value), 30, 95, 82) : 82,
+        audioBitrate: audioBitrateSelect ? clampAudioBitrate(Number(audioBitrateSelect.value)) : 96,
+      });
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      void runBatchAssetResetAction.call(this);
+    });
+  }
+
+  if (deselectBtn) {
+    deselectBtn.addEventListener('click', () => {
+      this.state.selectedAssetPaths.clear();
+      this.state.batchProgress = null;
+      renderAssetResults.call(this);
+      renderDetail.call(this);
+    });
+  }
+}
+
+async function runBatchAssetOptimizeAction(options) {
+  const selectedPaths = Array.from(this.state.selectedAssetPaths || []);
+  const rows = this.state.assetRows.filter((r) => selectedPaths.includes(r.relativePath) && r.canOptimizeDirectly);
+  if (!rows.length) {
+    setStatus.call(this, 'No optimizable assets selected.');
+    return;
+  }
+
+  const sourceRootInput = String(this.$.buildRootInput.value || DEFAULT_BUILD_ROOT).trim() || DEFAULT_BUILD_ROOT;
+  const outputRootInput = String(this.$.outputRootInput.value || DEFAULT_OUTPUT_ROOT).trim() || DEFAULT_OUTPUT_ROOT;
+  const sourceRoot = path.resolve(Editor.Project.path, sourceRootInput);
+  const outputRoot = path.resolve(Editor.Project.path, outputRootInput);
+
+  this.state.batchProgress = {
+    running: true,
+    current: 0,
+    total: rows.length,
+    currentFile: '',
+    results: [],
+    totalBefore: 0,
+    totalAfter: 0,
+  };
+  renderDetail.call(this);
+
+  for (let i = 0; i < rows.length; i++) {
+    const entry = rows[i];
+    this.state.batchProgress.current = i + 1;
+    this.state.batchProgress.currentFile = entry.relativePath;
+    setStatus.call(this, `[${i + 1}/${rows.length}] Optimizing ${entry.relativePath}...`);
+    renderDetail.call(this);
+
+    try {
+      const report = await Editor.Message.request('playable-size-inspector', 'optimize-selected-asset', {
+        sourceRoot,
+        outputRoot,
+        relativePath: entry.relativePath,
+        assetKind: entry.category,
+        maxTextureSize: SAFE_BULK_MAX_TEXTURE_SIZE,
+        jpegQuality: options.jpegQuality || 82,
+        pngQuality: options.pngQuality || '65-85',
+        targetFormat: 'original',
+        audioBitrate: options.audioBitrate || 96,
+      });
+
+      this.state.previewByAsset.set(entry.relativePath, {
+        status: 'ready',
+        report,
+      });
+      applyOptimizedAssetToState.call(this, entry, report);
+
+      this.state.batchProgress.results.push({
+        relativePath: entry.relativePath,
+        success: true,
+        report,
+      });
+      this.state.batchProgress.totalBefore += Number(report.beforeBytes || entry.size || 0);
+      this.state.batchProgress.totalAfter += Number(report.afterBytes || entry.size || 0);
+    } catch (err) {
+      console.error(`Failed to optimize ${entry.relativePath}:`, err);
+      this.state.batchProgress.results.push({
+        relativePath: entry.relativePath,
+        success: false,
+        error: err.message || String(err),
+      });
+    }
+  }
+
+  this.state.batchProgress.running = false;
+  void refreshOptimizedScanAvailability.call(this);
+  const totalSaved = Math.max(0, this.state.batchProgress.totalBefore - this.state.batchProgress.totalAfter);
+  setStatus.call(this, `Batch optimize complete! Saved ${formatBytes(totalSaved)} across ${rows.length} assets.`);
+  this.$.recommendation.textContent = `Batch optimize complete: saved ${formatBytes(totalSaved)} in Output Root.`;
+  renderAssetResults.call(this);
+  renderDetail.call(this);
+}
+
+async function runBatchAssetResetAction() {
+  const selectedPaths = Array.from(this.state.selectedAssetPaths || []);
+  const rows = this.state.assetRows.filter((r) => selectedPaths.includes(r.relativePath));
+  if (!rows.length) return;
+
+  const sourceRootInput = String(this.$.buildRootInput.value || DEFAULT_BUILD_ROOT).trim() || DEFAULT_BUILD_ROOT;
+  const outputRootInput = String(this.$.outputRootInput.value || DEFAULT_OUTPUT_ROOT).trim() || DEFAULT_OUTPUT_ROOT;
+  const sourceRoot = path.resolve(Editor.Project.path, sourceRootInput);
+  const outputRoot = path.resolve(Editor.Project.path, outputRootInput);
+
+  for (let i = 0; i < rows.length; i++) {
+    const entry = rows[i];
+    setStatus.call(this, `[${i + 1}/${rows.length}] Resetting ${entry.relativePath}...`);
+    try {
+      const report = await Editor.Message.request('playable-size-inspector', 'reset-selected-asset', {
+        sourceRoot,
+        outputRoot,
+        relativePath: entry.relativePath,
+      });
+      this.state.previewByAsset.delete(entry.relativePath);
+      applyOptimizedAssetToState.call(this, entry, report);
+    } catch (err) {
+      console.error(`Failed to reset ${entry.relativePath}:`, err);
+    }
+  }
+
+  void refreshOptimizedScanAvailability.call(this);
+  setStatus.call(this, `Reset ${rows.length} assets to original build.`);
+  this.$.recommendation.textContent = `Restored ${rows.length} assets in Output Root.`;
+  renderAssetResults.call(this);
   renderDetail.call(this);
 }
 

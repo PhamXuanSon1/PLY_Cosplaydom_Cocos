@@ -575,9 +575,19 @@ function normalizePngQuality(value) {
   return ['80-95', '65-85', '45-70'].includes(quality) ? quality : '65-85';
 }
 
+async function resolveAudioTool(toolName) {
+  const localTool = path.join(__dirname, 'tools', 'ffmpeg', `${toolName}.exe`);
+  try {
+    await fs.access(localTool);
+    return localTool;
+  } catch (_error) {
+    return toolName;
+  }
+}
+
 async function runSingleAudioOptimize({ inputPath, outputPath, audioBitrate }) {
-  const ffmpegPath = path.join(__dirname, 'tools', 'ffmpeg', 'ffmpeg.exe');
-  const ffprobePath = path.join(__dirname, 'tools', 'ffmpeg', 'ffprobe.exe');
+  const ffmpegPath = await resolveAudioTool('ffmpeg');
+  const ffprobePath = await resolveAudioTool('ffprobe');
   const inputExtension = path.extname(inputPath).toLowerCase();
   const outputExtension = path.extname(outputPath).toLowerCase();
 
@@ -603,6 +613,10 @@ async function runSingleAudioOptimize({ inputPath, outputPath, audioBitrate }) {
       maxBuffer: 16 * 1024 * 1024,
     }, (error, _stdout, stderr) => {
       if (error) {
+        if (error.code === 'ENOENT') {
+          reject(new Error('FFmpeg not found. Please place ffmpeg.exe and ffprobe.exe into extensions/playable-size-inspector/tools/ffmpeg/ or install FFmpeg in your PATH.'));
+          return;
+        }
         reject(new Error(stderr && stderr.trim() ? stderr.trim() : error.message));
         return;
       }
@@ -645,26 +659,39 @@ async function probeAudioFile(ffprobePath, filePath) {
       maxBuffer: 16 * 1024 * 1024,
     }, (error, stdout, stderr) => {
       if (error) {
+        if (error.code === 'ENOENT') {
+          resolve({
+            bitRateKbps: 0,
+            durationSeconds: 0,
+            channels: 2,
+            sampleRate: 44100,
+            codecName: path.extname(filePath).replace('.', ''),
+          });
+          return;
+        }
         reject(new Error(stderr && stderr.trim() ? stderr.trim() : error.message));
         return;
       }
-
       try {
-        const parsed = JSON.parse(String(stdout || '{}'));
-        const stream = Array.isArray(parsed.streams)
-          ? parsed.streams.find((item) => item.codec_type === 'audio') || parsed.streams[0] || {}
-          : {};
-        const format = parsed.format || {};
-
+        const payload = JSON.parse(stdout || '{}');
+        const format = payload.format || {};
+        const stream = Array.isArray(payload.streams) ? payload.streams[0] || {} : {};
+        const bitRateKbps = Math.round(Number(format.bit_rate || stream.bit_rate || 0) / 1000);
         resolve({
-          durationSeconds: roundNumber(Number(format.duration || stream.duration || 0), 3),
-          bitRateKbps: Math.round(Number(stream.bit_rate || format.bit_rate || 0) / 1000) || 0,
-          sampleRate: Number(stream.sample_rate || 0) || 0,
-          channels: Number(stream.channels || 0) || 0,
-          codecName: String(stream.codec_name || ''),
+          bitRateKbps: bitRateKbps > 0 ? bitRateKbps : 0,
+          durationSeconds: Number(format.duration || stream.duration || 0),
+          channels: Number(stream.channels || 0),
+          sampleRate: Number(stream.sample_rate || 0),
+          codecName: String(stream.codec_name || '').trim(),
         });
-      } catch (parseError) {
-        reject(new Error(`Failed to parse ffprobe output: ${parseError.message}`));
+      } catch (_parseError) {
+        resolve({
+          bitRateKbps: 0,
+          durationSeconds: 0,
+          channels: 0,
+          sampleRate: 0,
+          codecName: '',
+        });
       }
     });
   });
@@ -733,7 +760,7 @@ async function ensureOutputBuildCopy({ sourceRoot, outputRoot }) {
   }
 
   await fs.mkdir(path.dirname(resolvedOutput), { recursive: true });
-  await fs.cp(resolvedSource, resolvedOutput, { recursive: true, force: true });
+  await copyDirectory(resolvedSource, resolvedOutput);
 }
 
 async function areBuildRootsEquivalent(leftRoot, rightRoot) {
@@ -1020,15 +1047,32 @@ async function readJsonFile(filePath) {
 }
 
 async function copyDirectory(from, to) {
-  await fs.mkdir(path.dirname(to), { recursive: true });
-  await fs.cp(from, to, { recursive: true, force: true });
+  if (typeof fs.cp === 'function') {
+    await fs.mkdir(path.dirname(to), { recursive: true });
+    await fs.cp(from, to, { recursive: true, force: true });
+    return;
+  }
+
+  await fs.mkdir(to, { recursive: true });
+  const entries = await fs.readdir(from, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = path.join(from, entry.name);
+    const destPath = path.join(to, entry.name);
+
+    if (entry.isDirectory()) {
+      await copyDirectory(srcPath, destPath);
+    } else {
+      await fs.mkdir(path.dirname(destPath), { recursive: true });
+      await fs.copyFile(srcPath, destPath);
+    }
+  }
 }
 
 async function copyPath(from, to) {
   const stat = await fs.stat(from);
   if (stat.isDirectory()) {
-    await fs.mkdir(path.dirname(to), { recursive: true });
-    await fs.cp(from, to, { recursive: true, force: true });
+    await copyDirectory(from, to);
     return;
   }
 

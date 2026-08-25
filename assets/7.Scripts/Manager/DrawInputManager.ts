@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game, BoxCollider2D, CircleCollider2D, PolygonCollider2D, Intersection2D, director } from 'cc';
+import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game, BoxCollider2D, CircleCollider2D, PolygonCollider2D, Intersection2D, director, view } from 'cc';
 import { AppLovinAnalytics } from '../Tool/AppLovinAnalytics';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from './CharacterManager';
@@ -199,9 +199,42 @@ export class DrawInputManager extends Component {
         input.off(Input.EventType.TOUCH_CANCEL, this.onTouchCancel, this);
     }
 
+    public isTouchInsideValidArea(event: EventTouch): boolean {
+        if (!event) return false;
+
+        // 1. Kiểm tra toạ độ Screen so với ViewportRect (loại bỏ click vào 2 dải đen khi fit màn hình)
+        if (typeof event.getLocation === 'function') {
+            const screenPos = event.getLocation();
+            const viewport = view.getViewportRect();
+            if (viewport && viewport.width > 0 && viewport.height > 0) {
+                if (screenPos.x < viewport.x || screenPos.x > (viewport.x + viewport.width) ||
+                    screenPos.y < viewport.y || screenPos.y > (viewport.y + viewport.height)) {
+                    return false;
+                }
+            }
+        }
+
+        // 2. Kiểm tra toạ độ UI so với VisibleSize
+        if (typeof event.getUILocation === 'function') {
+            const uiPos = event.getUILocation();
+            const visibleSize = view.getVisibleSize();
+            if (visibleSize && visibleSize.width > 0 && visibleSize.height > 0) {
+                if (uiPos.x < 0 || uiPos.x > visibleSize.width ||
+                    uiPos.y < 0 || uiPos.y > visibleSize.height) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     private onTouchStart(event: EventTouch): void {
         // Bỏ qua chuột phải (button = 2) hoặc chuột giữa (button = 1) khi người chơi click mở Console
         if ((event as any).getButton && (event as any).getButton() !== 0) return;
+
+        // Bỏ qua nếu click vào vùng đen bên ngoài khung hình game (letterbox / pillarbox)
+        if (!this.isTouchInsideValidArea(event)) return;
 
         const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
         if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
@@ -212,8 +245,6 @@ export class DrawInputManager extends Component {
         if (this.ignoreScrollInput) return;
 
         if (this.isGoToStoreOnClickEnabled) {
-            AppLovinAnalytics.ctaClicked();
-
             const gameMgr = GameManager.instance || (globalThis as any).GameManager?.instance || (window as any).GameManager?.instance;
             if (gameMgr && typeof gameMgr.GotoStore === 'function') {
                 gameMgr.GotoStore();
@@ -267,17 +298,21 @@ export class DrawInputManager extends Component {
     }
 
     private onTouchMove(event: EventTouch): void {
+        if (this.isPlayingIntro) return;
+        if (!this.isClickFirst) return;
+
         const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
         if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
             handHintMgr.HideHintTemporarily();
         }
 
-        if (this.isPlayingIntro) return;
         this.mouseDrag(event);
     }
 
     private onTouchEnd(event: EventTouch): void {
         if (this.isPlayingIntro) return;
+        if (!this.isClickFirst) return;
+
         this.mouseUp();
         const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
         if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
@@ -287,6 +322,8 @@ export class DrawInputManager extends Component {
 
     private onTouchCancel(event: EventTouch): void {
         if (this.isPlayingIntro) return;
+        if (!this.isClickFirst) return;
+
         this.mouseUp();
         const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
         if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
@@ -1242,8 +1279,8 @@ export class DrawInputManager extends Component {
         if (drawItemMgr) drawItemMgr.currentMapIndex = 2;
 
         const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
-        if (handHintMgr && typeof handHintMgr.ShowHintImmediately === 'function') {
-            handHintMgr.ShowHintImmediately();
+        if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
+            handHintMgr.ShowHintWithDelay();
         }
     }
 

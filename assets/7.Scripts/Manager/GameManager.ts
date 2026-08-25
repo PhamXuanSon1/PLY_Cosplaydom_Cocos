@@ -217,7 +217,7 @@ export class GameManager extends Component {
         this.SetListActive(this.listObjectInMap4, false);
 
         if (DrawItemManager.Instance != null) DrawItemManager.Instance.currentMapIndex = 2;
-        if (HandHintManager.Instance != null) HandHintManager.Instance.ShowHintImmediately();
+        if (HandHintManager.Instance != null) HandHintManager.Instance.ShowHintWithDelay();
     }
 
     public TurnOnMap4(): void {

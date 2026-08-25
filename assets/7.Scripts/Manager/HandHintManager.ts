@@ -15,6 +15,13 @@ export class MapHintConfig {
     public mapName: string = 'New Map';
 
     @property({
+        type: CCFloat,
+        displayName: 'Custom Delay Before Hint',
+        tooltip: 'Thời gian chờ gợi ý riêng cho Map này (giây). Nếu <= 0 hoặc để mặc định (-1) sẽ sử dụng Delay Before Hint chung của HandHintManager.'
+    })
+    public customDelayBeforeHint: number = -1;
+
+    @property({
         type: [DrawItemController],
         displayName: 'Ordered Hint Items',
         tooltip: 'Danh sách DrawItemController theo đúng thứ tự muốn hiện bàn tay gợi ý.'
@@ -128,6 +135,24 @@ export class HandHintManager extends Component {
         return DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance || null;
     }
 
+    public getMapConfig(mapIndex: number): MapHintConfig | null {
+        if (mapIndex === 0) return this.map1_Hints;
+        if (mapIndex === 1) return this.map2_Hints;
+        if (mapIndex === 2) return this.map3_Hints;
+        if (mapIndex === 3) return this.map4_Hints;
+        return null;
+    }
+
+    public getCurrentMapDelay(): number {
+        const drawItemMgr = this.getDrawItemMgr();
+        const mapIndex = drawItemMgr ? drawItemMgr.currentMapIndex : 0;
+        const config = this.getMapConfig(mapIndex);
+        if (config && config.customDelayBeforeHint > 0) {
+            return config.customDelayBeforeHint;
+        }
+        return this.delayBeforeHint;
+    }
+
     protected update(dt: number): void {
         if (this.showHintPath) {
             this.updateHintPathDebug();
@@ -143,23 +168,12 @@ export class HandHintManager extends Component {
             return;
         }
 
-        const drawItemMgr = this.getDrawItemMgr();
-
-        // Ở Map 3 (currentMapIndex = 2): Không bao giờ chờ delay, hiện hint ngay
-        if (drawItemMgr && drawItemMgr.currentMapIndex === 2) {
-            if (this.isCounting) {
-                this.isCounting = false;
-                this.idleTime = 0;
-                this.showHint();
-                return;
-            }
-        }
-
         if (this.isCounting) {
             this.idleTime += dt;
-            this.currentStatus = `Đang chờ... ${this.idleTime.toFixed(1)}s / ${this.delayBeforeHint}s`;
+            const targetDelay = this.getCurrentMapDelay();
+            this.currentStatus = `Đang chờ... ${this.idleTime.toFixed(1)}s / ${targetDelay}s`;
 
-            if (this.idleTime >= this.delayBeforeHint) {
+            if (this.idleTime >= targetDelay) {
                 this.isCounting = false;
                 this.showHint();
             }
@@ -191,12 +205,6 @@ export class HandHintManager extends Component {
 
     public ShowHintWithDelay(): void {
         this.stopAllHintLogic();
-        const drawItemMgr = this.getDrawItemMgr();
-        if (drawItemMgr && drawItemMgr.currentMapIndex === 2) {
-            // Ở Map 3 (Index = 2): Hiện handhint ngay lập tức, không đếm ngược delay
-            this.showHint();
-            return;
-        }
         this.isCounting = true;
         this.idleTime = 0;
         this.currentStatus = 'Bắt đầu đếm thời gian: 0s';
@@ -248,12 +256,7 @@ export class HandHintManager extends Component {
         if (this.handIcon == null) { this.currentStatus = 'LỖI: Chưa gán Hand Icon!'; return; }
 
         const mapIndex = drawItemMgr.currentMapIndex;
-
-        let config: MapHintConfig | null = null;
-        if (mapIndex === 0) config = this.map1_Hints;
-        else if (mapIndex === 1) config = this.map2_Hints;
-        else if (mapIndex === 2) config = this.map3_Hints;
-        else if (mapIndex === 3) config = this.map4_Hints;
+        const config = this.getMapConfig(mapIndex);
 
         if (config == null) { this.currentStatus = `Bỏ qua: không có cài đặt cho Map ${mapIndex}`; return; }
 
@@ -462,12 +465,7 @@ export class HandHintManager extends Component {
 
         const drawItemMgr = this.getDrawItemMgr();
         const mapIndex = drawItemMgr ? drawItemMgr.currentMapIndex : 0;
-
-        let config: MapHintConfig | null = null;
-        if (mapIndex === 0) config = this.map1_Hints;
-        else if (mapIndex === 1) config = this.map2_Hints;
-        else if (mapIndex === 2) config = this.map3_Hints;
-        else if (mapIndex === 3) config = this.map4_Hints;
+        const config = this.getMapConfig(mapIndex);
 
         if (!config || !config.orderedHintItems || config.orderedHintItems.length === 0) return;
 
