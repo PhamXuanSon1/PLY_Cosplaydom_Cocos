@@ -1,0 +1,153 @@
+<div id="app">
+    <header>
+        <h2>Image Resizer</h2>
+        <span class="hint">Resize PNG / JPG / WebP / BMP by percent or to a target size. The aspect ratio is always kept, nothing is stretched.</span>
+    </header>
+
+    <section class="form">
+        <h3>1. Images</h3>
+        <ui-drag-area id="drop" class="drop" droppable="cc.ImageAsset,cc.SpriteFrame,cc.Texture2D,cc.Asset">
+            <span class="hint">Drag images or folders from the Assets panel here, or use the buttons below.</span>
+        </ui-drag-area>
+        <div class="row">
+            <ui-button id="addSelected">Add selected in Assets</ui-button>
+            <ui-button id="browse">Browse files...</ui-button>
+            <span class="grow"></span>
+            <ui-button id="clear">Clear list</ui-button>
+        </div>
+        <div id="fileList" class="panel list hidden"></div>
+
+        <h3>2. Size</h3>
+        <ui-prop>
+            <ui-label slot="label" value="Mode"></ui-label>
+            <ui-select slot="content" id="mode" class="grow">
+                <option value="percent">Percent of original (e.g. 30%)</option>
+                <option value="fit">Fit inside W x H box (e.g. 600 x 600)</option>
+                <option value="longest">Longest side = N px</option>
+                <option value="width">Width = N px (height auto)</option>
+                <option value="height">Height = N px (width auto)</option>
+            </ui-select>
+        </ui-prop>
+
+        <ui-prop id="rowPercent">
+            <ui-label slot="label" value="Percent"></ui-label>
+            <div slot="content" class="row">
+                <ui-num-input id="percent" class="grow" min="1" max="400" step="5" value="50"></ui-num-input>
+                <span class="hint">%</span>
+                <div class="presets" id="presets">
+                    <ui-button class="tiny" data-p="10">10</ui-button>
+                    <ui-button class="tiny" data-p="20">20</ui-button>
+                    <ui-button class="tiny" data-p="25">25</ui-button>
+                    <ui-button class="tiny" data-p="30">30</ui-button>
+                    <ui-button class="tiny" data-p="40">40</ui-button>
+                    <ui-button class="tiny" data-p="50">50</ui-button>
+                    <ui-button class="tiny" data-p="60">60</ui-button>
+                    <ui-button class="tiny" data-p="75">75</ui-button>
+                </div>
+            </div>
+        </ui-prop>
+
+        <ui-prop id="rowBox" class="hidden">
+            <ui-label slot="label" value="Box W x H"></ui-label>
+            <div slot="content" class="row">
+                <ui-num-input id="boxWidth" class="grow" min="1" step="1" value="600"></ui-num-input>
+                <span class="hint">x</span>
+                <ui-num-input id="boxHeight" class="grow" min="1" step="1" value="600"></ui-num-input>
+                <span class="hint">px</span>
+            </div>
+        </ui-prop>
+
+        <ui-prop id="rowTarget" class="hidden">
+            <ui-label slot="label" id="targetLabel" value="Size"></ui-label>
+            <div slot="content" class="row">
+                <ui-num-input id="target" class="grow" min="1" step="1" value="600"></ui-num-input>
+                <span class="hint">px</span>
+            </div>
+        </ui-prop>
+
+        <ui-prop>
+            <ui-label slot="label" value="Options"></ui-label>
+            <div slot="content" class="row wrap">
+                <ui-checkbox id="allowUpscale">Allow upscale</ui-checkbox>
+                <span class="hint">Round to multiple of</span>
+                <ui-select id="multipleOf">
+                    <option value="1" selected>1 px</option>
+                    <option value="2">2 px</option>
+                    <option value="4">4 px</option>
+                </ui-select>
+            </div>
+        </ui-prop>
+
+        <ui-prop>
+            <ui-label slot="label" value="Filter"></ui-label>
+            <ui-select slot="content" id="filter" class="grow">
+                <option value="lanczos3" selected>Lanczos3 (sharp, default)</option>
+                <option value="mitchell">Mitchell (softer)</option>
+                <option value="triangle">Bilinear</option>
+                <option value="box">Box</option>
+                <option value="nearest">Nearest (pixel art)</option>
+            </ui-select>
+        </ui-prop>
+
+        <h3>3. Output</h3>
+        <ui-prop>
+            <ui-label slot="label" value="Write to"></ui-label>
+            <ui-select slot="content" id="output" class="grow">
+                <option value="inplace" selected>Overwrite original (keeps .meta / uuid, references stay valid)</option>
+                <option value="suffix">New file next to original, with suffix</option>
+                <option value="folder">Another folder</option>
+            </ui-select>
+        </ui-prop>
+        <ui-prop id="rowSuffix" class="hidden">
+            <ui-label slot="label" value="Suffix"></ui-label>
+            <div slot="content" class="row">
+                <ui-input id="suffix" class="grow" placeholder="_{w}x{h}" value="_{w}x{h}"></ui-input>
+                <span class="hint">tokens: {w} {h} {p}</span>
+            </div>
+        </ui-prop>
+        <ui-prop id="rowFolder" class="hidden">
+            <ui-label slot="label" value="Folder"></ui-label>
+            <div slot="content" class="row">
+                <ui-input id="folder" class="grow" placeholder="db://assets/resized"></ui-input>
+                <ui-button id="browseFolder">Browse</ui-button>
+            </div>
+        </ui-prop>
+        <ui-prop>
+            <ui-label slot="label" value="Format"></ui-label>
+            <div slot="content" class="row">
+                <ui-select id="format" class="grow">
+                    <option value="keep" selected>Keep original format</option>
+                    <option value="png">PNG</option>
+                    <option value="jpg">JPG (needs ffmpeg or Windows)</option>
+                    <option value="webp">WebP (needs ffmpeg)</option>
+                </ui-select>
+                <span class="hint">JPG/WebP quality</span>
+                <ui-num-input id="quality" min="1" max="100" step="1" value="85" style="width:70px"></ui-num-input>
+            </div>
+        </ui-prop>
+        <div class="checks">
+            <ui-checkbox id="backup" checked>Backup originals to temp/image-resizer-backup before overwriting</ui-checkbox>
+            <ui-checkbox id="refresh" checked>Refresh asset database when finished</ui-checkbox>
+        </div>
+
+        <div class="row actions">
+            <ui-button id="preview">Preview</ui-button>
+            <ui-button id="resize" class="green">Resize</ui-button>
+            <ui-button id="cancelBtn" disabled>Cancel</ui-button>
+            <span class="grow"></span>
+            <ui-button id="revealBackup" disabled>Show backup</ui-button>
+        </div>
+
+        <div id="progressWrap" class="hidden">
+            <ui-progress id="progress" value="0"></ui-progress>
+            <div id="progressText" class="hint"></div>
+        </div>
+    </section>
+
+    <section id="issues" class="panel hidden"></section>
+    <section id="result" class="panel hidden"></section>
+    <section id="logWrap" class="panel hidden">
+        <h3>Log</h3>
+        <pre id="log"></pre>
+    </section>
+</div>

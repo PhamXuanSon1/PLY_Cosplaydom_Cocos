@@ -1,0 +1,40 @@
+{
+  "package_version": 2,
+  "name": "image-resizer",
+  "version": "1.0.0",
+  "description": "Resize images (PNG/JPG/WebP/BMP) by percent or to a target size while keeping the aspect ratio. Overwrite in place (keeps .meta/uuid) or write a copy.",
+  "author": "PLY",
+  "editor": ">=3.7.0",
+  "main": "./main.js",
+  "panels": {
+    "default": {
+      "title": "Image Resizer",
+      "type": "dockable",
+      "main": "./src/panels/default.js",
+      "size": {
+        "min-width": 560,
+        "min-height": 480,
+        "width": 720,
+        "height": 800
+      }
+    }
+  },
+  "contributions": {
+    "menu": [
+      { "path": "Tool", "label": "Image Resizer", "message": "open-panel" },
+      { "path": "i18n:menu.panel/Image Resizer", "label": "Open Panel", "message": "open-panel" }
+    ],
+    "messages": {
+      "open-panel": { "methods": ["openPanel"] },
+      "collect-selected": { "methods": ["collectSelected"] },
+      "browse-files": { "methods": ["browseFiles"] },
+      "browse-folder": { "methods": ["browseFolder"] },
+      "resolve-inputs": { "methods": ["resolveInputs"] },
+      "analyze": { "methods": ["analyze"] },
+      "run": { "methods": ["run"] },
+      "progress-status": { "methods": ["progressStatus"] },
+      "cancel": { "methods": ["cancel"] },
+      "reveal": { "methods": ["reveal"] }
+    }
+  }
+}

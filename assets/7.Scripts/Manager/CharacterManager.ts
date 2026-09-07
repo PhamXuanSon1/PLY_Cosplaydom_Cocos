@@ -227,28 +227,37 @@ export class CharacterManager extends Component {
         this._allEquipmentSet = [];
         this.myEquipmentSet = [];
 
-        // Lấy đối tượng _skeleton nguyên bản của Spine
-        const spineSkeleton = this.targetTestCharacter.spineSkeleton._skeleton;
-        if (!spineSkeleton) {
-            console.error("Không lấy được dữ liệu Skeleton từ Target!");
+        // Trong Editor, Spine có thể chưa tạo runtime _skeleton.
+        // Khi đó đọc skeletonJson từ SkeletonData để vẫn lấy được slot/attachment.
+        const spineComponent = this.targetTestCharacter.spineSkeleton as any;
+        const runtimeSkeleton = spineComponent._skeleton || spineComponent.skeleton || null;
+        const skeletonJson = spineComponent.skeletonData && spineComponent.skeletonData.skeletonJson;
+        const jsonSlots = skeletonJson && Array.isArray(skeletonJson.slots) ? skeletonJson.slots : [];
+
+        if (!runtimeSkeleton && jsonSlots.length === 0) {
+            console.error("Không lấy được dữ liệu Skeleton từ Target: SkeletonData chưa sẵn sàng!");
             return;
         }
 
-        // Lấy danh sách slots
-        const slots = spineSkeleton.slots;
+        // Lấy danh sách slots từ runtime hoặc dữ liệu JSON.
+        const slots = runtimeSkeleton ? runtimeSkeleton.slots : jsonSlots;
         for (let i = 0; i < slots.length; i++) {
             const slot = slots[i];
 
-            // 1. Lấy TÊN của attachment đang bật (nếu có)
-            const currentAttachmentName = slot.attachment ? slot.attachment.name : null;
-            const slotName = slot.data ? slot.data.name : "";
+            // 1. Lấy tên attachment đang bật (nếu có)
+            const currentAttachmentName = runtimeSkeleton
+                ? (slot.attachment ? slot.attachment.name : null)
+                : (slot.attachment || null);
+            const slotName = runtimeSkeleton
+                ? (slot.data ? slot.data.name : "")
+                : (slot.name || "");
 
             // 2. Tìm tên attachment kể cả khi currentAttachmentName là null (isEnabled = false)
             let attachmentName = currentAttachmentName || (slot.data ? slot.data.attachmentName : null);
 
             // Nếu chưa tìm thấy attachmentName, duyệt các Skins của Skeleton để lấy tên attachment gán cho slot này
-            if (!attachmentName && spineSkeleton.data) {
-                const skins = spineSkeleton.data.skins || [];
+            if (!attachmentName && runtimeSkeleton && runtimeSkeleton.data) {
+                const skins = runtimeSkeleton.data.skins || [];
                 const getNameStr = (obj: any): string => {
                     if (!obj) return "";
                     if (typeof obj === 'string') return obj;
@@ -291,6 +300,23 @@ export class CharacterManager extends Component {
                     }
 
                     if (attachmentName) break;
+                }
+            }
+
+            // Fallback cho Editor: lấy attachment đầu tiên của slot từ skins JSON.
+            if (!attachmentName && skeletonJson && skeletonJson.skins && slotName) {
+                const skins = Array.isArray(skeletonJson.skins)
+                    ? skeletonJson.skins
+                    : Object.values(skeletonJson.skins);
+                for (const skin of skins as any[]) {
+                    const slotAttachments = skin && skin.attachments && skin.attachments[slotName];
+                    if (slotAttachments && typeof slotAttachments === 'object') {
+                        const names = Object.keys(slotAttachments);
+                        if (names.length > 0) {
+                            attachmentName = names[0];
+                            break;
+                        }
+                    }
                 }
             }
 
