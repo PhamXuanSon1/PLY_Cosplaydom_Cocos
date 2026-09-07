@@ -383,6 +383,14 @@ export class UI extends Component {
     }
 
     start() {
+
+        try{
+            if(PlayableSDK.channel == "Google") {
+                this.offButtons.forEach(button => { if (button) button.active = false; });
+            }
+        } catch(error){
+
+        }
     }
 
     update(dt: number) {

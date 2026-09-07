@@ -14,12 +14,13 @@
 //     CTA_CLICKED
 // }
 
-import { Director, director } from "cc";
+import { Director, director, DirectorEvent } from "cc";
 
 export class AppLovinAnalytics {
 
     static track(event: string) {
-        console.log(`%c[AppLovinAnalytics] Event: ${event}`, 'color: #00ffcc; font-weight: bold; background: #222; padding: 2px 6px; border-radius: 3px;');
+        console.log(event);
+        
         const analytics = (window as any).ALPlayableAnalytics;
         if (analytics) {
             analytics.trackEvent(event);
@@ -82,7 +83,7 @@ director.once(Director.EVENT_BEFORE_SCENE_LAUNCH, () => {
     AppLovinAnalytics.loaded();
 })
 
-director.on(Director.EVENT_AFTER_SCENE_LAUNCH, () => {
+director.once(Director.EVENT_AFTER_SCENE_LAUNCH, () => {
     AppLovinAnalytics.displayed();
 })
 
