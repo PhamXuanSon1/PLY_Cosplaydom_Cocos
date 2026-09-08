@@ -464,20 +464,24 @@ export class DrawInputManager extends Component {
         for (let i = 0; i < controllers.length; i++) {
             const controller = controllers[i];
 
+            // Item còn require item chưa xong: chạm vào là báo sai ngay, không cho cầm lên,
+            // không rơi xuống các item phía dưới. Áp dụng cho MỌI loại item.
             if (!controller.isUnlocked()) {
-                if (controller.itemType === DrawItemType.ClickOnly) {
-                    continue;
-                } else if (controller.itemType === DrawItemType.SnapToTarget) {
-                    const lockedDrawItem = controller.getComponent(DrawItemMovement) || controller.getComponentInChildren(DrawItemMovement);
-                    if (lockedDrawItem) {
-                        this.currentDrawItem = lockedDrawItem;
-                        this.currentDrawItemController = controller;
+                const lockedDrawItem = controller.getComponent(DrawItemMovement) || controller.getComponentInChildren(DrawItemMovement);
 
-                        this.modifySortingOrder(this.currentDrawItem.node, 10);
-                        this.handleWrongItem();
-                    }
-                    return;
+                if (lockedDrawItem) {
+                    // Item kéo được: giữ tạm để handleWrongItem() bắn hiệu ứng rồi trả về Spawn Pos.
+                    this.currentDrawItem = lockedDrawItem;
+                    this.currentDrawItemController = controller;
+
+                    this.modifySortingOrder(this.currentDrawItem.node, 10);
+                    this.handleWrongItem();
+                } else {
+                    // Item không kéo được (ClickOnly...): chỉ bắn phản hồi sai.
+                    this.playWrongItemFeedback(controller.node);
                 }
+
+                return;
             }
 
             if (controller.itemType === DrawItemType.ClickOnly) {
@@ -861,6 +865,10 @@ export class DrawInputManager extends Component {
                             this.currentDrawItem = null;
                             this.currentDrawItemController = null;
 
+                            // Nhánh snap thoát sớm và item nằm lại ở target (không bay về Spawn Pos),
+                            // nên phải tự giải phóng map đang bị hoãn ở đây, tránh kẹt vĩnh viễn.
+                            this.flushPendingMapCompletion();
+
                             return;
                         }
                     }
@@ -923,6 +931,7 @@ export class DrawInputManager extends Component {
                         if (drawItemMovement) {
                             drawItemMovement.GoToSpawn();
                             drawItemMovement.UpdateSpawnPos();
+                            this.flushPendingMapCompletion();
 
                             for (const s of sprites) {
                                 if (s) {
@@ -970,6 +979,11 @@ export class DrawInputManager extends Component {
                     })
                     .start();
 
+                // Hẹn giờ trên chính manager thay vì gắn vào tween của item: OnDropEvent
+                // của item có thể tắt/đổi cha node ngay lúc này, tween trên node đã tắt
+                // sẽ không bao giờ chạy tới .call() và map sẽ kẹt mãi ở trạng thái chờ.
+                this.scheduleOnce(() => this.flushPendingMapCompletion(), 0.21);
+
                 for (let k = 0; k < this.hoveredTargets.length; k++) {
                     this.hoveredTargets[k].onBrushExit();
                 }
@@ -988,13 +1002,19 @@ export class DrawInputManager extends Component {
         }
     }
 
-    private handleWrongItem(): void {
-        if (!this.currentDrawItem || !this.currentDrawItemController) return;
-
+    /**
+     * Phản hồi "dùng sai đồ": BreakHeart + anim tức giận + tiếng Wrong.
+     * Tách riêng để dùng được cho cả item không kéo được (ClickOnly) — những item
+     * này không có DrawItemMovement nên không đi qua handleWrongItem() được.
+     * @param fallbackNode Node dùng làm vị trí sinh BreakHeart nếu map chưa gán Heart Spawn Pos.
+     */
+    private playWrongItemFeedback(fallbackNode: Node | null): void {
         const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
         if (Ply_Pool.Ins != null && drawItemMgr) {
             const spawnParent = typeof drawItemMgr.GetHeartSpawnPosForCurrentMap === 'function' ? drawItemMgr.GetHeartSpawnPosForCurrentMap() : null;
-            const spawnPos = spawnParent ? spawnParent.worldPosition : this.currentDrawItem.node.worldPosition;
+            const spawnPos = spawnParent
+                ? spawnParent.worldPosition
+                : (fallbackNode ? fallbackNode.worldPosition : new Vec3());
             const heartUnit = Ply_Pool.Ins.spawn(PoolType.BreakHeart, spawnPos);
             if (heartUnit) {
                 // Gắn vào spawnParent để hiển thị đúng trên UI layer
@@ -1014,6 +1034,15 @@ export class DrawInputManager extends Component {
 
         if (Ply_SoundManager.Ins != null) {
             Ply_SoundManager.Ins.playFx(FxType.Wrong);
+        }
+    }
+
+    private handleWrongItem(): void {
+        if (!this.currentDrawItem || !this.currentDrawItemController) return;
+
+        this.playWrongItemFeedback(this.currentDrawItem.node);
+
+        if (Ply_SoundManager.Ins != null) {
             if (this.currentDrawItemController.playLoopFxOnDrag) {
                 Ply_SoundManager.Ins.stopFx(this.currentDrawItemController.loopFxToPlay);
             }
@@ -1060,12 +1089,34 @@ export class DrawInputManager extends Component {
                 }
                 this.modifySortingOrder(itemNode, -10);
                 this.forceSyncItemPhysics(itemNode);
+                this.flushPendingMapCompletion();
             })
             .start();
 
         this.currentDrawItem = null;
         this.currentDrawItemController = null;
         this.isDropping = false;
+    }
+
+    /**
+     * Item vừa bay xong về Spawn Pos -> lúc này mới cho phép map được tính là hoàn thành.
+     * Tránh trường hợp map chuyển ngay khi nét vẽ cuối vừa xong mà item còn trên tay
+     * (hoặc người chơi thả tay ra ngoài màn hình, item đang bay dở về chỗ cũ).
+     */
+    private flushPendingMapCompletion(): void {
+        const drawItemMgr = DrawItemManager.Instance
+            || (globalThis as any).DrawItemManager?.Instance
+            || (window as any).DrawItemManager?.Instance;
+        if (!drawItemMgr || typeof drawItemMgr.FlushPendingMapCompletion !== 'function') return;
+
+        const mapChanged = drawItemMgr.FlushPendingMapCompletion();
+
+        const handHintMgr = HandHintManager.Instance
+            || (globalThis as any).HandHintManager?.Instance
+            || (window as any).HandHintManager?.Instance;
+        if (mapChanged && handHintMgr && typeof handHintMgr.ShowHintImmediately === 'function') {
+            handHintMgr.ShowHintImmediately();
+        }
     }
 
     private forceSyncItemPhysics(itemNode: Node): void {

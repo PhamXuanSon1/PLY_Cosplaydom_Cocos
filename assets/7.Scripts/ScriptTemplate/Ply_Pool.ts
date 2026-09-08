@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab, instantiate, Vec3, Quat, CCInteger, Enum } from 'cc';
+import { _decorator, Component, Node, Prefab, instantiate, Vec3, Quat, CCInteger, Enum, Animation, ParticleSystem2D } from 'cc';
 import { Ply_Singleton } from './Ply_Singleton';
 import { Ply_GameUnit } from './Ply_GameUnit';
 const { ccclass, property } = _decorator;
@@ -111,9 +111,44 @@ export class Ply_Pool extends Ply_Singleton {
             gameUnit.node.setPosition(pos);
             gameUnit.node.setRotation(rot);
             gameUnit.node.active = true;
+            Ply_Pool.replayEffects(gameUnit.node);
         }
 
         return gameUnit;
+    }
+
+    /**
+     * Phát lại animation/particle cho unit vừa lấy ra khỏi pool.
+     *
+     * `playOnLoad` của cc.Animation chỉ chạy trong onLoad, mà onLoad chỉ được gọi ĐÚNG
+     * MỘT LẦN trong đời một node. Unit lấy lại từ pool chỉ đi qua onEnable, nên từ lần
+     * tái sử dụng thứ hai trở đi animation không bao giờ chạy nữa - đúng hiện tượng
+     * "lúc thì Heart có anim, lúc lại không". Nếu clip đó là thứ làm Heart hiện ra
+     * (fade/scale), Heart sẽ đứng im ở frame cuối và coi như tàng hình.
+     *
+     * Vì vậy mỗi lần spawn phải chủ động stop rồi play lại từ đầu.
+     */
+    private static replayEffects(root: Node): void {
+        if (!root) return;
+
+        const animations = root.getComponentsInChildren(Animation);
+        for (let i = 0; i < animations.length; i++) {
+            const anim = animations[i];
+            if (!anim || !anim.isValid) continue;
+
+            const clip = anim.defaultClip || (anim.clips.length > 0 ? anim.clips[0] : null);
+            if (!clip) continue;
+
+            anim.stop();
+            anim.play(clip.name);
+        }
+
+        const particles = root.getComponentsInChildren(ParticleSystem2D);
+        for (let i = 0; i < particles.length; i++) {
+            const ps = particles[i];
+            if (!ps || !ps.isValid) continue;
+            ps.resetSystem();
+        }
     }
 
     /**

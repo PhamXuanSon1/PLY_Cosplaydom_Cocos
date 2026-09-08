@@ -177,6 +177,15 @@ export class DrawItemManager extends Component {
     // Index các nhóm đã thưởng Heart (mode RequiredItemGroups) - mỗi nhóm chỉ thưởng 1 lần.
     private _rewardedHeartGroups: Set<number> = new Set<number>();
 
+    // Index của map đã đủ điều kiện xong nhưng đang chờ item bay về Spawn Pos mới bắn
+    // OnMapCompleted. -1 = không có gì đang chờ.
+    //
+    // Phải nhớ INDEX chứ không chỉ một cờ boolean: trong lúc chờ, map có thể đã được
+    // hoàn thành bằng đường khác và currentMapIndex đã nhảy sang map kế. Khi đó flush
+    // sẽ hoàn thành nhầm map sau (map rỗng, heartSpawnPos = null) -> chuyển map nhưng
+    // mất Heart + anim vui.
+    private _pendingMapCompletionIndex: number = -1;
+
     protected onLoad(): void {
         DrawItemManager.Instance = this;
         (globalThis as any).DrawItemManager = DrawItemManager;
@@ -197,9 +206,14 @@ export class DrawItemManager extends Component {
 
     /**
      * Kiểm tra map hiện tại đã hoàn thành hết chưa. Nếu xong: tăng index + chạy Event chuyển map.
+     *
+     * @param deferUntilItemReturned Đặt true khi được gọi lúc người chơi VẪN đang cầm item
+     *   (ví dụ vừa tô xong nét cuối). Khi đó map chưa được tính là hoàn thành ngay; nó chỉ
+     *   thực sự hoàn thành sau khi thả tay và item đã bay về Spawn Pos
+     *   (DrawInputManager gọi `FlushPendingMapCompletion()` ở cuối tween bay về).
      * @returns true nếu vừa chuyển map.
      */
-    public CheckMapCompletion(): boolean {
+    public CheckMapCompletion(deferUntilItemReturned: boolean = false): boolean {
         if (this.currentMapIndex >= this.mapConfigs.length) return false;
 
         const currentConfig = this.mapConfigs[this.currentMapIndex];
@@ -228,27 +242,66 @@ export class DrawItemManager extends Component {
             }
         }
 
-        if (isAllCompleted) {
-            if (Ply_SoundManager.Ins != null) Ply_SoundManager.Ins.playFx(FxType.Happy);
-
-            // Map vừa xong đã có Heart riêng -> reset bộ đếm để không thưởng dồn 2 Heart liền nhau.
-            this._itemsSinceLastHeart = 0;
-
-            // Tăng index TRƯỚC khi chạy event chuyển map (để code lấy đúng index mới)
-            this.SpawnHeartAt(currentConfig.heartSpawnPos);
-            if (CharacterManager.instance != null) {
-                CharacterManager.instance.playHappyAnim();
-            }
-
-            this.currentMapIndex++;
-            this.updateMapStatusDisplay();
-
-            EventHandler.emitEvents(currentConfig.OnMapCompleted);
-
-            return true;
+        if (!isAllCompleted) {
+            return false;
         }
 
-        return false;
+        // Người chơi còn đang cầm item: khoan tính là xong map. Chờ thả tay (kể cả thả
+        // ra ngoài màn hình) và item bay về Spawn Pos xong thì mới bắn OnMapCompleted,
+        // nếu không map sẽ chuyển ngay lúc item còn lơ lửng trên tay.
+        if (deferUntilItemReturned) {
+            this._pendingMapCompletionIndex = this.currentMapIndex;
+            return false;
+        }
+
+        this._pendingMapCompletionIndex = -1;
+        return this.completeCurrentMap(currentConfig);
+    }
+
+    /**
+     * Gọi khi item vừa bay xong về Spawn Pos. Nếu trước đó có map bị hoãn hoàn thành
+     * thì kiểm tra lại và bắn OnMapCompleted lúc này.
+     * @returns true nếu vừa chuyển map.
+     */
+    public FlushPendingMapCompletion(): boolean {
+        const pendingIndex = this._pendingMapCompletionIndex;
+        this._pendingMapCompletionIndex = -1;
+
+        if (pendingIndex < 0) return false;
+
+        // Map đang chờ đã được hoàn thành bằng đường khác trong lúc item bay về
+        // (currentMapIndex đã nhảy) -> bỏ qua. Nếu chạy tiếp, CheckMapCompletion sẽ
+        // xét map KẾ TIẾP; map rỗng luôn được coi là "xong" nên sẽ hoàn thành nhầm
+        // map đó và mất Heart (map rỗng không có heartSpawnPos).
+        if (pendingIndex !== this.currentMapIndex) return false;
+
+        // Chạy lại toàn bộ kiểm tra thay vì tin vào trạng thái cũ, phòng khi điều kiện
+        // đã đổi trong lúc chờ.
+        return this.CheckMapCompletion(false);
+    }
+
+    /**
+     * Thực sự hoàn thành map hiện tại: Heart + tăng index + bắn OnMapCompleted.
+     *
+     * CỐ Ý không phát tiếng Happy và không chạy anim vui ở đây: lúc chuyển map,
+     * OnMapCompleted đã chạy anim intro của map kế (AnimIntroMap2/AnimIntroMap3),
+     * chồng thêm anim vui vào chỉ gây nhiễu. Anim vui vẫn chạy bình thường ở các
+     * chỗ khác: khi tô xong một makeup ID (MakeupTarget) và khi thưởng Heart theo
+     * nhóm đồ bắt buộc (Heart Reward Groups).
+     */
+    private completeCurrentMap(currentConfig: MapMakeupConfig): boolean {
+        // Map vừa xong đã có Heart riêng -> reset bộ đếm để không thưởng dồn 2 Heart liền nhau.
+        this._itemsSinceLastHeart = 0;
+
+        // Tăng index TRƯỚC khi chạy event chuyển map (để code lấy đúng index mới)
+        this.SpawnHeartAt(currentConfig.heartSpawnPos);
+
+        this.currentMapIndex++;
+        this.updateMapStatusDisplay();
+
+        EventHandler.emitEvents(currentConfig.OnMapCompleted);
+
+        return true;
     }
 
     private updateMapStatusDisplay(): void {

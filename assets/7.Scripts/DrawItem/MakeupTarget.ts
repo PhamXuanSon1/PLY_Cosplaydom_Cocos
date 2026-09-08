@@ -415,8 +415,10 @@ export class MakeupTarget extends Component {
                         drawItemMgr.NotifyMakeupTargetApplied(this.node);
                     }
 
+                    // Đang ở giữa thao tác vẽ -> item vẫn nằm trên tay người chơi.
+                    // Hoãn OnMapCompleted tới khi thả tay và item bay về Spawn Pos.
                     if (drawItemMgr && typeof drawItemMgr.CheckMapCompletion === 'function') {
-                        drawItemMgr.CheckMapCompletion();
+                        drawItemMgr.CheckMapCompletion(true);
                     }
 
                     const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;

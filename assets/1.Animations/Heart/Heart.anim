@@ -20,7 +20,11 @@
     ],
     "_exoticAnimation": null,
     "_events": [],
-    "_embeddedPlayers": []
+    "_embeddedPlayers": [],
+    "_additiveSettings": {
+      "__id__": 7
+    },
+    "_auxiliaryCurveEntries": []
   },
   {
     "__type__": "cc.animation.ObjectTrack",
@@ -97,5 +101,10 @@
         "__expectedType__": "cc.SpriteFrame"
       }
     ]
+  },
+  {
+    "__type__": "cc.AnimationClipAdditiveSettings",
+    "enabled": false,
+    "refClip": null
   }
 ]
