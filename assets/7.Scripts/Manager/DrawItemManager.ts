@@ -326,6 +326,20 @@ export class DrawItemManager extends Component {
         }
     }
 
+    /** Sinh 1 Star từ Pool tại vị trí spawnParent và gắn làm con của nó. */
+    public SpawnStarAt(spawnParent: Node | null): void {
+        if (Ply_Pool.Ins != null && spawnParent != null) {
+            const starUnit = Ply_Pool.Ins.spawn(PoolType.Star, spawnParent.worldPosition);
+            if (starUnit) {
+                starUnit.node.setParent(spawnParent, true);
+                const prefab = Ply_Pool.Ins.getPrefab(PoolType.Star);
+                if (prefab && prefab.data) {
+                    starUnit.node.setScale(prefab.data.scale);
+                }
+            }
+        }
+    }
+
     public SpawnHeartAndHappyAt(spawnParent: Node | null): void {
         if (Ply_SoundManager.Ins != null) Ply_SoundManager.Ins.playFx(FxType.Happy);
         this.SpawnHeartAt(spawnParent);

@@ -166,13 +166,13 @@
       "b": 255,
       "a": 255
     },
-    "duration": 1,
-    "emissionRate": 5,
-    "life": 1,
+    "duration": 0.3,
+    "emissionRate": 30,
+    "life": 0.7,
     "lifeVar": 0,
     "angle": 360,
     "angleVar": 360,
-    "startSize": 100,
+    "startSize": 80,
     "startSizeVar": 0,
     "endSize": 50,
     "endSizeVar": 0,
@@ -196,7 +196,7 @@
       "x": 0,
       "y": 0
     },
-    "speed": 100,
+    "speed": 200,
     "speedVar": 0,
     "tangentialAccel": 0,
     "tangentialAccelVar": 0,
@@ -219,7 +219,7 @@
       "__uuid__": "d2bab5eb-3241-4785-b002-47e3232e6551@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "_totalParticles": 5,
+    "_totalParticles": 10,
     "_startColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -297,7 +297,7 @@
     "fileId": "3aE/4M9iZFXbbsjWJxbN5H"
   },
   {
-    "__type__": "315c2k5pcxCGJnWkyQb1aex",
+    "__type__": "c0bb43BBUlBx61L/nM4PXbl",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -308,7 +308,7 @@
     "__prefab": {
       "__id__": 11
     },
-    "type": 5,
+    "duration": 2,
     "_id": ""
   },
   {

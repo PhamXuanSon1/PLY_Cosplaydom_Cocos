@@ -70,6 +70,14 @@ export class DrawInputManager extends Component {
     })
     public snapRadiusMultiplier: number = 50;
 
+    @property({
+        type: Node,
+        group: { name: '1. Layer Masks & Raycast', id: 'layerMasks' },
+        displayName: 'Star Spawn Pos',
+        tooltip: 'Node chung để bắn hiệu ứng ngôi sao mỗi khi snap trúng đích. Bỏ trống thì bắn ngay tại Snap Target của item vừa snap.'
+    })
+    public starSpawnPos: Node | null = null;
+
     // ==========================================
     // 2. Drag & Drop Settings
     // ==========================================
@@ -851,6 +859,18 @@ export class DrawInputManager extends Component {
 
                                     if (Ply_Pool.Ins != null) {
                                         Ply_Pool.Ins.spawn(PoolType.CorrectEffect, controller.snapTarget!.worldPosition);
+                                    }
+
+                                    // Ngôi sao bắn ra mỗi lần snap trúng đích. Dùng chung 1 node
+                                    // "Star Spawn Pos" gán trên chính DrawInputManager này,
+                                    // bỏ trống thì mặc định bắn tại Snap Target của item vừa snap.
+                                    // Prefab gán ở Ply_Pool -> Pool Amounts -> type Star.
+                                    const starSpawnNode = this.starSpawnPos || controller.snapTarget;
+                                    const starMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                                    if (starMgr && typeof starMgr.SpawnStarAt === 'function') {
+                                        starMgr.SpawnStarAt(starSpawnNode);
+                                    } else if (Ply_Pool.Ins != null && starSpawnNode) {
+                                        Ply_Pool.Ins.spawn(PoolType.Star, starSpawnNode.worldPosition);
                                     }
 
                                     if (controller.closedSpriteObj) controller.closedSpriteObj.active = true;
