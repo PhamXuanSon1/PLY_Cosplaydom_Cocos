@@ -8,6 +8,21 @@ const { execFile } = require('child_process');
 const PACKAGE_NAME = 'playable-size-inspector';
 const WORKSPACE_DIRECTORY = 'playable-size-inspector';
 
+// Chan moi thao tac ghi ra ngoai build/<WORKSPACE_DIRECTORY>.
+// Cac ban build cu (build/web-mobile, build/<ten khac>...) phai duoc giu nguyen:
+// tool nay chi duoc phep TAO THEM file trong thu muc lam viec cua no.
+function assertInsideWorkspace(targetPath, label) {
+  const workspaceRoot = path.resolve(path.join(Editor.Project.path, 'build', WORKSPACE_DIRECTORY));
+  const resolved = path.resolve(targetPath);
+  if (!isSameResolvedPath(resolved, workspaceRoot) && !isPathInside(resolved, workspaceRoot)) {
+    throw new Error(
+      `${label} must stay inside build/${WORKSPACE_DIRECTORY} so existing builds are never overwritten. `
+      + `Got: ${resolved}`,
+    );
+  }
+  return resolved;
+}
+
 exports.methods = {
   openPanel() {
     Editor.Panel.open(PACKAGE_NAME);
@@ -74,6 +89,9 @@ exports.methods = {
       throw new Error('Missing sourceRoot, optimizedRoot, or exportRoot.');
     }
 
+    assertInsideWorkspace(optimizedRoot, 'Output Root');
+    assertInsideWorkspace(exportRoot, 'Export Root');
+
     const defaultOriginalRoot = path.join(Editor.Project.path, 'build', 'web-mobile');
     const originalSourceRoot = isSameResolvedPath(sourceRoot, optimizedRoot)
       ? defaultOriginalRoot
@@ -135,6 +153,8 @@ exports.methods = {
       throw new Error('Missing sourceRoot, outputRoot, or relativePath.');
     }
 
+    assertInsideWorkspace(outputRoot, 'Output Root');
+
     if (isSameResolvedPath(sourceRoot, outputRoot)) {
       throw new Error('Build Root and Output Root must be different so the original asset stays untouched.');
     }
@@ -188,7 +208,7 @@ exports.methods = {
       });
 
       await fs.rm(resolvedDestinationFile, { force: true });
-      await fs.rename(tempOutputPath, resolvedDestinationFile);
+      await renameWithRetry(tempOutputPath, resolvedDestinationFile);
 
       return {
         ...report,
@@ -215,6 +235,8 @@ exports.methods = {
     if (!sourceRoot || !outputRoot || !relativePath) {
       throw new Error('Missing sourceRoot, outputRoot, or relativePath.');
     }
+
+    assertInsideWorkspace(outputRoot, 'Output Root');
     if (isSameResolvedPath(sourceRoot, outputRoot)) {
       throw new Error('Build Root and Output Root must be different so Reset cannot overwrite the original build.');
     }
@@ -443,7 +465,7 @@ async function runSafeAudioOptimizeToDestination({ inputPath, outputPath, audioB
     });
 
     await fs.rm(resolvedOutput, { force: true });
-    await fs.rename(tempOutputPath, resolvedOutput);
+    await renameWithRetry(tempOutputPath, resolvedOutput);
     return {
       ...report,
       outputPath: resolvedOutput,
@@ -473,7 +495,7 @@ async function runSafePngQuantToDestination({ inputPath, outputPath, pngQuality 
         pngQuality,
       });
       await fs.rm(resolvedOutput, { force: true });
-      await fs.rename(tempOutputPath, resolvedOutput);
+      await renameWithRetry(tempOutputPath, resolvedOutput);
       return { ...report, outputPath: resolvedOutput };
     } finally {
       await fs.rm(tempOutputPath, { force: true }).catch(() => {});
@@ -853,8 +875,6 @@ async function runIsolatedAdapterExport({ webMobileRoot, exportRoot }) {
   const projectRoot = Editor.Project.path;
   const buildRoot = path.join(projectRoot, 'build');
   const playableRoot = path.join(buildRoot, WORKSPACE_DIRECTORY);
-  const backupRoot = path.join(playableRoot, `.adapter-backup-${Date.now()}`);
-  const stagingRoot = path.join(playableRoot, `.adapter-staging-${Date.now()}`);
   const webMobileRootResolved = path.resolve(webMobileRoot);
   const exportRootResolved = path.resolve(exportRoot);
   const playableRootResolved = path.resolve(playableRoot);
@@ -869,123 +889,110 @@ async function runIsolatedAdapterExport({ webMobileRoot, exportRoot }) {
   if (!isPathInside(exportRootResolved, playableRootResolved)) {
     throw new Error(`Export root must stay inside build/${WORKSPACE_DIRECTORY}.`);
   }
+  if (!await pathExists(webMobileRootResolved)) {
+    throw new Error(`Export source root does not exist: ${webMobileRootResolved}`);
+  }
+
+  // Packager duy nhat duoc phep chay: no nhan webMobileDir + outputPath ro rang,
+  // nen KHONG can dung toi build/web-mobile hay bat ky ban build cu nao.
+  // Moi thu duoc ghi moi ben trong build/<WORKSPACE_DIRECTORY>.
+  const builderRoot = await findPlayableAdsBuilderRoot(projectRoot);
+  if (!builderRoot) {
+    throw new Error(
+      'Playable Ads Builder was not found. Install the "playable-ads-builder" extension in this project '
+      + 'before running Optimize + Export All.',
+    );
+  }
 
   await fs.mkdir(playableRoot, { recursive: true });
-  await fs.mkdir(backupRoot, { recursive: true });
+  await fs.mkdir(exportRootResolved, { recursive: true });
 
-  const preservedNames = new Set([
-    path.basename(playableRoot),
-    path.basename(backupRoot),
-  ]);
-  let activeSourceRoot = webMobileRootResolved;
-
-  const originalEntries = await fs.readdir(buildRoot, { withFileTypes: true });
-  const movedEntries = [];
-
-  try {
-    if (isSameResolvedPath(webMobileRootResolved, buildWebMobileResolved)) {
-      await fs.rm(stagingRoot, { recursive: true, force: true });
-      await copyDirectory(webMobileRootResolved, stagingRoot);
-      activeSourceRoot = stagingRoot;
-    }
-
-    for (const entry of originalEntries) {
-      if (preservedNames.has(entry.name)) {
-        continue;
-      }
-
-      const from = path.join(buildRoot, entry.name);
-      const to = path.join(backupRoot, entry.name);
-      await fs.rename(from, to);
-      movedEntries.push(entry.name);
-    }
-
-    await copyDirectory(activeSourceRoot, path.join(buildRoot, 'web-mobile'));
-    const buildInfo = await runAdapterExportOnly(projectRoot);
-
-    await fs.rm(exportRootResolved, { recursive: true, force: true });
-    await fs.mkdir(exportRootResolved, { recursive: true });
-
-    const exportedEntries = await fs.readdir(buildRoot, { withFileTypes: true });
-    const copiedEntries = [];
-    for (const entry of exportedEntries) {
-      if (
-        entry.name === 'web-mobile'
-        || entry.name === path.basename(playableRoot)
-        || entry.name.toLowerCase() === 'single-file-3x.html'
-      ) {
-        continue;
-      }
-
-      const from = path.join(buildRoot, entry.name);
-      const to = path.join(exportRootResolved, entry.name);
-      await copyPath(from, to);
-      copiedEntries.push(entry.name);
-    }
-
-    const analysis = await analyzeExportRoot(exportRootResolved);
-
-    return {
-      exportRoot: exportRootResolved,
-      buildName: buildInfo.name,
-      exportedEntries: copiedEntries,
-      analysis,
-    };
-  } finally {
-    const cleanupEntries = await fs.readdir(buildRoot, { withFileTypes: true });
-    for (const entry of cleanupEntries) {
-      if (entry.name === path.basename(playableRoot)) {
-        continue;
-      }
-      await fs.rm(path.join(buildRoot, entry.name), { recursive: true, force: true });
-    }
-
-    const backupEntries = await fs.readdir(backupRoot, { withFileTypes: true }).catch(() => []);
-    for (const entry of backupEntries) {
-      await fs.rename(path.join(backupRoot, entry.name), path.join(buildRoot, entry.name));
-    }
-
-    await fs.rm(backupRoot, { recursive: true, force: true });
-    await fs.rm(stagingRoot, { recursive: true, force: true }).catch(() => {});
-  }
-}
-
-async function runAdapterExportOnly(projectRoot) {
-  const adapterRoot = await findPlayableAdapterRoot(projectRoot);
-  const adapterMainPath = path.join(adapterRoot, 'main.js');
-  const mainSource = await fs.readFile(adapterMainPath, 'utf8').catch(() => '');
-  const runtimeMatch = mainSource.match(/require\(["'](\.\/3x-[^"']+\.js)["']\)/);
-
-  if (!runtimeMatch) {
-    throw new Error('Could not locate the playable adapter 3.x runtime for export-only mode.');
-  }
-
-  const runtimePath = path.resolve(adapterRoot, runtimeMatch[1]);
-  const adapterRuntime = require(runtimePath);
-  if (!adapterRuntime || typeof adapterRuntime.initBuildFinishedEvent !== 'function') {
-    throw new Error('The installed playable adapter does not expose export-only adaptation.');
-  }
-
-  // Calling adapter-build launches a new Cocos build and overwrites optimized
-  // assets. The after-build entry packages the prepared web-mobile tree only.
   const buildInfo = await resolveWebMobileBuildInfo(projectRoot);
-  await adapterRuntime.initBuildFinishedEvent({
-    platform: 'web-mobile',
-    name: buildInfo.name,
-    outputName: buildInfo.outputName,
+  const exported = await runPlayableAdsBuilderExport({
+    builderRoot,
+    projectRoot,
+    webMobileDir: webMobileRootResolved,
+    outputPath: exportRootResolved,
+    productName: buildInfo.name,
   });
-  return buildInfo;
+
+  const analysis = await analyzeExportRoot(exportRootResolved);
+
+  return {
+    exportRoot: exportRootResolved,
+    buildName: buildInfo.name,
+    exportedEntries: exported,
+    analysis,
+  };
 }
 
-async function findPlayableAdapterRoot(projectRoot) {
+// Goi thang API dong goi cua playable-ads-builder.
+// buildPlayableAds(webMobileDir, cocosVersion, options) chi doc tu webMobileDir
+// va chi ghi vao options.outputPath -> khong dong cham build/web-mobile,
+// khong xoa/di chuyen cac ban build cu trong build/.
+async function runPlayableAdsBuilderExport({ builderRoot, projectRoot, webMobileDir, outputPath, productName }) {
+  const playableBuildPath = path.join(builderRoot, 'dist', 'playable-build.js');
+  if (!await pathExists(playableBuildPath)) {
+    throw new Error(`playable-ads-builder is installed but dist/playable-build.js is missing: ${playableBuildPath}`);
+  }
+
+  const playableBuild = require(playableBuildPath);
+  if (!playableBuild || typeof playableBuild.buildPlayableAds !== 'function') {
+    throw new Error('The installed playable-ads-builder does not expose buildPlayableAds().');
+  }
+
+  const channelsModule = require(path.join(builderRoot, 'dist', 'channels.js'));
+  const options = await readPlayableBuilderOptions(projectRoot);
+  const channels = resolvePlayableBuilderChannels(channelsModule, options);
+
+  if (channels.length === 0) {
+    throw new Error(
+      'No ad channel is selected for playable-ads-builder. Tick at least one channel in the Build panel '
+      + '(or in settings/v2/packages/playable-ads-builder.json) and try again.',
+    );
+  }
+
+  const cocosVersion = await readCocosEngineVersion(webMobileDir);
+  const compressionQuality = typeof options.compressionQuality === 'number' ? options.compressionQuality : 80;
+  const audioBitrate = typeof options.audioBitrate === 'number' ? options.audioBitrate : 64;
+
+  const processed = await playableBuild.buildPlayableAds(
+    webMobileDir,
+    cocosVersion,
+    {
+      product: {
+        name: productName,
+        appleUrl: options.appleUrl || '',
+        googleUrl: options.googleUrl || '',
+      },
+      channels,
+      outputPath,
+      compression: {
+        type: options.compressionType || (channelsModule.CompressionType && channelsModule.CompressionType.Lossy) || 'lossy',
+        quality: compressionQuality,
+      },
+      audio: {
+        enabled: options.audioCompressionEnabled !== false,
+        bitrate: audioBitrate,
+      },
+    },
+    (stage, current, total) => {
+      console.log(`[${PACKAGE_NAME}] playable-ads-builder [${stage}] ${current}/${total}`);
+    },
+  );
+
+  return Array.isArray(processed) ? processed.map((file) => path.basename(String(file))) : [];
+}
+
+async function findPlayableAdsBuilderRoot(projectRoot) {
   const extensionRoots = new Set([
     path.join(projectRoot, 'extensions'),
     path.dirname(__dirname),
   ]);
 
   for (const extensionsRoot of extensionRoots) {
-    const exactRoot = path.join(extensionsRoot, 'playable-ads-adapter');
-    if (await isPackageNamed(exactRoot, 'playable-ads-adapter')) {
+    const exactRoot = path.join(extensionsRoot, 'playable-ads-builder');
+    if (await isPackageNamed(exactRoot, 'playable-ads-builder')) {
       return exactRoot;
     }
 
@@ -995,13 +1002,72 @@ async function findPlayableAdapterRoot(projectRoot) {
         continue;
       }
       const candidateRoot = path.join(extensionsRoot, entry.name);
-      if (await isPackageNamed(candidateRoot, 'playable-ads-adapter')) {
+      if (await isPackageNamed(candidateRoot, 'playable-ads-builder')) {
         return candidateRoot;
       }
     }
   }
 
-  throw new Error('Playable Ads Adapter was not found. Install it in this project before exporting network packages.');
+  return null;
+}
+
+// Uu tien options cua build task moi nhat, sau do den profile (per-user),
+// cuoi cung la settings (per-project, duoc commit).
+async function readPlayableBuilderOptions(projectRoot) {
+  const merged = {};
+
+  const settings = await readJsonFile(
+    path.join(projectRoot, 'settings', 'v2', 'packages', 'playable-ads-builder.json'),
+  );
+  const profile = await readJsonFile(
+    path.join(projectRoot, 'profiles', 'v2', 'packages', 'playable-ads-builder.json'),
+  );
+
+  const builderProfile = await readJsonFile(
+    path.join(projectRoot, 'profiles', 'v2', 'packages', 'builder.json'),
+  );
+  const taskMap = builderProfile && builderProfile.BuildTaskManager && builderProfile.BuildTaskManager.taskMap;
+  const latestWebMobileTask = taskMap
+    ? Object.values(taskMap)
+      .filter((task) => task && task.options && task.options.platform === 'web-mobile')
+      .sort((left, right) => Number(right.id || 0) - Number(left.id || 0))[0]
+    : null;
+  const taskOptions = latestWebMobileTask
+    && latestWebMobileTask.options
+    && latestWebMobileTask.options.packages
+    && latestWebMobileTask.options.packages['playable-ads-builder'];
+
+  for (const source of [settings, profile, taskOptions]) {
+    if (source && typeof source === 'object') {
+      Object.assign(merged, source);
+    }
+  }
+
+  return merged;
+}
+
+function resolvePlayableBuilderChannels(channelsModule, options) {
+  const sorted = channelsModule && channelsModule.CHANNEL_SORTED;
+  const fieldKey = channelsModule && channelsModule.channelFieldKey;
+  if (!Array.isArray(sorted) || typeof fieldKey !== 'function') {
+    return [];
+  }
+  return sorted.filter((channel) => options[fieldKey(channel)] === true);
+}
+
+async function readCocosEngineVersion(webMobileDir) {
+  const settingsPath = path.join(webMobileDir, 'src', 'settings.json');
+  const settings = await readJsonFile(settingsPath);
+  const version = settings
+    && settings.CocosEngine
+    || settings && settings.assets && settings.assets.CocosEngine;
+  if (version) {
+    return String(version);
+  }
+
+  const raw = await fs.readFile(settingsPath, 'utf8').catch(() => '');
+  const match = raw.match(/"CocosEngine"\s*:\s*"([^"]+)"/);
+  return match ? match[1] : 'unknown';
 }
 
 async function isPackageNamed(packageRoot, expectedName) {
@@ -1046,6 +1112,36 @@ async function readJsonFile(filePath) {
   }
 }
 
+// Windows hay tra ve EPERM/EBUSY khi rename mot thu muc dang bi giu handle
+// (Windows Defender, Search Indexer, File Explorer dang mo, preview server cua
+// Cocos, hoac tien trinh build vua ghi xong file). Rename tren o dia khac thi
+// tra ve EXDEV. Ca hai truong hop deu xu ly duoc bang retry + fallback copy.
+const MOVE_RETRY_CODES = new Set(['EPERM', 'EACCES', 'EBUSY', 'ENOTEMPTY', 'EEXIST', 'EXDEV']);
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function renameWithRetry(from, to, attempts = 5) {
+  let lastError = null;
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      await fs.rename(from, to);
+      return;
+    } catch (error) {
+      lastError = error;
+      if (!MOVE_RETRY_CODES.has(error && error.code)) {
+        throw error;
+      }
+      // Khoa thuong chi ton tai vai tram ms -> lui dan roi thu lai.
+      await wait(120 * (attempt + 1));
+    }
+  }
+
+  throw lastError;
+}
+
 async function copyDirectory(from, to) {
   if (typeof fs.cp === 'function') {
     await fs.mkdir(path.dirname(to), { recursive: true });
@@ -1069,17 +1165,6 @@ async function copyDirectory(from, to) {
   }
 }
 
-async function copyPath(from, to) {
-  const stat = await fs.stat(from);
-  if (stat.isDirectory()) {
-    await copyDirectory(from, to);
-    return;
-  }
-
-  await fs.mkdir(path.dirname(to), { recursive: true });
-  await fs.copyFile(from, to);
-}
-
 async function analyzeExportRoot(exportRoot) {
   const files = await collectAllFiles(exportRoot);
   const rootEntries = await fs.readdir(exportRoot, { withFileTypes: true });
@@ -1098,12 +1183,15 @@ async function analyzeExportRoot(exportRoot) {
       });
       continue;
     }
-    if (entry.isFile() && path.extname(entry.name).toLowerCase() === '.html') {
+    // playable-ads-builder xuat .html cho kenh thuong va .zip cho kenh yeu cau
+    // dong goi (Facebook, Google, TikTok, Mintegral...). Liet ke ca hai.
+    const extension = path.extname(entry.name).toLowerCase();
+    if (entry.isFile() && (extension === '.html' || extension === '.zip')) {
       const stat = await fs.stat(fullPath);
       packages.push({
         network: path.basename(entry.name, path.extname(entry.name)),
         relativePath: entry.name,
-        kind: 'single-html',
+        kind: extension === '.zip' ? 'zip-package' : 'single-html',
         fileCount: 1,
         bytes: stat.size,
       });

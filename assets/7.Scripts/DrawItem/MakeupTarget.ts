@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum, Graphics, Color, UITransform } from 'cc';
+import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum, Graphics, Color, UITransform, sp } from 'cc';
 import { Character } from '../SpineScript/Character';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from '../Manager/CharacterManager';
@@ -408,6 +408,11 @@ export class MakeupTarget extends Component {
                                 }
                             }
                         }
+                    }
+
+                    // Cho phép Makeup Target tính vào nhóm "đồ bắt buộc" của Heart Reward Groups.
+                    if (drawItemMgr && typeof drawItemMgr.NotifyMakeupTargetApplied === 'function') {
+                        drawItemMgr.NotifyMakeupTargetApplied(this.node);
                     }
 
                     if (drawItemMgr && typeof drawItemMgr.CheckMapCompletion === 'function') {

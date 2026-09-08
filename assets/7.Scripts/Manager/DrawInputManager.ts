@@ -493,6 +493,9 @@ export class DrawInputManager extends Component {
 
                     let mapChanged = false;
                     const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                    if (drawItemMgr && typeof drawItemMgr.NotifyDrawItemCompleted === 'function') {
+                        drawItemMgr.NotifyDrawItemCompleted(controller.node);
+                    }
                     if (drawItemMgr && typeof drawItemMgr.CheckMapCompletion === 'function') {
                         mapChanged = drawItemMgr.CheckMapCompletion();
                     }
@@ -797,21 +800,17 @@ export class DrawInputManager extends Component {
                             }
 
                             if (Ply_SoundManager.Ins != null) Ply_SoundManager.Ins.playFx(FxType.Happy);
-                            if (CharacterManager.instance != null) CharacterManager.instance.playHappyAnim();
 
                             if (!this.currentDrawItemController.isCompleted) {
                                 this.currentDrawItemController.isCompleted = true;
                                 const progressMgr = (globalThis as any).ProgressTrackingManager?.Instance || (window as any).ProgressTrackingManager?.Instance;
                                 if (progressMgr && typeof progressMgr.AddProgress === 'function') progressMgr.AddProgress();
 
+                                // Không bắn Heart ở mỗi lần snap nữa: DrawItemManager đếm đủ
+                                // `heartRewardEveryItems` item mới thưởng Heart + anim vui.
                                 const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
-                                if (drawItemMgr) {
-                                    const mapSpawnPos = typeof drawItemMgr.GetHeartSpawnPosForCurrentMap === 'function' ? drawItemMgr.GetHeartSpawnPosForCurrentMap() : null;
-                                    if (mapSpawnPos && typeof drawItemMgr.SpawnHeartAt === 'function') {
-                                        drawItemMgr.SpawnHeartAt(mapSpawnPos);
-                                    } else if (this.currentDrawItemController.snapTarget && typeof drawItemMgr.SpawnHeartAt === 'function') {
-                                        drawItemMgr.SpawnHeartAt(this.currentDrawItemController.snapTarget);
-                                    }
+                                if (drawItemMgr && typeof drawItemMgr.NotifyDrawItemCompleted === 'function') {
+                                    drawItemMgr.NotifyDrawItemCompleted(this.currentDrawItemController.snapTarget);
                                 }
                             }
 
@@ -876,6 +875,9 @@ export class DrawInputManager extends Component {
 
                         let mapChanged = false;
                         const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                        if (drawItemMgr && typeof drawItemMgr.NotifyDrawItemCompleted === 'function') {
+                            drawItemMgr.NotifyDrawItemCompleted(this.currentDrawItemController.node);
+                        }
                         if (drawItemMgr && typeof drawItemMgr.CheckMapCompletion === 'function') {
                             mapChanged = drawItemMgr.CheckMapCompletion();
                         }

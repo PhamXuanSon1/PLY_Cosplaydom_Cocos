@@ -163,7 +163,7 @@
           "spine-4.2": {
             "_value": false,
             "_flags": {
-              "LOAD_SPINE_MANUALLY": true
+              "LOAD_SPINE_MANUALLY": false
             }
           },
           "dragon-bones": {
@@ -193,7 +193,7 @@
           }
         },
         "flags": {
-          "LOAD_SPINE_MANUALLY": true
+          "LOAD_SPINE_MANUALLY": false
         },
         "name": "Migrated Configuration",
         "includeModules": [

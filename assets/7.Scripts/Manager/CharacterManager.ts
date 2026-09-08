@@ -217,6 +217,90 @@ export class CharacterManager extends Component {
     }
 
 
+    // ===== Helper đọc dữ liệu Spine an toàn cho cả bản JS lẫn bản WASM =====
+    // Bản WASM chỉ expose getter dạng hàm (getData/getAttachment/getName...),
+    // trong khi bản JS expose property. Các helper dưới đây thử cả hai kiểu.
+
+    private static callOrProp(obj: any, prop: string, getter: string): any {
+        if (!obj) return undefined;
+        const direct = obj[prop];
+        if (direct !== undefined && direct !== null) return direct;
+        if (typeof obj[getter] === 'function') {
+            try { return obj[getter](); } catch (e) { return undefined; }
+        }
+        return direct;
+    }
+
+    private static readName(obj: any): string {
+        if (!obj) return "";
+        if (typeof obj === 'string') return obj;
+        const name = CharacterManager.callOrProp(obj, 'name', 'getName');
+        return typeof name === 'string' ? name : "";
+    }
+
+    private static readSlotData(slot: any): any {
+        return CharacterManager.callOrProp(slot, 'data', 'getData');
+    }
+
+    // Tên attachment ĐANG được gán cho slot (null nếu slot đang tắt)
+    private static readCurrentAttachmentName(slot: any): string | null {
+        const att = CharacterManager.callOrProp(slot, 'attachment', 'getAttachment');
+        const name = CharacterManager.readName(att);
+        return name || null;
+    }
+
+    // Tên attachment ở setup pose của slot (SlotData.attachmentName)
+    private static readSetupAttachmentName(slotData: any): string {
+        const name = CharacterManager.callOrProp(slotData, 'attachmentName', 'getAttachmentName');
+        return typeof name === 'string' ? name : "";
+    }
+
+    // Tra tên attachment của slot thứ slotIndex trong các Skin (ưu tiên skin đang dùng)
+    private static findAttachmentNameInSkins(runtimeSkeleton: any, slotIndex: number): string {
+        const skins: any[] = [];
+        const currentSkin = CharacterManager.callOrProp(runtimeSkeleton, 'skin', 'getSkin');
+        if (currentSkin) skins.push(currentSkin);
+
+        const data = CharacterManager.callOrProp(runtimeSkeleton, 'data', 'getData');
+        const allSkins = data ? CharacterManager.callOrProp(data, 'skins', 'getSkins') : null;
+        if (Array.isArray(allSkins)) {
+            for (const skin of allSkins) {
+                if (skin && skins.indexOf(skin) === -1) skins.push(skin);
+            }
+        }
+
+        for (const skin of skins) {
+            // getAttachmentsForSlot đã được engine polyfill: (slotIndex, outArray)
+            if (typeof skin.getAttachmentsForSlot === 'function') {
+                try {
+                    const entries: any[] = [];
+                    skin.getAttachmentsForSlot(slotIndex, entries);
+                    for (const entry of entries) {
+                        const name = CharacterManager.readName(entry);
+                        if (name) return name;
+                    }
+                } catch (e) { /* thử cách khác bên dưới */ }
+            }
+
+            const entries = CharacterManager.callOrProp(skin, 'attachments', 'getAttachments');
+            if (Array.isArray(entries)) {
+                for (const entry of entries) {
+                    if (entry && entry.slotIndex === slotIndex) {
+                        const name = CharacterManager.readName(entry);
+                        if (name) return name;
+                    }
+                }
+            } else if (entries && typeof entries === 'object') {
+                const slotMap = entries[slotIndex];
+                if (slotMap) {
+                    const names = Object.keys(slotMap);
+                    if (names.length > 0) return names[0];
+                }
+            }
+        }
+        return "";
+    }
+
     //Lấy tất cả Slot & Attachment từ Target Character
     public getAllSlots(): void {
         if (!this.targetTestCharacter || !this.targetTestCharacter.spineSkeleton) {
@@ -241,70 +325,37 @@ export class CharacterManager extends Component {
 
         // Lấy danh sách slots từ runtime hoặc dữ liệu JSON.
         const slots = runtimeSkeleton ? runtimeSkeleton.slots : jsonSlots;
+        let enabledCount = 0;
+
         for (let i = 0; i < slots.length; i++) {
             const slot = slots[i];
 
-            // 1. Lấy tên attachment đang bật (nếu có)
+            // 1. Slot đang bật attachment nào?
+            //    LƯU Ý: bản Spine WASM có thể KHÔNG expose property `attachment`/`data`
+            //    (chỉ có getAttachment()/getData()), nên phải đọc bằng helper an toàn;
+            //    nếu không mọi slot sẽ ra null -> toàn bộ checkbox "Bật" đều tắt.
+            const slotData = runtimeSkeleton ? CharacterManager.readSlotData(slot) : null;
             const currentAttachmentName = runtimeSkeleton
-                ? (slot.attachment ? slot.attachment.name : null)
-                : (slot.attachment || null);
+                ? CharacterManager.readCurrentAttachmentName(slot)
+                : (typeof slot.attachment === 'string' ? slot.attachment : null);
+
             const slotName = runtimeSkeleton
-                ? (slot.data ? slot.data.name : "")
+                ? CharacterManager.readName(slotData)
                 : (slot.name || "");
+            if (!slotName) continue;
 
-            // 2. Tìm tên attachment kể cả khi currentAttachmentName là null (isEnabled = false)
-            let attachmentName = currentAttachmentName || (slot.data ? slot.data.attachmentName : null);
+            // 2. Nếu slot đang tắt, lấy attachment của setup pose làm gợi ý
+            let attachmentName = currentAttachmentName
+                || CharacterManager.readSetupAttachmentName(slotData)
+                || (runtimeSkeleton ? "" : (slot.attachment || ""));
 
-            // Nếu chưa tìm thấy attachmentName, duyệt các Skins của Skeleton để lấy tên attachment gán cho slot này
-            if (!attachmentName && runtimeSkeleton && runtimeSkeleton.data) {
-                const skins = runtimeSkeleton.data.skins || [];
-                const getNameStr = (obj: any): string => {
-                    if (!obj) return "";
-                    if (typeof obj === 'string') return obj;
-                    if (typeof obj.name === 'string') return obj.name;
-                    if (obj.name && typeof obj.name.name === 'string') return obj.name.name;
-                    return "";
-                };
-
-                for (let s = 0; s < skins.length; s++) {
-                    const skin = skins[s];
-                    if (!skin) continue;
-
-                    if (skin.attachments) {
-                        if (Array.isArray(skin.attachments)) {
-                            const entry = skin.attachments.find((att: any) => att && att.slotIndex === i);
-                            if (entry) {
-                                const found = getNameStr(entry.name) || getNameStr(entry.attachment) || getNameStr(entry);
-                                if (found) attachmentName = found;
-                            }
-                        } else if (typeof skin.attachments === 'object') {
-                            const slotMap = skin.attachments[i];
-                            if (slotMap) {
-                                const names = Object.keys(slotMap);
-                                if (names.length > 0) {
-                                    attachmentName = names[0];
-                                }
-                            }
-                        }
-                    }
-
-                    if (!attachmentName && typeof skin.getAttachments === 'function') {
-                        const attList = skin.getAttachments();
-                        if (Array.isArray(attList)) {
-                            const entry = attList.find((att: any) => att && att.slotIndex === i);
-                            if (entry) {
-                                const found = getNameStr(entry.name) || getNameStr(entry.attachment) || getNameStr(entry);
-                                if (found) attachmentName = found;
-                            }
-                        }
-                    }
-
-                    if (attachmentName) break;
-                }
+            // 3. Vẫn chưa có -> tra trong các Skin của skeleton (ưu tiên skin đang dùng)
+            if (!attachmentName && runtimeSkeleton) {
+                attachmentName = CharacterManager.findAttachmentNameInSkins(runtimeSkeleton, i);
             }
 
-            // Fallback cho Editor: lấy attachment đầu tiên của slot từ skins JSON.
-            if (!attachmentName && skeletonJson && skeletonJson.skins && slotName) {
+            // 4. Fallback cho Editor khi chưa có runtime skeleton: đọc thẳng từ skeletonJson
+            if (!attachmentName && skeletonJson && skeletonJson.skins) {
                 const skins = Array.isArray(skeletonJson.skins)
                     ? skeletonJson.skins
                     : Object.values(skeletonJson.skins);
@@ -321,12 +372,20 @@ export class CharacterManager extends Component {
             }
 
             const pair = new SlotAttachmentPair();
-            pair.isEnabled = currentAttachmentName !== null;
+            pair.isEnabled = !!currentAttachmentName;
             pair.slotName = slotName;
             // Dù isEnabled là false hay true, vẫn lưu giữ attachmentName (fallback về slotName nếu không có attachment nào)
             pair.attachmentName = attachmentName || slotName;
+            if (pair.isEnabled) enabledCount++;
 
             this._allEquipmentSet.push(pair);
+        }
+
+        if (this._allEquipmentSet.length > 0 && enabledCount === 0) {
+            console.warn('[CharacterManager] Đọc được ' + this._allEquipmentSet.length
+                + ' slot nhưng KHÔNG slot nào đang bật attachment.'
+                + ' Nguyên nhân thường gặp: Spine đang ở trạng thái đã bị "Tắt Tất Cả Đồ",'
+                + ' hoặc skin hiện tại chưa được set.');
         }
         this.myEquipmentSet = [...this._allEquipmentSet];
         console.log(`[CharacterManager] Đã lấy ${this._allEquipmentSet.length} slot từ Spine Skeleton.`);

@@ -11,7 +11,7 @@ export class Character extends Component {
     public spineSkeleton: sp.Skeleton | null = null;
 
     // Lưu lại trạng thái ép buộc của các slot (slotName -> attachmentName)
-    private forcedAttachments: Map<string, string | null> = new Map();
+    private forcedAttachments: Map<string, string> = new Map();
 
     protected start(): void {
         if(!this.spineSkeleton){
@@ -34,7 +34,9 @@ export class Character extends Component {
                 if (skeleton && typeof skeleton.findSlot === 'function' && !skeleton.findSlot(slotName)) {
                     continue;
                 }
-                this.spineSkeleton.setAttachment(slotName, attachmentName as any);
+                // LƯU Ý: binding native (wasm) của Spine chỉ nhận std::string.
+                // Truyền null sẽ ném BindingError, nên dùng chuỗi rỗng để gỡ attachment.
+                this.spineSkeleton.setAttachment(slotName, attachmentName ?? '');
             } catch (error) {
                 // Bỏ qua log warning ở update loop để tránh spam console
             }
@@ -59,16 +61,13 @@ export class Character extends Component {
                 }
             }
 
-            // Nếu attachmentName là rỗng, đặt thành null để tắt attachment
-            const targetAttachment = (!attachmentName || attachmentName.trim() === '') ? null : attachmentName;
-            this.spineSkeleton.setAttachment(slotName, targetAttachment as any);
-            if (skeleton) {
-                const slot = skeleton.findSlot(slotName);
-                if (slot) {
-                    slot.setAttachment(targetAttachment ? skeleton.getAttachmentByName(slotName, targetAttachment) : null);
-                }
-            }
-            // Lưu lại trạng thái ép buộc
+            // Nếu attachmentName rỗng/null -> dùng chuỗi rỗng để Spine gỡ attachment khỏi slot.
+            // KHÔNG truyền null: binding native (wasm) chỉ nhận std::string
+            // -> "BindingError: Cannot pass non-string to std::string".
+            const targetAttachment = (!attachmentName || attachmentName.trim() === '') ? '' : attachmentName;
+            this.spineSkeleton.setAttachment(slotName, targetAttachment);
+
+            // Lưu lại trạng thái ép buộc ('' nghĩa là tắt slot)
             this.forcedAttachments.set(slotName, targetAttachment);
         } catch (error) {
             console.error(`Lỗi khi thay đổi attachment cho slot "${slotName}" với attachment "${attachmentName}":`, error);

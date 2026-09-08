@@ -1,0 +1,15 @@
+{
+  "__version__": "1.0.0",
+  "channel_AppLovin": true,
+  "channel_Facebook": true,
+  "channel_Google": true,
+  "channel_IronSource": true,
+  "channel_Mintegral": true,
+  "channel_Moloco": true,
+  "channel_TikTok": true,
+  "channel_Unity": true,
+  "appleUrl": "https://apps.apple.com/vn/app/cosplaydom/id6755667284",
+  "googleUrl": "https://play.google.com/store/apps/details?id=com.abi.cosplaydom&gl=us",
+  "channel_UnityPlayworks": false,
+  "compressionType": "lossless"
+}

@@ -47,7 +47,8 @@ export class ToggleBoneSlot extends Component {
         if(!this.spineSkeleton) return;
 
         try{
-            const targetAttachment = attachmentName || null; // Nếu attachmentName là rỗng, đặt thành null để tắt attachment
+            // Chuỗi rỗng = gỡ attachment. Không truyền null vì binding native chỉ nhận std::string.
+            const targetAttachment = attachmentName || '';
             this.spineSkeleton.setAttachment(slotName, targetAttachment);
         } catch (error) {
             console.error(`Lỗi khi bật attachment cho slot "${slotName}" với attachment "${attachmentName}":`, error);
