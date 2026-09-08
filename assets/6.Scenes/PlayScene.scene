@@ -32,7 +32,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 703
+      "__id__": 705
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -63,7 +63,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 704
+      "__id__": 706
     },
     "_id": "37150f18-4c52-4f26-bdc5-00b4308270f1"
   },
@@ -209,13 +209,13 @@
         "__id__": 678
       },
       {
-        "__id__": 682
+        "__id__": 683
       },
       {
-        "__id__": 697
+        "__id__": 699
       },
       {
-        "__id__": 701
+        "__id__": 703
       }
     ],
     "_active": true,
@@ -738,7 +738,7 @@
         "__id__": 309
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 472
@@ -2103,7 +2103,7 @@
         "__id__": 49
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 55
@@ -2402,7 +2402,7 @@
       "__id__": 16
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 58
@@ -2925,7 +2925,7 @@
         "__id__": 80
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 445
@@ -3419,7 +3419,7 @@
         "__id__": 167
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 170
@@ -6647,7 +6647,7 @@
         "__id__": 178
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 182
@@ -7074,7 +7074,7 @@
         "__id__": 189
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 307
@@ -9879,9 +9879,9 @@
     "openBonesOnGrab": [],
     "closeBonesOnGrab": [],
     "drawFaceEffect": null,
-    "playLoopFxOnDrag": false,
-    "loopFxToPlay": 4,
-    "onlyPlayLoopFxWhenDrawing": true,
+    "playLoopFxOnDrag": true,
+    "loopFxToPlay": 3,
+    "onlyPlayLoopFxWhenDrawing": false,
     "playFxOnComplete": false,
     "completeFxToPlay": 1,
     "OnGrabEvent": [
@@ -10325,9 +10325,9 @@
     "openBonesOnGrab": [],
     "closeBonesOnGrab": [],
     "drawFaceEffect": null,
-    "playLoopFxOnDrag": false,
+    "playLoopFxOnDrag": true,
     "loopFxToPlay": 4,
-    "onlyPlayLoopFxWhenDrawing": true,
+    "onlyPlayLoopFxWhenDrawing": false,
     "playFxOnComplete": false,
     "completeFxToPlay": 1,
     "OnGrabEvent": [],
@@ -19588,6 +19588,9 @@
       },
       {
         "__id__": 681
+      },
+      {
+        "__id__": 682
       }
     ],
     "_id": "94iKmZlg1A666bdliG8/E0"
@@ -19611,6 +19614,15 @@
     }
   },
   {
+    "__type__": "PoolAmount",
+    "type": 3,
+    "amount": 0,
+    "prefab": {
+      "__uuid__": "c6a61899-b2f1-4055-953b-fd22da9f8337",
+      "__expectedType__": "cc.Prefab"
+    }
+  },
+  {
     "__type__": "cc.Node",
     "_name": "PLY_Sound",
     "_objFlags": 0,
@@ -19620,13 +19632,13 @@
     },
     "_children": [
       {
-        "__id__": 683
+        "__id__": 684
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 685
+        "__id__": 686
       }
     ],
     "_prefab": null,
@@ -19665,13 +19677,13 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
-      "__id__": 682
+      "__id__": 683
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 684
+        "__id__": 685
       }
     ],
     "_prefab": null,
@@ -19710,7 +19722,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 683
+      "__id__": 684
     },
     "_enabled": true,
     "__prefab": null,
@@ -19729,49 +19741,52 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 682
+      "__id__": 683
     },
     "_enabled": true,
     "__prefab": null,
     "fxAudio": {
-      "__id__": 686
+      "__id__": 687
     },
     "bgm1": {
-      "__id__": 684
+      "__id__": 685
     },
     "_id": "34oarrdzBIr5lFK4YK9pG0"
   },
   {
     "__type__": "FxAudio",
     "clickBox": {
-      "__id__": 687
-    },
-    "happy": {
       "__id__": 688
     },
-    "wrong": {
+    "happy": {
       "__id__": 689
     },
-    "spray": {
+    "wrong": {
       "__id__": 690
     },
-    "brush": {
+    "spray": {
       "__id__": 691
     },
-    "correct": {
+    "brush": {
       "__id__": 692
     },
-    "pop": {
+    "correct": {
       "__id__": 693
     },
-    "comb": {
+    "pop": {
       "__id__": 694
     },
-    "scissors": {
+    "comb": {
       "__id__": 695
     },
-    "curling": {
+    "scissors": {
       "__id__": 696
+    },
+    "curling": {
+      "__id__": 697
+    },
+    "snap": {
+      "__id__": 698
     }
   },
   {
@@ -19786,7 +19801,7 @@
   {
     "__type__": "SoundData",
     "clip": {
-      "__uuid__": "20113606-e6df-4892-b1b7-549bdb47b8f5",
+      "__uuid__": "d3a5389b-fa0c-4142-a800-3259f0317d8a",
       "__expectedType__": "cc.AudioClip"
     },
     "volume": 1,
@@ -19795,7 +19810,7 @@
   {
     "__type__": "SoundData",
     "clip": {
-      "__uuid__": "313d9880-4120-4c08-b2fe-7101b3a2cf66",
+      "__uuid__": "96ee8e8a-d721-4c4f-9ca7-5f92afa4cd02",
       "__expectedType__": "cc.AudioClip"
     },
     "volume": 1,
@@ -19862,6 +19877,15 @@
     "repeatCount": 1
   },
   {
+    "__type__": "SoundData",
+    "clip": {
+      "__uuid__": "4e8c3fa7-2217-440b-9b34-9bd5c206acf6",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "volume": 0.5,
+    "repeatCount": 1
+  },
+  {
     "__type__": "cc.Node",
     "_name": "StorePopupTrigger",
     "_objFlags": 0,
@@ -19873,10 +19897,10 @@
     "_active": false,
     "_components": [
       {
-        "__id__": 698
+        "__id__": 700
       },
       {
-        "__id__": 700
+        "__id__": 702
       }
     ],
     "_prefab": null,
@@ -19915,7 +19939,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 697
+      "__id__": 699
     },
     "_enabled": true,
     "__prefab": null,
@@ -19924,7 +19948,7 @@
     "triggerImmediately": true,
     "onOpenStore": [
       {
-        "__id__": 699
+        "__id__": 701
       }
     ],
     "_id": "b8yEHYUMJN6a8ky89GEbUY"
@@ -19945,7 +19969,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 697
+      "__id__": 699
     },
     "_enabled": true,
     "__prefab": null,
@@ -19964,7 +19988,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 702
+        "__id__": 704
       }
     ],
     "_prefab": null,
@@ -20003,7 +20027,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 701
+      "__id__": 703
     },
     "_enabled": true,
     "__prefab": null,
@@ -20026,28 +20050,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 705
-    },
-    "shadows": {
-      "__id__": 706
-    },
-    "_skybox": {
       "__id__": 707
     },
-    "fog": {
+    "shadows": {
       "__id__": 708
     },
-    "octree": {
+    "_skybox": {
       "__id__": 709
     },
-    "skin": {
+    "fog": {
       "__id__": 710
     },
-    "lightProbeInfo": {
+    "octree": {
       "__id__": 711
     },
-    "postSettings": {
+    "skin": {
       "__id__": 712
+    },
+    "lightProbeInfo": {
+      "__id__": 713
+    },
+    "postSettings": {
+      "__id__": 714
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

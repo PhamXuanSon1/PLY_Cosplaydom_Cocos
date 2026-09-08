@@ -395,6 +395,9 @@ export class DrawItemManager extends Component {
                 CharacterManager.instance.playHappyAnim();
             }
 
+            // play sound happy
+            if (Ply_SoundManager.Ins != null) Ply_SoundManager.Ins.playFx(FxType.Happy);
+
             rewarded = true;
         }
 

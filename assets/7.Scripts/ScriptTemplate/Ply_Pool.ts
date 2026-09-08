@@ -10,6 +10,7 @@ export enum PoolType {
     Heart = 0,
     CorrectEffect = 1,
     BreakHeart = 2,
+    Star = 3,
 }
 // Dang ky enum de hien thi tren inspector cua Cocos Creator
 Enum(PoolType);

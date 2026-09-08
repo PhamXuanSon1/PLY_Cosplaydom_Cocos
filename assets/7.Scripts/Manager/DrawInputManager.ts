@@ -803,7 +803,13 @@ export class DrawInputManager extends Component {
                                 return;
                             }
 
-                            if (Ply_SoundManager.Ins != null) Ply_SoundManager.Ins.playFx(FxType.Happy);
+                            // Tiếng riêng cho hành động snap. Gán clip ở PLY_Sound ->
+                            // Ply_SoundManager -> Fx Audio -> Snap. Bỏ trống clip thì im lặng.
+                            //
+                            // Đây KHÔNG phải tiếng Happy: muốn item nào có thêm tiếng riêng khi
+                            // hoàn thành thì bật "Play FX On Complete" + "Complete FX Type"
+                            // trên chính DrawItemController của item đó.
+                            if (Ply_SoundManager.Ins != null) Ply_SoundManager.Ins.playFx(FxType.Snap);
 
                             if (!this.currentDrawItemController.isCompleted) {
                                 this.currentDrawItemController.isCompleted = true;

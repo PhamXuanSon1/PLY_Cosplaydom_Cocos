@@ -1,0 +1,46 @@
+{
+  "package_version": 2,
+  "version": "1.0.0",
+  "name": "unity-particle-importer",
+  "title": "Unity Particle Importer",
+  "description": "Imports Unity Shuriken effects exported as .uparticle.json into cc.ParticleSystem nodes, creating matching materials and texture assets.",
+  "author": "Particles_Project",
+  "editor": ">=3.4.0",
+  "main": "./main.js",
+  "panels": {
+    "default": {
+      "title": "Unity Particle Importer",
+      "type": "dockable",
+      "main": "./panel/index.js",
+      "size": {
+        "min-width": 420,
+        "min-height": 360,
+        "width": 520,
+        "height": 520
+      }
+    }
+  },
+  "contributions": {
+    "menu": [
+      {
+        "path": "Extension/Unity Particle",
+        "label": "Import Effect...",
+        "message": "open-panel"
+      },
+      {
+        "path": "Extension/Unity Particle",
+        "label": "Import Folder (batch)...",
+        "message": "import-folder"
+      }
+    ],
+    "messages": {
+      "open-panel": { "methods": ["openPanel"] },
+      "import-folder": { "methods": ["importFolderDialog"] },
+      "import-file": { "methods": ["importFile"] },
+      "pick-json": { "methods": ["pickJson"] }
+    },
+    "scene": {
+      "script": "./scene.js"
+    }
+  }
+}

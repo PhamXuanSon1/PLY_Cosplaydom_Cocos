@@ -16,8 +16,21 @@ export enum FxType {
     Comb = 7,
     Scissors = 8,
     Curling = 9,
+    /** Tieng phat khi mot DrawItem loai SnapToTarget dinh dung vao target. */
+    Snap = 10,
 }
 Enum(FxType);
+
+/**
+ * So luong FxType. Cac mang fxSources/queuedCount/queueTimers duoc danh index
+ * bang gia tri enum nen phai dai bang so phan tu cua enum - truoc day hard-code
+ * 10, them mot loai moi la tran mang.
+ *
+ * LUU Y: gia tri so cua tung FxType duoc luu thang vao scene/prefab
+ * (Complete FX Type, Loop FX To Play...). Chi duoc THEM vao CUOI enum, khong
+ * duoc chen vao giua, neu khong moi tham chieu cu se tro sai am thanh.
+ */
+const FX_TYPE_COUNT = Object.keys(FxType).filter((k) => isNaN(Number(k))).length;
 
 /**
  * Cau hinh du lieu am thanh.
@@ -70,6 +83,9 @@ class FxAudio {
 
     @property(SoundData)
     curling: SoundData = new SoundData();
+
+    @property(SoundData)
+    snap: SoundData = new SoundData();
 }
 
 /**
@@ -92,9 +108,9 @@ export class Ply_SoundManager extends Ply_Singleton {
     @property(AudioSource)
     bgm1: AudioSource | null = null;
 
-    private fxSources: (AudioSource | null)[] = new Array(10).fill(null);
-    private queuedCount: number[] = new Array(10).fill(0);
-    private queueTimers: (number | null)[] = new Array(10).fill(null);
+    private fxSources: (AudioSource | null)[] = new Array(FX_TYPE_COUNT).fill(null);
+    private queuedCount: number[] = new Array(FX_TYPE_COUNT).fill(0);
+    private queueTimers: (number | null)[] = new Array(FX_TYPE_COUNT).fill(null);
 
     private isMute: boolean = false;
 
@@ -263,6 +279,7 @@ export class Ply_SoundManager extends Ply_Singleton {
             case FxType.Comb: return this.fxAudio.comb;
             case FxType.Scissors: return this.fxAudio.scissors;
             case FxType.Curling: return this.fxAudio.curling;
+            case FxType.Snap: return this.fxAudio.snap;
             default: return null;
         }
     }
