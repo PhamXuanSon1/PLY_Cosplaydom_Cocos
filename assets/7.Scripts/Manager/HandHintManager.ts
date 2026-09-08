@@ -339,7 +339,7 @@ export class HandHintManager extends Component {
             const target = this.findTargetFor(nextItem.makeupID, mapIndex);
             if (target != null) {
                 const targetPos = this.getTargetPos(target);
-                if (target.continuousMode) this.animateDragAndCircle(startPos, targetPos, target.hintCircleRadius);
+                if (target.continuousMode) this.animateDragAndCircle(startPos, targetPos, this.getHintWorldRadius(target));
                 else this.animateDrag(startPos, targetPos);
             } else {
                 console.warn(`[HandHint] Không tìm thấy MakeupTarget có ID ${nextItem.makeupID}`);
@@ -349,7 +349,7 @@ export class HandHintManager extends Component {
             if (target != null && nextItem.dipTarget != null) {
                 const targetPos = this.getTargetPos(target);
                 const dipPos = nextItem.dipTarget.worldPosition.clone();
-                this.animateDipAndDraw(startPos, dipPos, targetPos, target.continuousMode, target.hintCircleRadius);
+                this.animateDipAndDraw(startPos, dipPos, targetPos, target.continuousMode, this.getHintWorldRadius(target));
             } else {
                 console.warn(`[HandHint] Thiếu MakeupTarget hoặc khay phấn cho ${nextItem.node.name}`);
             }
@@ -361,6 +361,29 @@ export class HandHintManager extends Component {
     private getTargetPos(target: MakeupTarget): Vec3 {
         if (target == null) return new Vec3();
         return target.node.worldPosition.clone();
+    }
+
+    /**
+     * Quy đổi `hintCircleRadius` sang world-space.
+     *
+     * `hintCircleRadius` được canh trong Editor theo LOCAL-space của MakeupTarget, và
+     * MakeupTarget nằm trong nhánh `ScaleGameplay` — nhánh này bị UI.resize() nhân scale
+     * theo bề ngang màn hình (portrait: width/1080, landscape: 1.1). Trong khi đó bàn tay
+     * được tween bằng `worldPosition`, tức bán kính cộng thẳng vào toạ độ world.
+     *
+     * Trên Editor scale = 1 nên hai bên trùng nhau; lên browser scale != 1 thì vòng xoay
+     * của tay lệch hẳn so với vòng tròn vẽ quanh MakeupTarget. Nhân với worldScale của
+     * target để hai bên khớp ở mọi kích thước màn hình.
+     */
+    private getHintWorldRadius(target: MakeupTarget | null): number {
+        const rawRadius = (target != null && target.hintCircleRadius > 0)
+            ? target.hintCircleRadius
+            : this.circleRadius;
+
+        if (target == null || target.node == null || !target.node.isValid) return rawRadius;
+
+        const scale = Math.abs(target.node.worldScale.x);
+        return scale > 1e-6 ? rawRadius * scale : rawRadius;
     }
 
     private animateDrag(start: Vec3, end: Vec3): void {
@@ -516,7 +539,7 @@ export class HandHintManager extends Component {
                     this.drawDebugArrow(g, startLocal, endLocal, new Color(255, 200, 0, 240));
 
                     // Vẽ vòng xoay tại MakeupTarget
-                    const r = target.hintCircleRadius > 0 ? target.hintCircleRadius : this.circleRadius;
+                    const r = this.getHintWorldRadius(target);
                     g.fillColor = new Color(255, 200, 0, 35);
                     g.strokeColor = new Color(255, 200, 0, 200);
                     g.lineWidth = 2;
@@ -536,7 +559,7 @@ export class HandHintManager extends Component {
                         const endLocal = new Vec3(endWorld.x - myWorldPos.x, endWorld.y - myWorldPos.y, 0);
                         this.drawDebugArrow(g, dipLocal, endLocal, new Color(255, 200, 0, 240));
 
-                        const r = target.hintCircleRadius > 0 ? target.hintCircleRadius : this.circleRadius;
+                        const r = this.getHintWorldRadius(target);
                         g.fillColor = new Color(255, 200, 0, 35);
                         g.strokeColor = new Color(255, 200, 0, 200);
                         g.lineWidth = 2;
