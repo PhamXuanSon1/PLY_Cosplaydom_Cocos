@@ -15,8 +15,8 @@
       "id": "6c48a",
       "name": "texture",
       "userData": {
-        "wrapModeS": "clamp-to-edge",
-        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
         "imageUuidOrDatabaseUri": "6d412e2e-78b3-4700-8888-e43633c1eb70",
         "isUuid": true,
         "visible": false,
@@ -129,6 +129,10 @@
     "type": "sprite-frame",
     "fixAlphaTransparencyArtifacts": true,
     "hasAlpha": true,
-    "redirect": "6d412e2e-78b3-4700-8888-e43633c1eb70@6c48a"
+    "redirect": "6d412e2e-78b3-4700-8888-e43633c1eb70@6c48a",
+    "compressSettings": {
+      "useCompressTexture": true,
+      "presetId": "38VNaJsu5NhKD2A6Ufyipg"
+    }
   }
 }

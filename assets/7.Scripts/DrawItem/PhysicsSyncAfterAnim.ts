@@ -1,4 +1,5 @@
 import { _decorator, Component, Animation, Collider2D, RigidBody2D, sp } from 'cc';
+import { disablePhysics2D, enablePhysics2D } from '../Utils/Physics2DSync';
 const { ccclass, property } = _decorator;
 
 /**
@@ -59,6 +60,10 @@ export class PhysicsSyncAfterAnim extends Component {
         }, 0.1);
     }
 
+    protected onDisable(): void {
+        this._isSyncing = false;
+    }
+
     protected onDestroy(): void {
         if (this._anim) {
             this._anim.off(Animation.EventType.FINISHED, this._onAnimFinished, this);
@@ -86,6 +91,7 @@ export class PhysicsSyncAfterAnim extends Component {
     /** Ép collider rebuild bằng cách tắt/bật lại */
     private _doSync(): void {
         if (this._isSyncing) return; // Tránh gọi chồng
+        if (!this.isValid || !this.node || !this.node.isValid) return;
 
         // Thu thập cả trên chính node lẫn con
         const colliders = this.getComponentsInChildren(Collider2D);
@@ -94,32 +100,18 @@ export class PhysicsSyncAfterAnim extends Component {
         const activeBodies: RigidBody2D[] = [];
         const activeColliders: Collider2D[] = [];
 
-        // Tắt
-        for (const body of bodies) {
-            if (body && body.enabled) {
-                activeBodies.push(body);
-                body.enabled = false;
-            }
-        }
-        for (const col of colliders) {
-            if (col && col.enabled) {
-                activeColliders.push(col);
-                col.enabled = false;
-            }
-        }
+        // Tắt: Collider TRƯỚC, RigidBody SAU (xem chú thích trong Physics2DSync).
+        // Nếu tắt body trước, fixture bị destroy 2 lần => hỏng b2DynamicTree
+        // => testPoint/raycast sau đó văng "b2GrowableStack.Pop".
+        disablePhysics2D(colliders, bodies, activeColliders, activeBodies);
 
         if (activeBodies.length === 0 && activeColliders.length === 0) return;
 
         this._isSyncing = true;
 
-        // Bật lại frame sau để Box2D rebuild hoàn toàn
+        // Bật lại frame sau để Box2D rebuild hoàn toàn (RigidBody trước, Collider sau)
         this.scheduleOnce(() => {
-            for (const body of activeBodies) {
-                if (body && body.isValid) body.enabled = true;
-            }
-            for (const col of activeColliders) {
-                if (col && col.isValid) col.enabled = true;
-            }
+            enablePhysics2D(activeColliders, activeBodies);
             this._isSyncing = false;
         }, 0);
     }

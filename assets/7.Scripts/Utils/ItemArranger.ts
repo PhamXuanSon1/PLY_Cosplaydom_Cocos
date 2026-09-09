@@ -4,6 +4,7 @@ import { HandHintManager } from '../Manager/HandHintManager';
 import { DrawItemController } from '../DrawItem/DrawItemController';
 import { DrawItemMovement } from '../DrawItem/DrawItemMovement';
 import { PhysicsSyncAfterAnim } from '../DrawItem/PhysicsSyncAfterAnim';
+import { rebuildPhysics2D } from './Physics2DSync';
 
 const { ccclass, property, executeInEditMode } = _decorator;
 
@@ -273,39 +274,7 @@ export class ItemArranger extends Component {
     }
 
     private syncCollidersForItem(itemNode: Node): void {
-        if (!itemNode) return;
-
-        const colliders = itemNode.getComponentsInChildren(Collider2D);
-        const bodies = itemNode.getComponentsInChildren(RigidBody2D);
-        const activeColliders: Collider2D[] = [];
-        const activeBodies: RigidBody2D[] = [];
-
-        for (const collider of colliders) {
-            if (collider && collider.enabled) {
-                activeColliders.push(collider);
-                collider.enabled = false;
-            }
-        }
-
-        for (const body of bodies) {
-            if (body && body.enabled) {
-                activeBodies.push(body);
-                body.enabled = false;
-            }
-        }
-
-        this.scheduleOnce(() => {
-            for (const body of activeBodies) {
-                if (body && body.isValid) {
-                    body.enabled = true;
-                }
-            }
-            for (const collider of activeColliders) {
-                if (collider && collider.isValid) {
-                    collider.enabled = true;
-                }
-            }
-        }, 0);
+        rebuildPhysics2D(this, [itemNode]);
     }
 
     // Cocos không hỗ trợ ContextMenu giống hệt Unity, nhưng ta có thể dùng property getter/setter hoặc executeInEditMode.

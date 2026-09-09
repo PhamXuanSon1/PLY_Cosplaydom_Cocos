@@ -3,6 +3,7 @@ import { World } from './World';
 import { PointerController } from './PointerController';
 import { SoundType } from './SoundManager';
 import { Clock } from './Clock';
+import { disablePhysics2D, enablePhysics2D } from '../Utils/Physics2DSync';
 const { ccclass, property } = _decorator;
 
 export enum BindUIType {
@@ -270,32 +271,23 @@ export class UI extends Component {
             const activeColliders: Collider2D[] = [];
 
             for (const parentNode of nodesToSync) {
-                if (!parentNode) continue;
+                if (!parentNode || !parentNode.isValid) continue;
 
-                const bodies = parentNode.getComponentsInChildren(RigidBody2D);
-                for (const body of bodies) {
-                    if (body && body.enabled) {
-                        activeBodies.push(body);
-                        body.enabled = false;
-                    }
-                }
-                const colliders = parentNode.getComponentsInChildren(Collider2D);
-                for (const col of colliders) {
-                    if (col && col.enabled) {
-                        activeColliders.push(col);
-                        col.enabled = false;
-                    }
-                }
+                // Tắt Collider TRƯỚC, RigidBody SAU. Ngược thứ tự sẽ destroy fixture
+                // 2 lần và làm hỏng b2DynamicTree (lỗi b2GrowableStack.Pop khi testPoint).
+                disablePhysics2D(
+                    parentNode.getComponentsInChildren(Collider2D),
+                    parentNode.getComponentsInChildren(RigidBody2D),
+                    activeColliders,
+                    activeBodies,
+                );
             }
+
+            if (activeBodies.length === 0 && activeColliders.length === 0) return;
 
             // Đợi thêm 1 frame nữa rồi bật lại để Box2D rebuild hoàn toàn
             this.scheduleOnce(() => {
-                for (const body of activeBodies) {
-                    body.enabled = true;
-                }
-                for (const col of activeColliders) {
-                    col.enabled = true;
-                }
+                enablePhysics2D(activeColliders, activeBodies);
             }, 0);
         }, 0);
     }

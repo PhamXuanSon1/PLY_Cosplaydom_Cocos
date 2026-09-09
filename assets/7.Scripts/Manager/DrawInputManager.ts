@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game, BoxCollider2D, CircleCollider2D, PolygonCollider2D, Intersection2D, director, view } from 'cc';
+import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game, BoxCollider2D, CircleCollider2D, PolygonCollider2D, Intersection2D, director, view, warn } from 'cc';
 import { AppLovinAnalytics } from '../Tool/AppLovinAnalytics';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from './CharacterManager';
@@ -12,6 +12,7 @@ import { GameManager } from './GameManager';
 import { DrawItemManager } from './DrawItemManager';
 import { HandHintManager } from './HandHintManager';
 import { PhysicsSyncAfterAnim } from '../DrawItem/PhysicsSyncAfterAnim';
+import { rebuildPhysics2D } from '../Utils/Physics2DSync';
 
 const { ccclass, property } = _decorator;
 
@@ -395,7 +396,15 @@ export class DrawInputManager extends Component {
 
         // 1. Dùng PhysicsSystem2D kiểm tra va chạm bằng 2D Collider (BoxCollider2D, PolygonCollider2D...)
         if (PhysicsSystem2D.instance) {
-            const colliders2D = PhysicsSystem2D.instance.testPoint(touchVec2);
+            // testPoint có thể văng lỗi nếu b2DynamicTree bị hỏng (fixture destroy sai thứ tự).
+            // Bọc try/catch để rơi xuống fallback hình học bên dưới thay vì crash cả game.
+            let colliders2D: readonly Collider2D[] = [];
+            try {
+                colliders2D = PhysicsSystem2D.instance.testPoint(touchVec2);
+            } catch (e) {
+                warn('[DrawInputManager] PhysicsSystem2D.testPoint failed, fallback to geometric hit test:', e);
+                colliders2D = [];
+            }
             for (let i = 0; i < colliders2D.length; i++) {
                 const colNode = colliders2D[i]?.node;
                 if (!colNode) continue;
@@ -1146,7 +1155,7 @@ export class DrawInputManager extends Component {
     }
 
     private forceSyncItemPhysics(itemNode: Node): void {
-        if (!itemNode) return;
+        if (!itemNode || !itemNode.isValid) return;
 
         const physicsSync = itemNode.getComponent(PhysicsSyncAfterAnim) || itemNode.getComponentInChildren(PhysicsSyncAfterAnim);
         if (physicsSync) {
@@ -1154,37 +1163,8 @@ export class DrawInputManager extends Component {
             return;
         }
 
-        const colliders = itemNode.getComponentsInChildren(Collider2D);
-        const bodies = itemNode.getComponentsInChildren(RigidBody2D);
-        const activeColliders: Collider2D[] = [];
-        const activeBodies: RigidBody2D[] = [];
-
-        for (const collider of colliders) {
-            if (collider && collider.enabled) {
-                activeColliders.push(collider);
-                collider.enabled = false;
-            }
-        }
-        for (const body of bodies) {
-            if (body && body.enabled) {
-                activeBodies.push(body);
-                body.enabled = false;
-            }
-        }
-
-        this.scheduleOnce(() => {
-            for (const body of activeBodies) {
-                if (body && body.isValid) {
-                    body.enabled = true;
-                }
-            }
-            for (const collider of activeColliders) {
-                if (collider && collider.isValid) {
-                    collider.enabled = true;
-                }
-            }
-        }, 0);
-    } 
+        rebuildPhysics2D(this, [itemNode]);
+    }
 
     /** Tìm DrawItemGraphic trên chính node bị kéo, fallback xuống node con (Cocos getComponentInChildren không tính node hiện tại). */
     private getDrawGraphic(item: DrawItemMovement): DrawItemGraphic | null {
