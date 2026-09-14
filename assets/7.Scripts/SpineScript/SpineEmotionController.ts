@@ -55,6 +55,37 @@ export class SpineEmotionController extends Component {
     private charComponent: Character | null = null;
     private _originalAnimName: string = "";
 
+    // Spine WASM (4.x) chỉ expose getter dạng hàm (getName/getAnimation/getAttachment),
+    // bản JS (3.8) expose property. Helper này đọc được cả hai.
+    private static readProp(obj: any, prop: string, getter: string): any {
+        if (!obj) return undefined;
+        const direct = obj[prop];
+        if (direct !== undefined && direct !== null) return direct;
+        if (typeof obj[getter] === 'function') {
+            try { return obj[getter](); } catch (e) { return undefined; }
+        }
+        return undefined;
+    }
+
+    private static getCurrentAnimName(entry: any): string {
+        const anim = SpineEmotionController.readProp(entry, 'animation', 'getAnimation');
+        const name = SpineEmotionController.readProp(anim, 'name', 'getName');
+        return typeof name === 'string' ? name : '';
+    }
+
+    private getSlotAttachmentName(slotName: string): string | null {
+        if (!this.skeletonAnimation) return null;
+        const runtimeSkeleton = (this.skeletonAnimation as any)._skeleton;
+        let slot: any = null;
+        if (runtimeSkeleton && typeof runtimeSkeleton.findSlot === 'function') slot = runtimeSkeleton.findSlot(slotName);
+        if (!slot && typeof (this.skeletonAnimation as any).findSlot === 'function') slot = (this.skeletonAnimation as any).findSlot(slotName);
+        if (!slot) return undefined as any; // slot không tồn tại
+        const att = SpineEmotionController.readProp(slot, 'attachment', 'getAttachment');
+        if (!att) return null;
+        const name = SpineEmotionController.readProp(att, 'name', 'getName');
+        return typeof name === 'string' ? name : null;
+    }
+
     start() {
         if (!this.skeletonAnimation) {
             this.skeletonAnimation = this.getComponent(sp.Skeleton);
@@ -63,10 +94,8 @@ export class SpineEmotionController extends Component {
 
         // Lưu animation ban đầu (thường là idle)
         if (this.skeletonAnimation) {
-            const current = this.skeletonAnimation.getCurrent(0);
-            if (current && current.animation) {
-                this._originalAnimName = current.animation.name;
-            }
+            const name = SpineEmotionController.getCurrentAnimName(this.skeletonAnimation.getCurrent(0));
+            if (name) this._originalAnimName = name;
         }
     }
 
@@ -81,10 +110,8 @@ export class SpineEmotionController extends Component {
         if (!this.skeletonAnimation || !this.charComponent) return;
 
         // Lưu lại animation đang chạy ở track 0 trước khi chuyển sang emotion
-        const currentEntry = this.skeletonAnimation.getCurrent(0);
-        if (currentEntry && currentEntry.animation) {
-            this._originalAnimName = currentEntry.animation.name;
-        }
+        const currentName = SpineEmotionController.getCurrentAnimName(this.skeletonAnimation.getCurrent(0));
+        if (currentName) this._originalAnimName = currentName;
 
         const revertAnimName = (this.defaultAnimationName && this.defaultAnimationName.trim() !== "")
             ? this.defaultAnimationName
@@ -93,23 +120,20 @@ export class SpineEmotionController extends Component {
         const revertActions: (() => void)[] = []; // Mảng lưu các hành động để quay về trạng thái ban đầu
 
         for (const slotConfig of slots) {
-            const slot = this.skeletonAnimation.findSlot(slotConfig.slotName);
+            const currentAttachmentName = this.getSlotAttachmentName(slotConfig.slotName); // undefined = không có slot, null = slot đang tắt
 
-            if (!slot) {
+            if (currentAttachmentName === undefined) {
                 console.warn(`Không tìm thấy slot: ${slotConfig.slotName}`);
                 continue;
             }
 
-            const currentAttachment = slot.getAttachment(); // Lấy attachment hiện tại của slot
-            const currentAttachmentName = currentAttachment ? currentAttachment.name : null; // Lấy tên attachment hiện tại
-
             //nếu requiredCurrentAttachment được đặt và attachment hiện tại không khớp, bỏ qua slot này
             if (slotConfig.requiredCurrentAttachment && slotConfig.requiredCurrentAttachment.trim() !== ""
                 && currentAttachmentName !== slotConfig.requiredCurrentAttachment) {
-                console.log(`Slot ${slotConfig.slotName} không có attachment yêu cầu. Bỏ qua.`);
+                console.log(`Slot ${slotConfig.slotName} đang là '${currentAttachmentName}', không khớp '${slotConfig.requiredCurrentAttachment}'. Bỏ qua.`);
                 continue;
             } else {
-                if (!currentAttachment) continue; // Nếu không có attachment hiện tại, bỏ qua slot này
+                if (!currentAttachmentName) continue; // Nếu không có attachment hiện tại, bỏ qua slot này
             }
 
             const revertTo = (!slotConfig.defaultAttachmentName || slotConfig.defaultAttachmentName.trim() === "")

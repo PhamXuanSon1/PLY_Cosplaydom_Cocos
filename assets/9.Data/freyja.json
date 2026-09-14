@@ -772,7 +772,7 @@
       "attachmentName": "Face/Skincare_Mouth"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "Makeup/Face/Makeup_Mouth",
       "attachmentName": "Face/Makeup_Mouth"
     },

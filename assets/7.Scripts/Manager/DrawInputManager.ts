@@ -11,6 +11,7 @@ import { MakeupTarget } from '../DrawItem/MakeupTarget';
 import { GameManager } from './GameManager';
 import { DrawItemManager } from './DrawItemManager';
 import { HandHintManager } from './HandHintManager';
+import { ui } from './UI';
 import { PhysicsSyncAfterAnim } from '../DrawItem/PhysicsSyncAfterAnim';
 import { rebuildPhysics2D } from '../Utils/Physics2DSync';
 
@@ -261,45 +262,16 @@ export class DrawInputManager extends Component {
             return;
         }
 
+        // Không còn Map Intro: click đầu tiên chỉ đánh dấu bắt đầu chơi (analytics) rồi xử lý input luôn
         if (!this.isClickFirst) {
-            if (this.introAnimator) {
-                this.isPlayingIntro = true;
-                const anim = this.introAnimator.getComponent(Animation);
-                let duration = this.introCustomDuration;
-
-                if (anim) {
-                    const clipName = this.introClipName || (anim.defaultClip ? anim.defaultClip.name : '');
-                    if (clipName) {
-                        anim.play(clipName);
-                        const state = anim.getState(clipName);
-                        if (state && state.duration > 0 && duration <= 0) {
-                            duration = state.duration;
-                        }
-                    } else {
-                        anim.play();
-                        if (anim.defaultClip && anim.defaultClip.duration > 0 && duration <= 0) {
-                            duration = anim.defaultClip.duration;
-                        }
-                    }
-
-                    const onAnimFinish = () => {
-                        anim.off(Animation.EventType.FINISHED, onAnimFinish, this);
-                        this.turnOnMap1();
-                    };
-                    anim.on(Animation.EventType.FINISHED, onAnimFinish, this);
-                }
-
-                if (duration <= 0) duration = 0.5;
-
-                this.scheduleOnce(() => {
-                    if (this.isPlayingIntro) {
-                        this.turnOnMap1();
-                    }
-                }, duration);
-                return;
+            this.isClickFirst = true;
+            // Bật/tắt các node First On / First Off cấu hình trên UI
+            if (ui) ui.firstMove();
+            const progressMgr = (globalThis as any).ProgressTrackingManager?.Instance || (window as any).ProgressTrackingManager?.Instance;
+            if (progressMgr && typeof progressMgr.StartChallenge === 'function') {
+                progressMgr.StartChallenge();
             } else {
-                this.turnOnMap1();
-                return;
+                AppLovinAnalytics.challengeStarted();
             }
         }
 
