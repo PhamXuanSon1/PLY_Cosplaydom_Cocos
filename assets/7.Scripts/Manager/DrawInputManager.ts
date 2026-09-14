@@ -173,6 +173,8 @@ export class DrawInputManager extends Component {
 
     public currentDrawItem: DrawItemMovement | null = null;
     public ignoreScrollInput: boolean = false;
+    /** Khoá toàn bộ input (dùng cho các đoạn cutscene/sequence). Thả item đang cầm khi khoá. */
+    public isInputLocked: boolean = false;
     private currentDrawItemController: DrawItemController | null = null;
     private offset: Vec3 = new Vec3();
     private zCoord: number = 0;
@@ -252,6 +254,7 @@ export class DrawInputManager extends Component {
         }
 
         if (this.isPlayingIntro) return;
+        if (this.isInputLocked) return;
         if (this.ignoreScrollInput) return;
 
         if (this.isGoToStoreOnClickEnabled) {
@@ -623,6 +626,7 @@ export class DrawInputManager extends Component {
 
                     if (dist < this.dipDistanceThreshold && canDip) {
                         this.currentDrawItemController.hasDipped = true;
+                        if (dipTargetComp) dipTargetComp.onDipped();
                         this.currentDrawItemController.emitCompleteEvent();
                     }
                 }
@@ -749,6 +753,18 @@ export class DrawInputManager extends Component {
     public ForceDropItem(): void {
         this.forceDropItem();
     }
+
+    /** Khoá input: thả item đang cầm và bỏ qua mọi touch cho tới khi unlockInput(). */
+    public lockInput(): void {
+        this.forceDropItem();
+        this.isInputLocked = true;
+    }
+    public LockInput(): void { this.lockInput(); }
+
+    public unlockInput(): void {
+        this.isInputLocked = false;
+    }
+    public UnlockInput(): void { this.unlockInput(); }
 
     public mouseUp(): void {
         if (this.isDropping) return;

@@ -18,6 +18,12 @@ export enum FxType {
     Curling = 9,
     /** Tieng phat khi mot DrawItem loai SnapToTarget dinh dung vao target. */
     Snap = 10,
+    /** Tieng tich tac dong ho dem nguoc (ClockTimer). */
+    Clock = 11,
+    /** Tieng nuoc (rua mat, voi nuoc...). */
+    Water = 12,
+    /** Tieng correct thu 2 (bien the khac cua Correct). */
+    Correct2 = 13,
 }
 Enum(FxType);
 
@@ -86,6 +92,15 @@ class FxAudio {
 
     @property(SoundData)
     snap: SoundData = new SoundData();
+
+    @property(SoundData)
+    clock: SoundData = new SoundData();
+
+    @property(SoundData)
+    water: SoundData = new SoundData();
+
+    @property(SoundData)
+    correct2: SoundData = new SoundData();
 }
 
 /**
@@ -111,6 +126,8 @@ export class Ply_SoundManager extends Ply_Singleton {
     private fxSources: (AudioSource | null)[] = new Array(FX_TYPE_COUNT).fill(null);
     private queuedCount: number[] = new Array(FX_TYPE_COUNT).fill(0);
     private queueTimers: (number | null)[] = new Array(FX_TYPE_COUNT).fill(null);
+    /** Cac AudioSource phu de phat chong (repeatCount) cho tung FxType. */
+    private fxRepeatSources: AudioSource[][] = new Array(FX_TYPE_COUNT).fill(null).map(() => []);
 
     private isMute: boolean = false;
 
@@ -141,11 +158,24 @@ export class Ply_SoundManager extends Ply_Singleton {
         const source = this.fxSources[index]!;
         source.clip = data.clip;
         source.volume = data.volume;
+        source.loop = false;
         source.play();
 
-        // Phat lap de tang am luong (giong xu ly trong Unity)
-        for (let i = 1; i < data.repeatCount; i++) {
-            source.playOneShot(data.clip, data.volume);
+        // Phat chong them (repeatCount - 1) ban sao cung luc de tang am luong (giong Unity).
+        // Dung AudioSource rieng cho tung ban sao thay vi playOneShot: playOneShot tren web
+        // load clip bat dong bo & khong dam bao phat, nen truoc day repeat khong co tac dung.
+        const extra = Math.max(0, Math.floor(data.repeatCount) - 1);
+        if (extra > 0) {
+            let pool = this.fxRepeatSources[index];
+            if (!pool) pool = this.fxRepeatSources[index] = [];
+            for (let i = 0; i < extra; i++) {
+                if (!pool[i]) pool[i] = this.createAudioSource(`SoundFX_${FxType[fxType]}_Repeat${i + 1}`);
+                const extraSource = pool[i];
+                extraSource.clip = data.clip;
+                extraSource.volume = data.volume;
+                extraSource.loop = false;
+                extraSource.play();
+            }
         }
     }
 
@@ -245,6 +275,8 @@ export class Ply_SoundManager extends Ply_Singleton {
         if (index >= 0 && index < this.fxSources.length && this.fxSources[index]) {
             this.fxSources[index]!.stop();
         }
+        const pool = this.fxRepeatSources[index];
+        if (pool) for (const src of pool) if (src) src.stop();
     }
 
     /**
@@ -280,6 +312,9 @@ export class Ply_SoundManager extends Ply_Singleton {
             case FxType.Scissors: return this.fxAudio.scissors;
             case FxType.Curling: return this.fxAudio.curling;
             case FxType.Snap: return this.fxAudio.snap;
+            case FxType.Clock: return this.fxAudio.clock;
+            case FxType.Water: return this.fxAudio.water;
+            case FxType.Correct2: return this.fxAudio.correct2;
             default: return null;
         }
     }
@@ -293,6 +328,8 @@ export class Ply_SoundManager extends Ply_Singleton {
             if (this.fxSources[i]) {
                 this.fxSources[i]!.stop();
             }
+            const pool = this.fxRepeatSources[i];
+            if (pool) for (const src of pool) if (src) src.stop();
         }
     }
 
@@ -306,6 +343,8 @@ export class Ply_SoundManager extends Ply_Singleton {
             if (this.fxSources[i]) {
                 this.fxSources[i]!.stop();
             }
+            const pool = this.fxRepeatSources[i];
+            if (pool) for (const src of pool) if (src) src.stop();
         }
     }
 

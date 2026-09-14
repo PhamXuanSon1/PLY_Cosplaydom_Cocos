@@ -193,7 +193,23 @@ export class HandHintManager extends Component {
         this.removeHintPathDebug();
     }
 
+    /** Khi true, mọi lệnh ShowHint* bị bỏ qua (dùng trong sequence chuyển map). */
+    private isSuppressed: boolean = false;
+
+    /** Chặn hint: ẩn tay + dừng đếm, và bỏ qua mọi ShowHint* cho tới khi ResumeHints(). */
+    public SuppressHints(): void {
+        this.isSuppressed = true;
+        this.HideHintTemporarily();
+    }
+
+    /** Bỏ chặn và bắt đầu đếm lại delay của map hiện tại. */
+    public ResumeHints(): void {
+        this.isSuppressed = false;
+        this.ShowHintWithDelay();
+    }
+
     public ShowHintImmediately(): void {
+        if (this.isSuppressed) return;
         this.stopAllHintLogic();
         // Tương đương WaitForEndOfFrame rồi ShowHint
         this.scheduleOnce(this.doShowHintDelayed, 0);
@@ -209,6 +225,7 @@ export class HandHintManager extends Component {
     }
 
     public ShowHintWithDelay(): void {
+        if (this.isSuppressed) return;
         this.stopAllHintLogic();
         this.isCounting = true;
         this.idleTime = 0;

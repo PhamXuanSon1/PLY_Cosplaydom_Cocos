@@ -4,8 +4,48 @@ import { DrawItemController, DrawItemType } from '../DrawItem/DrawItemController
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { Ply_Pool, PoolType } from '../ScriptTemplate/Ply_Pool';
 import { CharacterManager } from './CharacterManager';
+import { Character } from '../SpineScript/Character';
+import { DrawInputManager } from './DrawInputManager';
+import { HandHintManager } from './HandHintManager';
 
 const { ccclass, property } = _decorator;
+
+/**
+ * Chuỗi hành động chạy khi hoàn thành 1 Map:
+ * khoá input → bật/tắt Node → fade các slot Spine về alpha 0 rồi tắt slot → hết Lock Duration thì mở input.
+ */
+@ccclass('MapCompleteSequence')
+export class MapCompleteSequence {
+    @property({ displayName: 'Enabled', tooltip: 'Bật để chạy sequence này khi map hoàn thành' })
+    public enabled: boolean = false;
+
+    @property({ displayName: 'Lock Duration', tooltip: 'Khoá input trong bao nhiêu giây' })
+    public lockDuration: number = 2;
+
+    @property({ displayName: 'Delay OnMapCompleted', tooltip: 'BẬT: đợi hết Lock Duration rồi mới bắn On Map Completed. TẮT: bắn ngay như bình thường.' })
+    public delayMapCompleted: boolean = false;
+
+    @property({ type: [Node], displayName: 'Nodes To Turn On', tooltip: 'Các Node được bật ngay khi bắt đầu sequence' })
+    public nodesToTurnOn: Node[] = [];
+
+    @property({ type: [Node], displayName: 'Nodes To Turn Off', tooltip: 'Các Node bị tắt ngay khi bắt đầu sequence' })
+    public nodesToTurnOff: Node[] = [];
+
+    @property({ type: [CCString], displayName: 'Slots To Fade', tooltip: 'Tên các slot Spine sẽ mờ dần rồi tắt (VD: Stain_F/Base_Dirt_FL)' })
+    public slotsToFade: string[] = [];
+
+    @property({ displayName: 'Fade Delay', tooltip: 'Đợi bao nhiêu giây rồi mới bắt đầu fade' })
+    public fadeDelay: number = 0;
+
+    @property({ displayName: 'Fade Duration', tooltip: 'Thời gian fade slot từ 1 → 0 (giây)' })
+    public fadeDuration: number = 0.5;
+
+    @property({ displayName: 'Turn Off Slot After Fade', tooltip: 'Sau khi alpha = 0 thì gỡ attachment khỏi slot' })
+    public turnOffSlotAfterFade: boolean = true;
+
+    @property({ type: [EventHandler], displayName: 'On Sequence Finished', tooltip: 'Gọi khi hết Lock Duration (sau khi đã mở lại input)' })
+    public onFinished: EventHandler[] = [];
+}
 
 /**
  * Cấu hình makeup cho từng Map (port từ DrawItemManager.MapMakeupConfig của Unity).
@@ -49,6 +89,13 @@ export class MapMakeupConfig {
         tooltip: 'Chạy khi hoàn thành toàn bộ map (thường dùng để chuyển sang map tiếp theo)'
     })
     public OnMapCompleted: EventHandler[] = [];
+
+    @property({
+        type: MapCompleteSequence,
+        displayName: 'Complete Sequence',
+        tooltip: 'Chuỗi khoá input / bật Node / fade slot chạy khi map này hoàn thành'
+    })
+    public completeSequence: MapCompleteSequence = new MapCompleteSequence();
 }
 
 /** Cách thưởng Heart + anim vui. */
@@ -299,9 +346,85 @@ export class DrawItemManager extends Component {
         this.currentMapIndex++;
         this.updateMapStatusDisplay();
 
-        EventHandler.emitEvents(currentConfig.OnMapCompleted);
+        const seq = currentConfig.completeSequence;
+        if (seq && seq.enabled) {
+            this.runCompleteSequence(seq, () => EventHandler.emitEvents(currentConfig.OnMapCompleted));
+        } else {
+            EventHandler.emitEvents(currentConfig.OnMapCompleted);
+        }
 
         return true;
+    }
+
+    // ===== Map Complete Sequence =====
+    private _seqFading: boolean = false;
+    private _seqFadeElapsed: number = 0;
+    private _seqSlots: string[] = [];
+    private _seqFadeDuration: number = 0;
+    private _seqTurnOffAfterFade: boolean = true;
+
+    /** Khoá input → bật/tắt Node → fade slot → hết Lock Duration mở input + bắn event. */
+    private runCompleteSequence(seq: MapCompleteSequence, emitMapCompleted: () => void): void {
+        const inputMgr = DrawInputManager.Instance || (globalThis as any).DrawInputManager?.Instance;
+        if (inputMgr) inputMgr.lockInput();
+
+        // Chặn hand hint trong suốt sequence (kể cả ShowHintImmediately do mapChanged gọi ngay sau đây)
+        const hintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance;
+        if (hintMgr) hintMgr.SuppressHints();
+
+        for (const n of seq.nodesToTurnOn) if (n) n.active = true;
+        for (const n of seq.nodesToTurnOff) if (n) n.active = false;
+
+        if (!seq.delayMapCompleted) emitMapCompleted();
+
+        if (seq.slotsToFade.length > 0) {
+            this.scheduleOnce(() => {
+                this._seqSlots = seq.slotsToFade.slice();
+                this._seqFadeDuration = seq.fadeDuration;
+                this._seqTurnOffAfterFade = seq.turnOffSlotAfterFade;
+                this._seqFadeElapsed = 0;
+                this._seqFading = true;
+                this.applySeqSlotAlpha(1);
+            }, seq.fadeDelay);
+        }
+
+        this.scheduleOnce(() => {
+            if (inputMgr) inputMgr.unlockInput();
+            if (seq.delayMapCompleted) emitMapCompleted();
+            // Mở lại hint: đếm delay của map mới rồi mới hiện tay
+            if (hintMgr) hintMgr.ResumeHints();
+            EventHandler.emitEvents(seq.onFinished);
+        }, seq.lockDuration);
+    }
+
+    protected update(dt: number): void {
+        if (!this._seqFading) return;
+
+        this._seqFadeElapsed += dt;
+        const t = this._seqFadeDuration > 0 ? Math.min(1, this._seqFadeElapsed / this._seqFadeDuration) : 1;
+        this.applySeqSlotAlpha(1 - t);
+
+        if (t >= 1) {
+            this._seqFading = false;
+            if (this._seqTurnOffAfterFade) {
+                const chara = this.getSeqCharacter();
+                if (chara) for (const slotName of this._seqSlots) if (slotName) chara.turnSlotAttachment(slotName, null);
+            }
+        }
+    }
+
+    private applySeqSlotAlpha(alpha: number): void {
+        const chara = this.getSeqCharacter();
+        if (!chara) return;
+        for (const slotName of this._seqSlots) if (slotName) chara.setSlotAlpha(slotName, alpha);
+    }
+
+    private getSeqCharacter(): Character | null {
+        if (this.characterSkeleton) {
+            const c = this.characterSkeleton.getComponent(Character);
+            if (c) return c;
+        }
+        return this.node.scene ? this.node.scene.getComponentInChildren(Character) : null;
     }
 
     private updateMapStatusDisplay(): void {
