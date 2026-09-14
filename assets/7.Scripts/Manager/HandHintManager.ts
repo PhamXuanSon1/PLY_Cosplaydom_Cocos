@@ -131,6 +131,11 @@ export class HandHintManager extends Component {
         if (this.handIcon != null) this.handIcon.active = false;
     }
 
+    protected start(): void {
+        // Không có Map Intro nên vào game là Map 1 luôn -> đếm delayBeforeHint rồi hiện hint ngay từ đầu
+        this.ShowHintWithDelay();
+    }
+
     private getDrawItemMgr(): DrawItemManager | null {
         return DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance || null;
     }
