@@ -1,0 +1,549 @@
+Freyja.png
+size: 5230,5230
+filter: Linear,Linear
+Base_Body/Base_Bicep_L
+bounds: 3792,1057,233,323
+offsets: 6,14,239,337
+rotate: 90
+Base_Body/Base_Bicep_R
+bounds: 4747,1277,238,324
+offsets: 0,13,239,337
+Base_Body/Base_Body
+bounds: 3515,2971,450,778
+rotate: 90
+Base_Body/Base_Fingers_L1
+bounds: 3666,1,117,119
+offsets: 0,0,118,123
+rotate: 90
+Base_Body/Base_Forearm_L
+bounds: 4110,800,225,301
+offsets: 0,0,229,305
+rotate: 90
+Base_Body/Base_Forearm_R
+bounds: 4412,796,228,305
+rotate: 90
+Base_Body/Base_Hand_L
+bounds: 4969,465,172,163
+Base_Body/Base_Hand_L1
+bounds: 5124,3754,91,95
+offsets: 0,0,91,103
+Base_Body/Base_Hand_R
+bounds: 4630,69,172,163
+Base_Body/Base_Leg_L
+bounds: 1551,2116,242,1269
+rotate: 90
+Base_Body/Base_Leg_R
+bounds: 741,675,241,1269
+Base_Body/Base_Underwear_B2
+bounds: 4843,1849,444,214
+offsets: 1,0,445,215
+rotate: 90
+Base_Body/Base_Underwear_L2
+bounds: 741,389,241,285
+offsets: 1,22,243,307
+Base_Body/Base_Underwear_R2
+bounds: 4717,741,242,284
+offsets: 1,23,243,307
+Base_Body/Base_Underwear_T2
+bounds: 2696,104,351,165
+offsets: 9,12,361,178
+Base_Body/Shadow
+bounds: 1,26,640,346
+Cart/Set_F_Cart_B
+bounds: 1551,3178,1370,796
+Cart/Set_F_Cart_BT
+bounds: 1434,3975,1766,120
+Cart/Set_F_Cart_F
+bounds: 794,2236,1414,756
+rotate: 90
+Cart/Set_F_Cat_G
+bounds: 2289,132,406,827
+Cart/Set_F_Cat_O
+bounds: 4294,2887,406,827
+rotate: 90
+Cart/Set_F_Rein_L
+bounds: 4780,4537,692,430
+offsets: 1,0,693,430
+rotate: 90
+Cart/Set_F_Rein_R
+bounds: 4501,3294,691,430
+Cart/Set_F_Wheel_B
+bounds: 1,373,1571,739
+rotate: 90
+Cart/Set_F_Wheel_F
+bounds: 1,1945,1706,792
+rotate: 90
+Clean_Body/Base_Dirt_FL
+bounds: 5098,850,131,224
+offsets: 37,73,229,305
+Clean_Body/Base_Dirt_FR
+bounds: 5124,3850,105,204
+offsets: 103,18,229,305
+Clean_Body/Base_Dirt_LL
+bounds: 4271,3423,229,797
+offsets: 0,220,242,1270
+Clean_Body/Base_Dirt_LR
+bounds: 2621,1342,236,773
+offsets: 6,253,242,1269
+Clean_Body/Base_Freckles
+bounds: 3201,3990,250,117
+offsets: 1,62,251,351
+Clean_Body/Base_Scratch_FL
+bounds: 4667,515,225,301
+offsets: 0,0,229,305
+rotate: 90
+Clean_Body/Base_Scratch_FR
+bounds: 3841,10,222,260
+offsets: 7,0,229,305
+rotate: 90
+Clean_Body/Base_Scratch_LL
+bounds: 4064,1602,241,917
+offsets: 0,182,242,1270
+rotate: 90
+Clean_Body/Base_Scratch_LR
+bounds: 2858,1279,241,928
+offsets: 0,181,242,1269
+rotate: 90
+Clean_Body/Clean_Cleanse_FL
+bounds: 4969,629,143,217
+offsets: 22,48,229,305
+Clean_Body/Clean_Cleanse_FR
+bounds: 2232,1,130,200
+offsets: 54,60,229,305
+rotate: 90
+Clean_Body/Clean_Cleanse_LL
+bounds: 3451,1524,91,265
+rotate: 90
+Clean_Body/Clean_Cleanse_LR
+bounds: 5124,4296,90,240
+Clean_Body/Clean_Medicine_FL
+bounds: 4952,252,143,212
+offsets: 22,53,229,305
+Clean_Body/Clean_Medicine_FR
+bounds: 4490,43,139,188
+offsets: 53,65,229,305
+Clean_Body/Clean_Medicine_LL
+bounds: 1434,3708,91,266
+Clean_Body/Clean_Medicine_LR
+bounds: 5124,4055,90,240
+Clean_Body/Makeup_Salon_Cape
+bounds: 2696,729,636,388
+Ending/E_Dress_L
+bounds: 1434,4096,579,1721
+rotate: 90
+Ending/E_Dress_R
+bounds: 3246,4825,404,1534
+offsets: 0,0,427,1534
+rotate: 90
+Ending/E_Finger_R1
+bounds: 4803,49,183,127
+offsets: 0,0,185,128
+rotate: 90
+Ending/E_Forearm_R1
+bounds: 5081,2683,148,203
+Ending/E_Leg_L
+bounds: 1551,2359,453,1267
+rotate: 90
+Ending/E_Leg_R
+bounds: 3246,4582,242,1313
+rotate: 90
+Ending/E_Wing_L1
+bounds: 3515,3421,755,799
+Ending/E_Wing_LT1
+bounds: 3451,1617,612,691
+Face/Base_Bruise
+bounds: 3738,848,20,21
+offsets: 0,0,20,23
+Face/Base_Dirt
+bounds: 3414,407,250,350
+offsets: 1,1,251,351
+Face/Base_EBalll_L
+bounds: 4982,1774,75,58
+rotate: 90
+Face/Base_EBalll_R
+bounds: 5113,633,75,59
+Face/Base_EBrows_L
+bounds: 1526,3882,92,24
+rotate: 90
+Face/Base_EBrows_R
+bounds: 1410,52,92,23
+rotate: 90
+Face/Base_ELash_L
+bounds: 3478,3090,92,37
+offsets: 0,2,92,45
+rotate: 90
+Face/Base_ELash_R
+bounds: 4736,4735,90,38
+offsets: 0,0,92,45
+rotate: 90
+Face/Base_ELid_L
+bounds: 642,318,86,54
+Face/Base_ELid_R
+bounds: 3717,1530,86,54
+rotate: 90
+Face/Base_ELight_L
+bounds: 966,2185,16,13
+offsets: 1,1,18,14
+Face/Base_ELight_R
+bounds: 966,2185,16,13
+offsets: 1,1,18,14
+Face/Base_ELight_L1
+bounds: 2611,1359,15,9
+offsets: 1,1,16,11
+rotate: 90
+Face/Base_ELight_R1
+bounds: 4395,1339,17,10
+offsets: 1,1,18,12
+Face/Base_Ear_L
+bounds: 1434,3652,55,101
+rotate: 90
+Face/Base_Ear_R
+bounds: 1478,1074,55,101
+Face/Base_Head
+bounds: 3759,806,250,350
+offsets: 1,1,251,351
+rotate: 90
+Face/Base_Iris_L
+bounds: 5211,5156,18,18
+offsets: 1,1,19,19
+Face/Base_Iris_R
+bounds: 5211,5137,18,18
+offsets: 1,1,19,19
+Face/Base_Mouth
+bounds: 5124,3728,79,25
+Face/Base_Mouth_A
+bounds: 1,1,78,24
+Face/Base_Mouth_H
+bounds: 5123,3102,71,31
+rotate: 90
+Face/Base_Pupil_L
+bounds: 4048,1292,46,46
+offsets: 1,1,48,47
+Face/Base_Pupil_R
+bounds: 4667,749,46,46
+offsets: 1,1,48,47
+Face/Face_BLash_L
+bounds: 2655,1047,70,40
+rotate: 90
+Face/Face_BLash_R
+bounds: 2655,976,70,40
+rotate: 90
+Face/Face_EBag_L
+bounds: 5081,2305,108,69
+offsets: 0,3,108,72
+Face/Face_EBag_R
+bounds: 4625,1277,108,72
+Face/Makeup_BLash_L
+bounds: 3156,4631,89,44
+offsets: 0,2,89,46
+Face/Makeup_BLash_R
+bounds: 1258,1,89,43
+offsets: 0,4,89,47
+Face/Makeup_Blush
+bounds: 4103,9,250,156
+offsets: 1,40,251,351
+rotate: 90
+Face/Makeup_Concealer_B
+bounds: 3478,2983,32,33
+Face/Makeup_Concealer_BL
+bounds: 3682,758,63,24
+Face/Makeup_Concealer_BM
+bounds: 4091,244,11,15
+Face/Makeup_Concealer_BR
+bounds: 3452,4001,62,25
+Face/Makeup_ELid_L
+bounds: 3682,783,86,55
+rotate: 90
+Face/Makeup_ELid_R
+bounds: 3785,33,86,54
+rotate: 90
+Face/Makeup_EShadow_L
+bounds: 2691,1,101,79
+offsets: 0,0,102,82
+rotate: 90
+Face/Makeup_EShadow_R
+bounds: 2770,1,102,79
+offsets: 0,0,102,82
+rotate: 90
+Face/Makeup_Ebrows_L
+bounds: 2956,2716,97,25
+rotate: 90
+Face/Makeup_Ebrows_R
+bounds: 3048,173,97,25
+rotate: 90
+Face/Makeup_Foundation
+bounds: 3415,95,250,311
+offsets: 1,1,251,351
+Face/Makeup_Foundation_BD
+bounds: 3759,1068,24,18
+Face/Makeup_Foundation_BL
+bounds: 1348,9,46,35
+Face/Makeup_Foundation_BM
+bounds: 966,2199,16,36
+Face/Makeup_Foundation_BR
+bounds: 4937,1241,46,35
+Face/Makeup_Foundation_BT
+bounds: 2232,158,42,39
+Face/Makeup_Highlight
+bounds: 4625,1026,250,311
+offsets: 1,1,251,351
+rotate: 90
+Face/Makeup_Mascara_UL
+bounds: 4259,241,55,18
+Face/Makeup_Mascara_UR
+bounds: 5211,5175,55,17
+offsets: 0,0,55,19
+rotate: 90
+Face/Makeup_Mouth
+bounds: 3333,731,79,26
+offsets: 0,1,79,27
+Face/Makeup_Mouth_A
+bounds: 80,1,78,24
+Face/Makeup_Mouth_H
+bounds: 1478,1002,71,30
+rotate: 90
+Face/Makeup_Primer_BD
+bounds: 3156,4096,17,11
+Face/Makeup_Primer_BL
+bounds: 5210,1738,35,19
+rotate: 90
+Face/Makeup_Primer_BM
+bounds: 4644,532,17,18
+Face/Makeup_Primer_BR
+bounds: 5210,1703,34,19
+rotate: 90
+Face/Makeup_ULash_L
+bounds: 794,1945,89,36
+Face/Makeup_ULash_R
+bounds: 884,1945,89,36
+Face/Skincare_Eye_Pad_L
+bounds: 3452,4027,80,44
+rotate: 90
+Face/Skincare_Eye_Pad_R
+bounds: 4259,10,81,45
+Face/Skincare_Face_Mask
+bounds: 4395,1350,251,351
+rotate: 90
+Face/Skincare_Lip_Mask
+bounds: 2232,198,99,52
+rotate: 90
+Face/Skincare_Moisturizer_D
+bounds: 5210,1674,28,19
+rotate: 90
+Face/Skincare_Moisturizer_L
+bounds: 3006,1,51,30
+Face/Skincare_Moisturizer_M
+bounds: 5210,1654,20,19
+rotate: 90
+Face/Skincare_Moisturizer_R
+bounds: 5190,2324,50,29
+rotate: 90
+Face/Skincare_Mouth
+bounds: 5176,1554,79,25
+rotate: 90
+Face/Skincare_Mouth_A
+bounds: 159,1,78,24
+Face/Skincare_Mouth_H
+bounds: 1434,74,71,31
+Hair/Base_Bangs
+bounds: 4960,847,226,138
+offsets: 0,1,227,139
+rotate: 90
+Hair/Base_Hair_B
+bounds: 2922,3183,592,791
+offsets: 0,0,592,792
+Hair/Base_Hair_T
+bounds: 3840,519,285,249
+rotate: 90
+Hair/Base_SHair_L
+bounds: 5081,2375,140,307
+Hair/Base_SHair_R
+bounds: 642,4,140,307
+rotate: 90
+Hair/Clean_Bangs_L
+bounds: 4986,1424,189,209
+Hair/Clean_Bangs_R
+bounds: 4560,4595,175,229
+Hair/Clean_Foam_Bangs
+bounds: 794,1982,253,171
+offsets: 0,1,254,172
+rotate: 90
+Hair/Clean_Foam_Hair_B
+bounds: 4501,3725,622,811
+Hair/Clean_Foam_Hair_T
+bounds: 3787,1291,325,260
+rotate: 90
+Hair/Clean_Foam_SHair_L
+bounds: 3666,120,174,316
+Hair/Clean_Foam_SHair_R
+bounds: 4336,232,166,317
+Hair/Clean_Hair_B
+bounds: 1478,298,661,811
+rotate: 90
+Hair/Clean_Hair_T
+bounds: 4117,1026,312,253
+rotate: 90
+Hair/Clean_Shampoo_Base
+bounds: 3478,3017,72,37
+rotate: 90
+Hair/Clean_Water_Bangs
+bounds: 4982,1634,227,139
+Hair/Clean_Water_Bangs_L
+bounds: 4937,1075,227,138
+Hair/Clean_Water_Hair_B
+bounds: 4289,2294,592,790
+offsets: 0,0,592,792
+rotate: 90
+Hair/Clean_Water_Hair_BL
+bounds: 2858,1522,592,790
+offsets: 0,0,592,792
+Hair/Clean_Water_Hair_T
+bounds: 4090,550,285,249
+Hair/Clean_Water_Hair_TL
+bounds: 3841,233,286,249
+rotate: 90
+Hair/Clean_Water_SHair_L
+bounds: 950,4,140,307
+rotate: 90
+Hair/Clean_Water_SHair_LL
+bounds: 4503,243,140,307
+Hair/Clean_Water_SHair_R
+bounds: 4644,374,140,307
+rotate: 90
+Hair/Clean_Water_SHair_RL
+bounds: 4644,233,140,307
+rotate: 90
+Hair/Dyed_Hair_B
+bounds: 3478,2309,661,810
+rotate: 90
+Hair/Dyed_Hair_L
+bounds: 4986,1214,189,209
+Hair/Dyed_Hair_R
+bounds: 4259,56,176,229
+rotate: 90
+Hair/Dyed_Hair_T
+bounds: 4371,1026,312,253
+rotate: 90
+Hair/Makeup_Headband
+bounds: 3081,99,333,216
+Outfit_Base/Oufit_Sleeves_L
+bounds: 4048,1339,262,346
+offsets: 0,11,262,358
+rotate: 90
+Outfit_Base/Oufit_Sleeves_R
+bounds: 1879,35,262,352
+offsets: 0,6,262,358
+rotate: 90
+Outfit_Base/Outfit_Bag
+bounds: 983,1176,551,1059
+Outfit_Base/Outfit_Bow
+bounds: 3333,870,425,216
+offsets: 0,1,425,217
+Outfit_Base/Outfit_Bracelet
+bounds: 2555,1304,70,55
+rotate: 90
+Outfit_Base/Outfit_Dress
+bounds: 1535,960,534,1019
+rotate: 90
+Outfit_Base/Outfit_Glasses
+bounds: 2433,13,257,118
+Outfit_Base/Outfit_Shoes_L
+bounds: 5096,268,121,196
+offsets: 0,0,121,205
+Outfit_Base/Outfit_Shoes_R
+bounds: 4294,3301,121,197
+offsets: 0,0,121,205
+rotate: 90
+Outfit_Base/Outfit_Socks_L
+bounds: 3156,4108,112,350
+offsets: 0,0,113,355
+rotate: 90
+Outfit_Base/Outfit_Socks_R
+bounds: 3333,758,111,348
+offsets: 1,0,113,355
+rotate: 90
+Set_F/Set_F_ADL
+bounds: 3156,4592,38,70
+rotate: 90
+Set_F/Set_F_ADL1
+bounds: 2555,1375,58,119
+Set_F/Set_F_ADM
+bounds: 4494,4537,44,159
+rotate: 90
+Set_F/Set_F_ADR
+bounds: 3006,32,38,71
+Set_F/Set_F_ADR1
+bounds: 5123,3174,57,119
+Set_F/Set_F_Armlet_L
+bounds: 5113,771,96,78
+Set_F/Set_F_Armlet_R
+bounds: 5113,693,96,77
+Set_F/Set_F_Belt
+bounds: 3665,437,320,174
+rotate: 90
+Set_F/Set_F_Chest_Armor
+bounds: 4064,1843,450,778
+rotate: 90
+Set_F/Set_F_Coat_B
+bounds: 1,3652,1432,1577
+Set_F/Set_F_Coat_L
+bounds: 983,306,494,869
+Set_F/Set_F_Coat_R
+bounds: 2984,2313,493,869
+Set_F/Set_F_Crown
+bounds: 3081,316,412,332
+rotate: 90
+Set_F/Set_F_Dress_B
+bounds: 1535,1495,620,1084
+rotate: 90
+Set_F/Set_F_Dress_BL
+bounds: 5058,1774,519,171
+offsets: 0,0,519,240
+rotate: 90
+Set_F/Set_F_Dress_BR
+bounds: 4315,4238,343,178
+offsets: 4,0,347,185
+rotate: 90
+Set_F/Set_F_Dress_L
+bounds: 1434,4676,553,1811
+rotate: 90
+Set_F/Set_F_Dress_R
+bounds: 1551,2813,364,1433
+offsets: 0,0,428,1435
+rotate: 90
+Set_F/Set_F_Gem
+bounds: 2819,2371,79,120
+rotate: 90
+Set_F/Set_F_Hip_AL
+bounds: 3347,1087,191,444
+rotate: 90
+Set_F/Set_F_Hip_AR
+bounds: 1434,106,191,444
+rotate: 90
+Set_F/Set_F_Necklace
+bounds: 2850,14,155,89
+Set_F/Set_F_Shoes_L
+bounds: 2555,1118,160,791
+rotate: 90
+Set_F/Set_F_Shoes_R
+bounds: 642,145,160,790
+rotate: 90
+Set_F/Set_F_Shoulder_AL
+bounds: 4376,551,290,244
+Set_F/Set_F_Shoulder_AR
+bounds: 4091,260,289,244
+rotate: 90
+Set_F/Set_F_String_L
+bounds: 2819,2451,136,361
+Set_F/Set_F_String_M
+bounds: 2696,270,384,458
+Set_F/Set_F_Sword
+bounds: 3156,4221,361,1157
+rotate: 90
+Set_F/Set_F_Wrist_AL
+bounds: 1258,45,99,150
+offsets: 0,6,99,157
+rotate: 90
+Set_F/Set_F_Wrist_AR
+bounds: 2555,966,99,151
+offsets: 0,6,99,157
