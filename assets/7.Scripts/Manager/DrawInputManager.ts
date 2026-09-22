@@ -9,6 +9,7 @@ import { DrawItemGraphic } from '../DrawItem/DrawItemGraphic';
 import { DipTarget } from '../DrawItem/DipTarget';
 import { MakeupTarget } from '../DrawItem/MakeupTarget';
 import { GameManager } from './GameManager';
+import { World } from './World';
 import { DrawItemManager } from './DrawItemManager';
 import { HandHintManager } from './HandHintManager';
 import { PhysicsSyncAfterAnim } from '../DrawItem/PhysicsSyncAfterAnim';
@@ -262,6 +263,24 @@ export class DrawInputManager extends Component {
         }
 
         if (!this.isClickFirst) {
+            const gameMgrForIntro = GameManager.instance || (globalThis as any).GameManager?.instance || (window as any).GameManager?.instance;
+            const hasMapIntro = gameMgrForIntro ? gameMgrForIntro.hasMapIntro !== false : true;
+
+            if (!hasMapIntro) {
+                // Không có Map Intro: click đầu tiên chỉ đánh dấu bắt đầu chơi (analytics, First On/Off) rồi xử lý input luôn
+                this.isClickFirst = true;
+                const ui = World.instance ? World.instance.ui : null;
+                if (ui) ui.firstMove();
+                const progressMgr = (globalThis as any).ProgressTrackingManager?.Instance || (window as any).ProgressTrackingManager?.Instance;
+                if (progressMgr && typeof progressMgr.StartChallenge === 'function') {
+                    progressMgr.StartChallenge();
+                } else {
+                    AppLovinAnalytics.challengeStarted();
+                }
+                this.mouseDown(event);
+                return;
+            }
+
             if (this.introAnimator) {
                 this.isPlayingIntro = true;
                 const anim = this.introAnimator.getComponent(Animation);

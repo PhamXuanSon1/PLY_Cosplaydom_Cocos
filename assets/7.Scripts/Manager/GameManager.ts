@@ -59,6 +59,13 @@ export class GameManager extends Component {
     public isGoogleBuild: boolean = false;
 
     @property({
+        group: { name: '1. Build Settings', id: 'buildSettings' },
+        displayName: 'Has Map Intro',
+        tooltip: 'Bật: vào game hiện Map Intro, click đầu tiên chạy anim intro rồi mới sang Map 1.\nTắt: vào game là Map 1 luôn, click đầu tiên xử lý input ngay.'
+    })
+    public hasMapIntro: boolean = true;
+
+    @property({
         type: [Node],
         group: { name: '1. Build Settings', id: 'buildSettings' },
         displayName: 'Google Disabled Objects',
@@ -114,6 +121,15 @@ export class GameManager extends Component {
     protected start(): void {
         if (this.isGoogleBuild) {
             this.applyGoogleBuildSettings();
+        }
+
+        // Trạng thái map ban đầu do code quyết định theo hasMapIntro, không phụ thuộc node active/deactive tay trong editor
+        if (this.hasMapIntro) {
+            this.TurnOnIntro();
+        } else {
+            this.TurnOnMap1(false);
+            // Không có intro: hint không hiện ngay mà đếm delayBeforeHint từ lúc mở game
+            if (HandHintManager.Instance != null) HandHintManager.Instance.ShowHintWithDelay();
         }
     }
 
@@ -189,13 +205,13 @@ export class GameManager extends Component {
         this.SetListActive(this.listObjectInIntro, true);
     }
 
-    public TurnOnMap1(): void {
+    public TurnOnMap1(showHint: boolean = true): void {
         this.SetListActive(this.listObjectInIntro, false);
         this.SetListActive(this.listObjectInMap2, false);
         this.SetListActive(this.listObjectInMap3, false);
         this.SetListActive(this.listObjectInMap4, false);
         this.SetListActive(this.listObjectInMap1, true);
-        if (HandHintManager.Instance != null) HandHintManager.Instance.ShowHintImmediately();
+        if (showHint && HandHintManager.Instance != null) HandHintManager.Instance.ShowHintImmediately();
     }
 
     public TurnOnMap2(): void {
@@ -270,7 +286,7 @@ export class GameManager extends Component {
     public getInspectorConfig() {
         return {
             sections: [
-                { header: '1. Build Settings', props: ['isGoogleBuild', 'googleDisabledObjects', 'googleDisabledBehaviours', 'gameController'] },
+                { header: '1. Build Settings', props: ['isGoogleBuild', 'hasMapIntro', 'googleDisabledObjects', 'googleDisabledBehaviours', 'gameController'] },
                 { header: '2. Map Objects', props: ['listObjectInIntro', 'listObjectInMap1', 'listObjectInMap2', 'listObjectInMap3', 'listObjectInMap4'] },
                 { header: '3. Map2 → Map3 Sequence', props: ['autoSwitchToMap3AtEnd', 'map2ToMap3Sequence'] },
             ],
