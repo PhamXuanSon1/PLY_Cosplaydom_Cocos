@@ -496,7 +496,10 @@ export class DrawInputManager extends Component {
         // Chặn grab item mới nếu đang giữ item hoặc đang trong quá trình thả
         if (this.currentDrawItem || this.isDropping) return;
 
-        const controllers = this.raycastNodes(event, DrawItemController, this.drawItemLayerMask);
+        const hitControllers = this.raycastNodes(event, DrawItemController, this.drawItemLayerMask);
+        // Nhiều item chồng collider lên nhau: ưu tiên item đã mở khoá, để item đang khoá nằm đè không chặn mất item cần kéo.
+        // Chỉ báo sai khi tất cả item chạm trúng đều đang khoá.
+        const controllers = hitControllers.filter(c => c.isUnlocked()).concat(hitControllers.filter(c => !c.isUnlocked()));
         for (let i = 0; i < controllers.length; i++) {
             const controller = controllers[i];
 
@@ -671,6 +674,7 @@ export class DrawInputManager extends Component {
                     if (dist < this.dipDistanceThreshold && canDip) {
                         this.currentDrawItemController.hasDipped = true;
                         this.currentDrawItemController.emitCompleteEvent();
+                        if (dipTargetComp) dipTargetComp.emitDipEvent();
                     }
                 }
             }
