@@ -211,7 +211,7 @@ export class GameManager extends Component {
         this.SetListActive(this.listObjectInMap3, false);
         this.SetListActive(this.listObjectInMap4, false);
         this.SetListActive(this.listObjectInMap1, true);
-        if (showHint && HandHintManager.Instance != null) HandHintManager.Instance.ShowHintImmediately();
+        if (showHint && HandHintManager.Instance != null) HandHintManager.Instance.ShowHintWithDelay();
     }
 
     public TurnOnMap2(): void {
@@ -222,7 +222,7 @@ export class GameManager extends Component {
         this.SetListActive(this.listObjectInMap2, true);
 
         if (DrawItemManager.Instance != null) DrawItemManager.Instance.currentMapIndex = 1;
-        if (HandHintManager.Instance != null) HandHintManager.Instance.ShowHintImmediately();
+        if (HandHintManager.Instance != null) HandHintManager.Instance.ShowHintWithDelay();
     }
 
     public TurnOnMap3(): void {

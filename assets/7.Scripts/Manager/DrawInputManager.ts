@@ -544,8 +544,8 @@ export class DrawInputManager extends Component {
                     }
 
                     if (handHintMgr) {
-                        if (mapChanged && typeof handHintMgr.ShowHintImmediately === 'function') {
-                            handHintMgr.ShowHintImmediately();
+                        if (mapChanged && typeof handHintMgr.ShowHintWithDelay === 'function') {
+                            handHintMgr.ShowHintWithDelay();
                         } else if (typeof handHintMgr.CheckAndAdvanceHint === 'function') {
                             handHintMgr.CheckAndAdvanceHint();
                         }
@@ -872,8 +872,8 @@ export class DrawInputManager extends Component {
 
                             const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
                             if (handHintMgr) {
-                                if (mapChanged && typeof handHintMgr.ShowHintImmediately === 'function') {
-                                    handHintMgr.ShowHintImmediately();
+                                if (mapChanged && typeof handHintMgr.ShowHintWithDelay === 'function') {
+                                    handHintMgr.ShowHintWithDelay();
                                 } else if (typeof handHintMgr.CheckAndAdvanceHint === 'function') {
                                     handHintMgr.CheckAndAdvanceHint();
                                 }
@@ -950,8 +950,8 @@ export class DrawInputManager extends Component {
 
                         const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
                         if (handHintMgr) {
-                            if (mapChanged && typeof handHintMgr.ShowHintImmediately === 'function') {
-                                handHintMgr.ShowHintImmediately();
+                            if (mapChanged && typeof handHintMgr.ShowHintWithDelay === 'function') {
+                                handHintMgr.ShowHintWithDelay();
                             } else if (typeof handHintMgr.CheckAndAdvanceHint === 'function') {
                                 handHintMgr.CheckAndAdvanceHint();
                             }
@@ -1029,18 +1029,35 @@ export class DrawInputManager extends Component {
 
                 const itemNode = this.currentDrawItem.node;
                 const spawnWorldPos = this.currentDrawItem.SpawnPos.clone();
-                tween(this.currentDrawItem.node)
+
+                // Trả item về cha gốc TRƯỚC rồi mới cho map hoàn thành. Nếu map chuyển lúc item
+                // còn nằm ở DragLayer/Canvas thì việc tắt cả cụm item của map (VD ItemMap2) không
+                // tắt được nó, và FadeInChildren.onDisable trên cụm đó còn stop luôn tween bay về
+                // -> item kẹt lại, vẫn hiện trên màn hình ở map sau.
+                let hasReturned = false;
+                const finishReturn = () => {
+                    if (hasReturned) return;
+                    hasReturned = true;
+                    this.modifySortingOrder(itemNode, -10);
+                    this.forceSyncItemPhysics(itemNode);
+                };
+
+                tween(itemNode)
                     .to(0.2, { worldPosition: spawnWorldPos })
                     .call(() => {
-                        this.modifySortingOrder(itemNode, -10);
-                        this.forceSyncItemPhysics(itemNode);
+                        finishReturn();
+                        this.flushPendingMapCompletion();
                     })
                     .start();
 
-                // Hẹn giờ trên chính manager thay vì gắn vào tween của item: OnDropEvent
-                // của item có thể tắt/đổi cha node ngay lúc này, tween trên node đã tắt
-                // sẽ không bao giờ chạy tới .call() và map sẽ kẹt mãi ở trạng thái chờ.
-                this.scheduleOnce(() => this.flushPendingMapCompletion(), 0.21);
+                // Dự phòng trên chính manager: OnDropEvent của item có thể tắt/đổi cha node ngay
+                // lúc này, tween trên node đã tắt sẽ không bao giờ chạy tới .call() và map sẽ kẹt
+                // mãi ở trạng thái chờ. Tween chạy frame đầu với dt = 0 nên có thể xong trễ hơn
+                // hẹn giờ này -> luôn tự trả item về cha gốc trước khi flush.
+                this.scheduleOnce(() => {
+                    finishReturn();
+                    this.flushPendingMapCompletion();
+                }, 0.25);
 
                 for (let k = 0; k < this.hoveredTargets.length; k++) {
                     this.hoveredTargets[k].onBrushExit();
@@ -1172,8 +1189,8 @@ export class DrawInputManager extends Component {
         const handHintMgr = HandHintManager.Instance
             || (globalThis as any).HandHintManager?.Instance
             || (window as any).HandHintManager?.Instance;
-        if (mapChanged && handHintMgr && typeof handHintMgr.ShowHintImmediately === 'function') {
-            handHintMgr.ShowHintImmediately();
+        if (mapChanged && handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
+            handHintMgr.ShowHintWithDelay();
         }
     }
 
@@ -1331,8 +1348,8 @@ export class DrawInputManager extends Component {
         if (drawItemMgr) drawItemMgr.currentMapIndex = 1;
 
         const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
-        if (handHintMgr && typeof handHintMgr.ShowHintImmediately === 'function') {
-            handHintMgr.ShowHintImmediately();
+        if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
+            handHintMgr.ShowHintWithDelay();
         }
     }
 
@@ -1377,8 +1394,8 @@ export class DrawInputManager extends Component {
             gameMgr.SetListActive(gameMgr.listObjectInMap4, true);
         }
         const handHintMgr = (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
-        if (handHintMgr && typeof handHintMgr.ShowHintImmediately === 'function') {
-            handHintMgr.ShowHintImmediately();
+        if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
+            handHintMgr.ShowHintWithDelay();
         }
         this.enableGoToStoreOnClick();
     }
