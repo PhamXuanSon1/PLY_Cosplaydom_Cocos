@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Enum, CCString, CCBoolean, CCFloat, EventHandler, Graphics, Color, UITransform } from 'cc';
+import { _decorator, Component, Node, Enum, CCString, CCBoolean, CCFloat, EventHandler, Graphics, Color, UITransform, Vec3 } from 'cc';
 import { EDITOR } from 'cc/env';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 
@@ -107,6 +107,19 @@ export class DrawItemController extends Component {
         }
     })
     public tipPointDebugSize: number = 8;
+
+    @property({
+        type: CCFloat,
+        group: { name: '2. Interaction Setup', id: 'interactionSetup' },
+        displayName: 'Paint Radius',
+        tooltip: "Bán kính vẽ (world/pixel UI) quanh Tip Point cho target có Mask Reveal: kéo tới đâu, vòng tròn này tô lộ hình tới đó. 0 = dùng Brush Radius của MaskReveal/SpineMaskReveal. Bật Show Tip Point để thấy vòng xanh."
+    })
+    public paintRadius: number = 0;
+
+    /** Vị trí vẽ: Tip Point nếu có, không thì dùng vị trí truyền vào (ngón tay). */
+    public getPaintWorldPos(fallback: Vec3): Vec3 {
+        return this.tipPoint && this.tipPoint.isValid ? this.tipPoint.worldPosition : fallback;
+    }
 
     @property({
         type: Node,
@@ -392,6 +405,15 @@ export class DrawItemController extends Component {
         g.moveTo(0, -dotRadius * 0.6);
         g.lineTo(0, dotRadius * 0.6);
         g.stroke();
+
+        // Vòng xanh = Paint Radius (đổi từ world sang local của tipPoint)
+        if (this.paintRadius > 0) {
+            const s = Math.abs(this.tipPoint.worldScale.x) || 1;
+            g.strokeColor = new Color(0, 220, 255, 230);
+            g.lineWidth = 2;
+            g.circle(0, 0, this.paintRadius / s);
+            g.stroke();
+        }
     }
 
     private removeTipPointDebug(): void {

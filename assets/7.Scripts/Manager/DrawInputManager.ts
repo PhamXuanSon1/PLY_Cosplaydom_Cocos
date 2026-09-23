@@ -397,8 +397,8 @@ export class DrawInputManager extends Component {
         }
     }
 
-    private raycastNodes<T extends Component>(event: EventTouch, type: { new(): T }, layerMask: number = -1): T[] {
-        const uiWorldPos = (event as any).getUIWorldPosition ? (event as any).getUIWorldPosition() : event.getUILocation();
+    private raycastNodes<T extends Component>(event: EventTouch, type: { new(): T }, layerMask: number = -1, worldPosOverride: Vec3 | null = null): T[] {
+        const uiWorldPos = worldPosOverride ? worldPosOverride : ((event as any).getUIWorldPosition ? (event as any).getUIWorldPosition() : event.getUILocation());
         const touchWorldVec3 = new Vec3(uiWorldPos.x, uiWorldPos.y, 0);
         const touchVec2 = new Vec2(uiWorldPos.x, uiWorldPos.y);
         const results: T[] = [];
@@ -685,7 +685,11 @@ export class DrawInputManager extends Component {
             let isHittingValidTarget = false;
 
             if (canDraw) {
-                const targets = this.raycastNodes(event, MakeupTarget, this.makeupTargetLayer);
+                // Item có Paint Radius: nhận target tại Tip Point (chỗ đang tô), không phải ngón tay,
+                // để vệt tô và % tiến độ tính trên cùng 1 target.
+                const ctrl = this.currentDrawItemController;
+                const paintAtTip = ctrl.paintRadius > 0 && !!ctrl.tipPoint && ctrl.tipPoint.isValid;
+                const targets = this.raycastNodes(event, MakeupTarget, this.makeupTargetLayer, paintAtTip ? ctrl.tipPoint!.worldPosition.clone() : null);
                 this.currentFrameTargets = [];
                 let isWrongItem = false;
 
@@ -706,7 +710,7 @@ export class DrawInputManager extends Component {
                         const beforeDraws = target.CurrentDrawTimes;
                         const wasApplied = target.isApplied;
                         const dt = game.deltaTime > 0 ? game.deltaTime : 0.016;
-                        target.applyMakeup(dt, touchWorldPos);
+                        target.applyMakeup(dt, this.currentDrawItemController.getPaintWorldPos(touchWorldPos), this.currentDrawItemController.paintRadius);
                         const afterDraws = target.CurrentDrawTimes;
                         const isAppliedNow = target.isApplied;
 

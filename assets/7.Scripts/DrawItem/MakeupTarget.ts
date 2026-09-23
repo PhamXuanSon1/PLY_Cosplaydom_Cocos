@@ -1,8 +1,10 @@
-import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum, Graphics, Color, UITransform, sp } from 'cc';
+import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum, Graphics, Color, UITransform, sp, director } from 'cc';
 import { Character } from '../SpineScript/Character';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from '../Manager/CharacterManager';
 import { Ply_Pool, PoolType } from '../ScriptTemplate/Ply_Pool';
+import { MaskReveal } from './MaskReveal';
+import { SpineMaskReveal } from './SpineMaskReveal';
 
 const { ccclass, property, executeInEditMode } = _decorator;
 
@@ -176,6 +178,94 @@ export class MakeupTarget extends Component {
     })
     public showHintPath: boolean = false;
 
+    @property({
+        type: MaskReveal,
+        group: { name: '5. Draw Settings', id: 'drawSettings' },
+        displayName: 'Mask Reveal',
+        tooltip: 'Nếu gán: cọ đi tới đâu ảnh (Sprite có MaskReveal) hiện tới đó. Tiến độ = % đã tô thay cho số lần quẹt / số giây.'
+    })
+    public maskReveal: MaskReveal | null = null;
+
+    @property({
+        type: SpineMaskReveal,
+        group: { name: '5. Draw Settings', id: 'drawSettings' },
+        displayName: 'Spine Mask Reveal',
+        tooltip: 'Nếu gán: hình trên Spine (các region khai báo trong SpineMaskReveal) hiện theo vệt cọ. Tiến độ = % đã tô bên trong collider của target này.'
+    })
+    public spineMaskReveal: SpineMaskReveal | null = null;
+
+    @property({
+        type: CCFloat,
+        group: { name: '5. Draw Settings', id: 'drawSettings' },
+        displayName: 'Spine Mask Complete Coverage',
+        tooltip: 'Tô được bao nhiêu % diện tích collider thì coi như xong (tự lấp đầy phần còn lại). Collider thường rộng hơn hình nên để 0.4-0.6.',
+        range: [0.05, 1, 0.05],
+        slide: true
+    })
+    public spineMaskCompleteCoverage: number = 0.5;
+
+    @property({
+        type: CCInteger,
+        group: { name: '5. Draw Settings', id: 'drawSettings' },
+        displayName: 'Spine Mask Group',
+        tooltip: 'Nhóm trong Reveal Groups của SpineMaskReveal mà target này tô (0 = nhóm đầu tiên). Mỗi item nên dùng 1 nhóm riêng.',
+        range: [0, 3, 1]
+    })
+    public spineMaskGroup: number = 0;
+
+    private get hasReveal(): boolean {
+        return !!(this.maskReveal || this.spineMaskReveal);
+    }
+
+    /** Vẽ 1 chấm lên mask đang dùng. Trả về true nếu có pixel mới. */
+    private lastRevealPos: Vec3 | null = null;
+
+    private revealPaint(pos: Vec3, radius: number): boolean {
+        // Nối từ vị trí frame trước -> kéo nhanh không bị đứt nét
+        const from = this.lastRevealPos;
+        let changed = false;
+        if (this.maskReveal) changed = this.maskReveal.paintStrokeWorld(from, pos, radius);
+        else if (this.spineMaskReveal) changed = this.spineMaskReveal.paintStrokeWorld(from, pos, radius, this.spineMaskGroup);
+        if (!this.lastRevealPos) this.lastRevealPos = new Vec3();
+        this.lastRevealPos.set(pos);
+        return changed;
+    }
+
+    /** Tiến độ 0..1 của mask (1 = đủ mốc hoàn thành). */
+    private revealProgress(): number {
+        if (this.maskReveal) return this.maskReveal.progress;
+        if (this.spineMaskReveal) {
+            const rect = SpineMaskReveal.getTargetWorldRect(this.node);
+            if (!rect) return 0;
+            return Math.min(1, this.spineMaskReveal.coverageInWorldRect(rect, this.spineMaskGroup) / Math.max(0.01, this.spineMaskCompleteCoverage));
+        }
+        return 0;
+    }
+
+    /**
+     * Collider của các target không phủ kín người (khe cổ, giữa 2 chân...) -> phần đó của mask không bao giờ được tô.
+     * Khi MỌI target dùng chung SpineMaskReveal + nhóm đã xong thì tô kín cả nhóm cho sạch.
+     */
+    private fillSpineGroupIfAllDone(): void {
+        const reveal = this.spineMaskReveal;
+        if (!reveal) return;
+        const scene = director.getScene();
+        if (!scene) return;
+        const all = scene.getComponentsInChildren(MakeupTarget);
+        for (const t of all) {
+            if (t.spineMaskReveal === reveal && t.spineMaskGroup === this.spineMaskGroup && !t.isApplied) return;
+        }
+        reveal.fillGroup(this.spineMaskGroup);
+    }
+
+    private revealFill(): void {
+        if (this.maskReveal) this.maskReveal.fillAll();
+        if (this.spineMaskReveal) {
+            const rect = SpineMaskReveal.getTargetWorldRect(this.node);
+            if (rect) this.spineMaskReveal.fillWorldRect(rect, this.spineMaskGroup);
+        }
+    }
+
     // Getters & Privates
     public get currentDrawTimesValue(): number {
         return this.currentDrawTimes;
@@ -243,12 +333,12 @@ export class MakeupTarget extends Component {
         }
     }
 
-    public applyMakeup(dt: number = 0.016, currentMousePos?: Vec3): void {
+    public applyMakeup(dt: number = 0.016, currentMousePos?: Vec3, brushRadius: number = 0): void {
         if (this.isApplied || !this.targetCharacter) return;
 
         this.ensureSlotsCached();
 
-        if (this.continuousMode && currentMousePos) {
+        if (!this.hasReveal && this.continuousMode && currentMousePos) {
             const mouseDelta = Vec3.squaredDistance(currentMousePos, this.lastMousePos);
             this.lastMousePos.set(currentMousePos);
 
@@ -256,19 +346,36 @@ export class MakeupTarget extends Component {
             if (mouseDelta < 0.1) return;
         }
 
-        const canProgress = this.continuousMode || !this.isBeingHovered;
+        const canProgress = this.hasReveal || this.continuousMode || !this.isBeingHovered;
 
         if (canProgress) {
             this.isBeingHovered = true;
 
-            if (this.continuousMode) {
+            const targetMaxDraws = this.continuousMode ? this.continuousRequiredSeconds : this.requiredDrawTimes;
+
+            if (this.hasReveal) {
+                // Tiến độ = % mask đã tô, quy đổi sang thang currentDrawTimes để phần còn lại (Heart, hint, sound) chạy như cũ
+                if (currentMousePos) {
+                    if (!this.revealPaint(currentMousePos, brushRadius)) return;
+                } else if (this.currentDrawTimes < targetMaxDraws) {
+                    return;
+                }
+                const progress = this.currentDrawTimes >= targetMaxDraws ? 1 : this.revealProgress();
+                if (progress >= 1) {
+                    this.revealFill();
+                    this.currentDrawTimes = targetMaxDraws;
+                } else {
+                    this.currentDrawTimes = progress * targetMaxDraws;
+                }
+            } else if (this.continuousMode) {
                 this.currentDrawTimes += dt;
             } else {
                 this.currentDrawTimes += 1.0;
             }
 
-            const targetMaxDraws = this.continuousMode ? this.continuousRequiredSeconds : this.requiredDrawTimes;
-            const targetAlpha = targetMaxDraws > 0 ? Math.min(1.0, Math.max(0.0, this.currentDrawTimes / targetMaxDraws)) : 1.0;
+            const progressAlpha = targetMaxDraws > 0 ? Math.min(1.0, Math.max(0.0, this.currentDrawTimes / targetMaxDraws)) : 1.0;
+            // Có mask: hình bật đủ 100% alpha, mask lo phần hiện dần theo vệt cọ
+            const targetAlpha = this.hasReveal ? 1.0 : progressAlpha;
 
             const hasTurnOnSettings = !!(this.slotName || (this.multipleTurnOnSlots && this.multipleTurnOnSlots.length > 0) || this.objectToTurnOn || (this.multipleObjectsToTurnOn && this.multipleObjectsToTurnOn.length > 0));
 
@@ -323,19 +430,19 @@ export class MakeupTarget extends Component {
                 if (!this.turnOffOnlyWhenDone) {
                     // Từ từ giảm Alpha của cái đang bị xóa đi
                     if (this.cachedSlotOff) {
-                        this.setSlotAlphaValue(this.cachedSlotOff, 1.0 - targetAlpha);
+                        this.setSlotAlphaValue(this.cachedSlotOff, 1.0 - progressAlpha);
                     } else if (this.slotNameToTurnOff) {
-                        this.targetCharacter.setSlotAlpha(this.slotNameToTurnOff, 1.0 - targetAlpha);
+                        this.targetCharacter.setSlotAlpha(this.slotNameToTurnOff, 1.0 - progressAlpha);
                     }
 
                     if (this.cachedMultipleSlotsOff.length > 0) {
                         for (const slotOff of this.cachedMultipleSlotsOff) {
-                            this.setSlotAlphaValue(slotOff, 1.0 - targetAlpha);
+                            this.setSlotAlphaValue(slotOff, 1.0 - progressAlpha);
                         }
                     } else if (this.multipleTurnOffSlots) {
                         for (const slotNameOff of this.multipleTurnOffSlots) {
                             if (slotNameOff) {
-                                this.targetCharacter.setSlotAlpha(slotNameOff, 1.0 - targetAlpha);
+                                this.targetCharacter.setSlotAlpha(slotNameOff, 1.0 - progressAlpha);
                             }
                         }
                     }
@@ -369,6 +476,7 @@ export class MakeupTarget extends Component {
             if (this.currentDrawTimes >= targetMaxDraws) {
                 if (!this.isApplied) {
                     this.isApplied = true;
+                    this.fillSpineGroupIfAllDone();
 
                     const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                     let isIdCompleteInMap = true;
@@ -449,6 +557,7 @@ export class MakeupTarget extends Component {
 
     public onBrushExit(): void {
         this.isBeingHovered = false;
+        this.lastRevealPos = null;
     }
 
     public OnBrushExit(): void {

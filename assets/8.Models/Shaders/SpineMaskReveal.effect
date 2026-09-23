@@ -1,0 +1,181 @@
+// Spine giống builtin-spine, thêm: các vùng atlas nằm trong region0..15 chỉ hiện ở chỗ maskTexture đã tô
+// (mỗi region đọc 1 kênh R/G/B/A của mask -> tối đa 4 nhóm vẽ độc lập).
+// Mask nằm trong không gian world (maskRect = x, y, w, h world). Dùng cho SpineMaskReveal.ts.
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none
+      properties:
+        alphaThreshold: { value: 0.5 }
+        maskTexture: { value: black }
+        maskRect: { value: [0.0, 0.0, 1.0, 1.0], editor: { type: vec4 } }
+        regionInfo: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4, tooltip: 'x = số region đang dùng' } }
+        region0: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region1: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region2: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region3: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region4: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region5: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region6: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region7: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region8: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region9: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region10: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region11: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region12: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region13: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region14: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        region15: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4 } }
+        regionChannel0: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4, tooltip: 'Kênh mask (0=R,1=G,2=B,3=A) của region 0..3' } }
+        regionChannel1: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4, tooltip: 'Kênh mask (0=R,1=G,2=B,3=A) của region 4..7' } }
+        regionChannel2: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4, tooltip: 'Kênh mask (0=R,1=G,2=B,3=A) của region 8..11' } }
+        regionChannel3: { value: [0.0, 0.0, 0.0, 0.0], editor: { type: vec4, tooltip: 'Kênh mask (0=R,1=G,2=B,3=A) của region 12..15' } }
+}%
+
+CCProgram sprite-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #if USE_LOCAL
+    #include <builtin/uniforms/cc-local>
+  #endif
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+
+  out vec4 v_light;
+  out vec2 uv0;
+  out vec2 v_world;
+
+  #if TWO_COLORED
+    in vec4 a_color2;
+    out vec4 v_dark;
+  #endif
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1);
+
+    #if USE_LOCAL
+      pos = cc_matWorld * pos;
+    #endif
+
+    v_world = pos.xy;
+    pos = cc_matViewProj * pos;
+
+    uv0 = a_texCoord;
+
+    v_light = a_color;
+    #if TWO_COLORED
+      v_dark = a_color2;
+    #endif
+
+    return pos;
+  }
+}%
+
+CCProgram sprite-fs %{
+  precision highp float;
+  #include <builtin/internal/alpha-test>
+
+  uniform MaskRevealConstants {
+    vec4 maskRect;
+    vec4 regionInfo;
+    vec4 region0;
+    vec4 region1;
+    vec4 region2;
+    vec4 region3;
+    vec4 region4;
+    vec4 region5;
+    vec4 region6;
+    vec4 region7;
+    vec4 region8;
+    vec4 region9;
+    vec4 region10;
+    vec4 region11;
+    vec4 region12;
+    vec4 region13;
+    vec4 region14;
+    vec4 region15;
+    vec4 regionChannel0;
+    vec4 regionChannel1;
+    vec4 regionChannel2;
+    vec4 regionChannel3;
+  };
+
+  in vec4 v_light;
+  #if TWO_COLORED
+    in vec4 v_dark;
+  #endif
+  in vec2 uv0;
+  in vec2 v_world;
+  #pragma builtin(local)
+  layout(set = 2, binding = 12) uniform sampler2D cc_spriteTexture;
+  uniform sampler2D maskTexture;
+
+  bool inRect (vec2 p, vec4 r) {
+    return r.z > 0.0 && p.x >= r.x && p.y >= r.y && p.x <= r.x + r.z && p.y <= r.y + r.w;
+  }
+
+  // Trả về kênh mask (0..3) của region chứa p, -1 nếu p không thuộc region nào
+  float revealChannel (vec2 p) {
+    float n = regionInfo.x;
+    if (n > 0.5 && inRect(p, region0)) return regionChannel0.x;
+    if (n > 1.5 && inRect(p, region1)) return regionChannel0.y;
+    if (n > 2.5 && inRect(p, region2)) return regionChannel0.z;
+    if (n > 3.5 && inRect(p, region3)) return regionChannel0.w;
+    if (n > 4.5 && inRect(p, region4)) return regionChannel1.x;
+    if (n > 5.5 && inRect(p, region5)) return regionChannel1.y;
+    if (n > 6.5 && inRect(p, region6)) return regionChannel1.z;
+    if (n > 7.5 && inRect(p, region7)) return regionChannel1.w;
+    if (n > 8.5 && inRect(p, region8)) return regionChannel2.x;
+    if (n > 9.5 && inRect(p, region9)) return regionChannel2.y;
+    if (n > 10.5 && inRect(p, region10)) return regionChannel2.z;
+    if (n > 11.5 && inRect(p, region11)) return regionChannel2.w;
+    if (n > 12.5 && inRect(p, region12)) return regionChannel3.x;
+    if (n > 13.5 && inRect(p, region13)) return regionChannel3.y;
+    if (n > 14.5 && inRect(p, region14)) return regionChannel3.z;
+    if (n > 15.5 && inRect(p, region15)) return regionChannel3.w;
+    return -1.0;
+  }
+
+  vec4 frag () {
+
+    vec4 o = vec4(1, 1, 1, 1);
+    #if TWO_COLORED
+      vec4 texColor = vec4(1, 1, 1, 1);
+
+      texColor *= texture(cc_spriteTexture, uv0);
+      o.a = texColor.a * v_light.a;
+      o.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;
+    #else
+      o *= texture(cc_spriteTexture, uv0);
+      o *= v_light;
+    #endif
+
+    float ch = revealChannel(uv0);
+    if (ch > -0.5) {
+      vec2 maskUV = (v_world - maskRect.xy) / maskRect.zw;
+      float m = 0.0;
+      if (maskUV.x >= 0.0 && maskUV.y >= 0.0 && maskUV.x <= 1.0 && maskUV.y <= 1.0) {
+        vec4 mk = texture(maskTexture, maskUV);
+        m = ch < 0.5 ? mk.r : (ch < 1.5 ? mk.g : (ch < 2.5 ? mk.b : mk.a));
+      }
+      o.a *= m;
+    }
+
+    ALPHA_TEST(o);
+    return o;
+  }
+}%
