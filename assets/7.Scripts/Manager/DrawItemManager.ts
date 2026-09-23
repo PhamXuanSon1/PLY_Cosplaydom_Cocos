@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, CCString, sp, EventHandler, Enum } from 'cc';
+import { _decorator, Component, Node, CCString, sp, EventHandler, Enum, director } from 'cc';
 import { MakeupTarget } from '../DrawItem/MakeupTarget';
 import { DrawItemController, DrawItemType } from '../DrawItem/DrawItemController';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
@@ -186,6 +186,12 @@ export class DrawItemManager extends Component {
     // mất Heart + anim vui.
     private _pendingMapCompletionIndex: number = -1;
 
+    // Frame gần nhất có sinh Heart. Target cuối của map vừa tô xong đã bắn Heart + tiếng Happy
+    // ngay trong frame đó -> map hoàn thành (kể cả bị hoãn tới lúc thả tay) không bắn thêm Heart nữa.
+    private _lastHeartFrame: number = -1;
+    private _skipMapHeart: boolean = false;
+    private _isFlushingPending: boolean = false;
+
     protected onLoad(): void {
         DrawItemManager.Instance = this;
         (globalThis as any).DrawItemManager = DrawItemManager;
@@ -250,10 +256,17 @@ export class DrawItemManager extends Component {
         // ra ngoài màn hình) và item bay về Spawn Pos xong thì mới bắn OnMapCompleted,
         // nếu không map sẽ chuyển ngay lúc item còn lơ lửng trên tay.
         if (deferUntilItemReturned) {
+            if (this._pendingMapCompletionIndex !== this.currentMapIndex) {
+                this._skipMapHeart = this._lastHeartFrame === director.getTotalFrames();
+            }
             this._pendingMapCompletionIndex = this.currentMapIndex;
             return false;
         }
 
+        // Hoàn thành ngay (không qua hoãn): tự xét lại. Đi từ Flush thì giữ cờ đã tính lúc hoãn.
+        if (!this._isFlushingPending) {
+            this._skipMapHeart = this._lastHeartFrame === director.getTotalFrames();
+        }
         this._pendingMapCompletionIndex = -1;
         return this.completeCurrentMap(currentConfig);
     }
@@ -277,7 +290,11 @@ export class DrawItemManager extends Component {
 
         // Chạy lại toàn bộ kiểm tra thay vì tin vào trạng thái cũ, phòng khi điều kiện
         // đã đổi trong lúc chờ.
-        return this.CheckMapCompletion(false);
+        this._isFlushingPending = true;
+        const changed = this.CheckMapCompletion(false);
+        this._isFlushingPending = false;
+        if (!changed) this._skipMapHeart = false;
+        return changed;
     }
 
     /**
@@ -294,7 +311,8 @@ export class DrawItemManager extends Component {
         this._itemsSinceLastHeart = 0;
 
         // Tăng index TRƯỚC khi chạy event chuyển map (để code lấy đúng index mới)
-        this.SpawnHeartAt(currentConfig.heartSpawnPos);
+        if (!this._skipMapHeart) this.SpawnHeartAt(currentConfig.heartSpawnPos);
+        this._skipMapHeart = false;
 
         this.currentMapIndex++;
         this.updateMapStatusDisplay();
@@ -314,6 +332,7 @@ export class DrawItemManager extends Component {
 
     /** Sinh 1 Heart từ Pool tại vị trí spawnParent và gắn làm con của nó. */
     public SpawnHeartAt(spawnParent: Node | null): void {
+        this._lastHeartFrame = director.getTotalFrames();
         if (Ply_Pool.Ins != null && spawnParent != null) {
             const heartUnit = Ply_Pool.Ins.spawn(PoolType.Heart, spawnParent.worldPosition);
             if (heartUnit) {
