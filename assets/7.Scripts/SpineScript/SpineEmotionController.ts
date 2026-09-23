@@ -1,5 +1,4 @@
-import { _decorator, Component, Node, sp } from "cc";
-import { Character } from "./Character";
+import { _decorator, Component, director, Director, sp } from "cc";
 const { ccclass, property } = _decorator;
 
 @ccclass("EmotonSlotConfig")
@@ -21,7 +20,7 @@ export class EmotonSlotConfig {
     public requiredCurrentAttachment: string = "";
     @property({
         tooltip:
-            "Tên Attachment gốc để quay về sau khi cười. Nếu để trống, code sẽ tự lấy Attachment đang mặc định lúc đó.",
+            "(Không còn bắt buộc) Hết cảm xúc, slot tự trả về đúng trạng thái trước đó. Chỉ dùng khi muốn ép về 1 attachment cụ thể.",
     })
     public defaultAttachmentName: string = "";
 }
@@ -40,7 +39,7 @@ export class SpineEmotionController extends Component {
     @property({ tooltip: "Chỉ số track animation để thay đổi" })
     public animationTrack: number = 1;
 
-    @property({ tooltip: "Thời gian hiển thị cảm xúc" })
+    @property({ tooltip: "Thời gian giữ biểu cảm (giây). Attachment cảm xúc được giữ suốt khoảng này, kể cả khi animation Spine có key khác." })
     public emotionDuration: number = 1.0;
 
     @property({ type: [EmotonSlotConfig], tooltip: "Danh sách các cặp slot và attachment để thay đổi khi cười" })
@@ -49,25 +48,31 @@ export class SpineEmotionController extends Component {
     @property({ type: [EmotonSlotConfig], tooltip: "Danh sách các cặp slot và attachment để thay đổi khi tức giận" })
     public angrySlots: EmotonSlotConfig[] = [];
 
-    @property({ tooltip: "Tên animation mặc định (idle) để quay về sau cảm xúc. Nếu để trống, code sẽ tự lấy animation đang chạy trước đó." })
+    @property({ tooltip: "Animation cho track cảm xúc sau khi xong (để trống = trả track về rỗng, mix mượt). Thường để trống." })
     public defaultAnimationName: string = "";
 
-    private charComponent: Character | null = null;
-    private _originalAnimName: string = "";
+    @property({ tooltip: "Thời gian mix (giây) khi animation cảm xúc kết thúc để trả track về." })
+    public mixOutDuration: number = 0.2;
+
+    // slot -> attachment đang ép trong lúc có cảm xúc
+    private overrides: Map<string, string> = new Map();
+    private revertTimer: (() => void) | null = null;
 
     start() {
         if (!this.skeletonAnimation) {
             this.skeletonAnimation = this.getComponent(sp.Skeleton);
         }
-        this.charComponent = this.getComponent(Character);
+    }
 
-        // Lưu animation ban đầu (thường là idle)
-        if (this.skeletonAnimation) {
-            const current = this.skeletonAnimation.getCurrent(0);
-            if (current && current.animation) {
-                this._originalAnimName = current.animation.name;
-            }
-        }
+    protected onEnable(): void {
+        // Spine áp animation SAU mọi update()/lateUpdate() của script -> nếu đổi attachment trong update
+        // thì animation (happy/angry có key miệng) sẽ đè lại. Áp override ngay trước khi vẽ để luôn thắng.
+        director.on(Director.EVENT_BEFORE_DRAW, this.applyOverrides, this);
+    }
+
+    protected onDisable(): void {
+        director.off(Director.EVENT_BEFORE_DRAW, this.applyOverrides, this);
+        this.endEmotion();
     }
 
     public PlayHappyAnim(): void {
@@ -78,83 +83,89 @@ export class SpineEmotionController extends Component {
     }
 
     public EmotionRoutine(animName: string, slots: EmotonSlotConfig[]): void {
-        if (!this.skeletonAnimation || !this.charComponent) return;
+        const skel = this.skeletonAnimation;
+        if (!skel) return;
 
-        // Lưu lại animation đang chạy ở track 0 trước khi chuyển sang emotion
-        const currentEntry = this.skeletonAnimation.getCurrent(0);
-        if (currentEntry && currentEntry.animation) {
-            this._originalAnimName = currentEntry.animation.name;
-        }
+        // Cảm xúc mới đè cảm xúc cũ: huỷ hẹn hoàn tác của lần trước
+        this.endEmotion();
 
-        const revertAnimName = (this.defaultAnimationName && this.defaultAnimationName.trim() !== "")
-            ? this.defaultAnimationName
-            : this._originalAnimName;
-
-        const revertActions: (() => void)[] = []; // Mảng lưu các hành động để quay về trạng thái ban đầu
-
-        for (const slotConfig of slots) {
-            const slot = this.skeletonAnimation.findSlot(slotConfig.slotName);
-
+        for (const cfg of slots) {
+            if (!cfg || !cfg.slotName || !cfg.targetAttachmentName) continue;
+            const slot = skel.findSlot(cfg.slotName);
             if (!slot) {
-                console.warn(`Không tìm thấy slot: ${slotConfig.slotName}`);
+                console.warn(`[SpineEmotion] Không tìm thấy slot: ${cfg.slotName}`);
                 continue;
             }
 
-            const currentAttachment = slot.getAttachment(); // Lấy attachment hiện tại của slot
-            const currentAttachmentName = currentAttachment ? currentAttachment.name : null; // Lấy tên attachment hiện tại
-
-            //nếu requiredCurrentAttachment được đặt và attachment hiện tại không khớp, bỏ qua slot này
-            if (slotConfig.requiredCurrentAttachment && slotConfig.requiredCurrentAttachment.trim() !== ""
-                && currentAttachmentName !== slotConfig.requiredCurrentAttachment) {
-                console.log(`Slot ${slotConfig.slotName} không có attachment yêu cầu. Bỏ qua.`);
+            const currentName = SpineEmotionController.readAttachmentName(slot);
+            // Slot đang tắt (không có attachment) -> không bật mặt cười lên chỗ trống
+            if (!currentName) continue;
+            if (cfg.requiredCurrentAttachment && cfg.requiredCurrentAttachment.trim() !== ""
+                && currentName !== cfg.requiredCurrentAttachment) {
                 continue;
-            } else {
-                if (!currentAttachment) continue; // Nếu không có attachment hiện tại, bỏ qua slot này
             }
-
-            const revertTo = (!slotConfig.defaultAttachmentName || slotConfig.defaultAttachmentName.trim() === "")
-                ? currentAttachmentName  // Nếu không có defaultAttachmentName, revert về attachment hiện tại
-                : slotConfig.defaultAttachmentName;
-
-            // Đổi attachment sang biểu cảm mới & lưu lại action hoàn tác
-            if (this.charComponent) {
-                this.charComponent.turnSlotAttachment(slotConfig.slotName, slotConfig.targetAttachmentName);
-                revertActions.push(() => {
-                    // bật lại skin
-                    this.charComponent.turnSlotAttachment(slotConfig.slotName, revertTo);
-                })
-            } else {
-                this.skeletonAnimation.setAttachment(slotConfig.slotName, slotConfig.targetAttachmentName);
-                revertActions.push(() => {
-                    // bật lại skin
-                    this.skeletonAnimation.setAttachment(slotConfig.slotName, revertTo);
-                })
-            }
+            this.overrides.set(cfg.slotName, cfg.targetAttachmentName);
         }
+        // Đổi ngay trong frame này (không đợi tới lúc vẽ) để code khác đọc slot thấy đúng
+        this.applyOverrides();
 
-        if (animName && animName !== "") {
-            // Chạy animation cảm xúc (happy/angry) KHÔNG loop
-            const entry = this.skeletonAnimation.setAnimation(this.animationTrack, animName, false);
-
-            // Khi animation emotion chạy xong → tự động quay về animation ban đầu
+        if (animName) {
+            const entry = skel.setAnimation(this.animationTrack, animName, false);
             if (entry) {
-                this.skeletonAnimation.setTrackCompleteListener(entry, () => {
-                    if (revertAnimName && revertAnimName !== "") {
-                        this.skeletonAnimation.setAnimation(this.animationTrack, revertAnimName, true);
-                        console.log(`[SpineEmotion] Animation '${animName}' xong → Quay về '${revertAnimName}'`);
+                skel.setTrackCompleteListener(entry, () => {
+                    if (this.defaultAnimationName && this.defaultAnimationName.trim() !== "") {
+                        skel.setAnimation(this.animationTrack, this.defaultAnimationName, true);
                     } else {
-                        this.skeletonAnimation.clearTrack(this.animationTrack);
+                        // Trả track về rỗng, mix mượt -> không để lại animation lặp chồng lên track 0
+                        skel.getState()?.setEmptyAnimation(this.animationTrack, Math.max(0, this.mixOutDuration));
                     }
                 });
             }
         }
 
-        // Đợi sau khoảng thời gian emotionDuration thì hoàn tác trả lại mặt ban đầu
-        this.scheduleOnce(() => {
-            for (const action of revertActions) {
-                action();
-            }
-        }, this.emotionDuration);
+        this.revertTimer = () => this.endEmotion();
+        this.scheduleOnce(this.revertTimer, Math.max(0, this.emotionDuration));
+    }
 
+    /** Kết thúc cảm xúc: nhả override, slot tự quay về theo Character / animation như trước. */
+    private endEmotion(): void {
+        if (this.revertTimer) {
+            this.unschedule(this.revertTimer);
+            this.revertTimer = null;
+        }
+        if (this.overrides.size === 0) return;
+        const skel = this.skeletonAnimation;
+        const character: any = this.getComponent("Character");
+        this.overrides.forEach((_att, slotName) => {
+            // Trả về attachment Character đang ép (nếu có), không thì về setup pose của slot
+            const forced = character && character.forcedAttachments ? character.forcedAttachments.get(slotName) : undefined;
+            if (skel) {
+                try {
+                    if (forced !== undefined) skel.setAttachment(slotName, forced ?? "");
+                    else {
+                        const slot: any = skel.findSlot(slotName);
+                        if (slot && typeof slot.setToSetupPose === "function") slot.setToSetupPose();
+                    }
+                } catch (e) { /* slot không còn -> bỏ qua */ }
+            }
+        });
+        this.overrides.clear();
+    }
+
+    private applyOverrides(): void {
+        if (this.overrides.size === 0 || !this.skeletonAnimation) return;
+        this.overrides.forEach((att, slotName) => {
+            try {
+                this.skeletonAnimation!.setAttachment(slotName, att);
+            } catch (e) { /* bỏ qua */ }
+        });
+    }
+
+    // Spine bản JS có property .name, bản WASM chỉ có getName()
+    private static readAttachmentName(slot: any): string | null {
+        const att = slot.attachment !== undefined ? slot.attachment : (typeof slot.getAttachment === "function" ? slot.getAttachment() : null);
+        if (!att) return null;
+        const name = att.name !== undefined ? att.name : (typeof att.getName === "function" ? att.getName() : null);
+        return typeof name === "string" && name ? name : null;
     }
 }
