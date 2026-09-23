@@ -16,9 +16,10 @@ export class MapHintConfig {
 
     @property({
         type: CCFloat,
-        displayName: 'Custom Delay Before Hint',
-        tooltip: 'Thời gian chờ gợi ý riêng cho Map này (giây). Nếu <= 0 hoặc để mặc định (-1) sẽ sử dụng Delay Before Hint chung của HandHintManager.'
+        displayName: 'Custom Delay 1st Item Of Map',
+        tooltip: 'Thời gian chờ (giây) trước khi gợi ý MÓN ĐẦU TIÊN của Map này (lúc chưa món nào trong map hoàn thành). Từ món thứ 2 trở đi dùng Delay Before Hint chung. Nếu <= 0 (mặc định -1) thì món đầu tiên cũng dùng Delay Before Hint chung.'
     })
+    // Giữ tên biến cũ để không mất dữ liệu đã lưu trong scene
     public customDelayBeforeHint: number = -1;
 
     @property({
@@ -147,10 +148,25 @@ export class HandHintManager extends Component {
         const drawItemMgr = this.getDrawItemMgr();
         const mapIndex = drawItemMgr ? drawItemMgr.currentMapIndex : 0;
         const config = this.getMapConfig(mapIndex);
-        if (config && config.customDelayBeforeHint > 0) {
+        // Custom delay chỉ áp cho món đầu tiên của map, các món sau dùng delay chung
+        if (config && config.customDelayBeforeHint > 0 && this.isFirstItemOfMap(mapIndex)) {
             return config.customDelayBeforeHint;
         }
         return this.delayBeforeHint;
+    }
+
+    /** true khi map chưa có món nào hoàn thành (item xong hoặc vùng tô xong) -> đang gợi ý món đầu tiên. */
+    private isFirstItemOfMap(mapIndex: number): boolean {
+        const drawItemMgr = this.getDrawItemMgr();
+        if (!drawItemMgr || mapIndex >= drawItemMgr.mapConfigs.length) return true;
+        const cfg = drawItemMgr.mapConfigs[mapIndex];
+        for (const item of cfg.itemsInMap) {
+            if (item && item.isCompleted) return false;
+        }
+        for (const target of cfg.targetsInMap) {
+            if (target && target.isApplied) return false;
+        }
+        return true;
     }
 
     protected update(dt: number): void {
