@@ -2,824 +2,774 @@
   "skeletonDataFileName": "Porcelain",
   "slotAttachmentPairs": [
     {
-      "isEnabled": true,
-      "slotName": "shadown",
-      "attachmentName": "Set_Porcelain/shadown"
+      "isEnabled": false,
+      "slotName": "masks circle",
+      "attachmentName": "cos/masks"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_cloak",
-      "attachmentName": "Set_Porcelain/cloak"
+      "slotName": "masks1",
+      "attachmentName": "cos/masks"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_back_dress",
-      "attachmentName": "Set_Porcelain/back_dress"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_b_hair_R",
-      "attachmentName": "Base_Head/b_hair"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_b_hair_L",
-      "attachmentName": "Base_Head/b_hair"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "HairMake_b_hair1_dirt_R",
-      "attachmentName": "HairMake/b_hair1_dirt"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "HairMake_b_hair1_dirt_L",
-      "attachmentName": "HairMake/b_hair1_dirt"
+      "slotName": "masks2",
+      "attachmentName": "cos/masks"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_b_hair1_wet_R",
-      "attachmentName": "HairMake/b_hair1_wet"
+      "slotName": "masks3",
+      "attachmentName": "cos/masks"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_b_hair1_wet_L",
-      "attachmentName": "HairMake/b_hair1_wet"
+      "slotName": "masks4",
+      "attachmentName": "cos/masks"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_b_hair1_shampoo_R",
-      "attachmentName": "HairMake/b_hair1_shampoo"
+      "slotName": "masks5",
+      "attachmentName": "cos/masks"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_b_hair1_shampoo_L",
-      "attachmentName": "HairMake/b_hair1_shampoo"
+      "slotName": "masks6",
+      "attachmentName": "cos/masks"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_b_hair1_R",
-      "attachmentName": "HairMake/b_hair1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair1_L",
-      "attachmentName": "HairMake/b_hair1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair2_R",
-      "attachmentName": "HairMake/b_hair2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair2_L",
-      "attachmentName": "HairMake/b_hair2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair3_R",
-      "attachmentName": "HairMake/b_hair3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair3_L",
-      "attachmentName": "HairMake/b_hair3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair4_R",
-      "attachmentName": "HairMake/b_hair4"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair4_L",
-      "attachmentName": "HairMake/b_hair4"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair5_R",
-      "attachmentName": "HairMake/b_hair5"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair5_L",
-      "attachmentName": "HairMake/b_hair5"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_curl_hair1_R",
-      "attachmentName": "HairMake/curl_hair"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_curl_hair2_R",
-      "attachmentName": "HairMake/curl_hair"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_curl_hair3_R",
-      "attachmentName": "HairMake/curl_hair"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_curl_hair1_L",
-      "attachmentName": "HairMake/curl_hair"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_curl_hair2_L",
-      "attachmentName": "HairMake/curl_hair"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_curl_hair3_L",
-      "attachmentName": "HairMake/curl_hair"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair6_R",
-      "attachmentName": "HairMake/b_hair6"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "HairMake_b_hair6_L",
-      "attachmentName": "HairMake/b_hair6"
+      "slotName": "masks7",
+      "attachmentName": "cos/masks"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Body_arm_R1",
-      "attachmentName": "Base_Body/Base_arm1"
+      "slotName": "hair_01_b",
+      "attachmentName": "base/hair_01_b"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_wet_b",
+      "attachmentName": "makeup/hair_wet_b"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_04_b",
+      "attachmentName": "base/hair_04_b"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_05_b",
+      "attachmentName": "base/hair_05_b"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_06_b",
+      "attachmentName": "base/hair_06_b"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "kimono_b_R",
+      "attachmentName": "cos/kimono_b_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "kimono_b_L",
+      "attachmentName": "cos/kimono_b_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_sandals_b_L",
+      "attachmentName": "cos/cos_sandals_b_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_sandals_b_R",
+      "attachmentName": "cos/cos_sandals_b_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Body_arm_L1",
-      "attachmentName": "Base_Body/Base_arm1"
+      "slotName": "shadow",
+      "attachmentName": "shadow/shadow"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Body_arm_L2",
-      "attachmentName": "Base_Body/Base_arm2"
+      "slotName": "backeye",
+      "attachmentName": "head/backeye"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_hand_L",
-      "attachmentName": "Base_Head/Base_hand_1"
+      "slotName": "base_arm_R",
+      "attachmentName": "setbase/base_arm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Body_arm_R2",
-      "attachmentName": "Base_Body/Base_arm2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_arm1_L",
-      "attachmentName": "MakeUp/arm1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_arm1b_L",
-      "attachmentName": "MakeUp/arm1b"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_arm2_L",
-      "attachmentName": "MakeUp/arm2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_arm2b_L",
-      "attachmentName": "MakeUp/arm2b"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_hand_L",
-      "attachmentName": "Base_Head/hand_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_hand_L2",
-      "attachmentName": "Base_Head/hand_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_arm1_R",
-      "attachmentName": "MakeUp/arm1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_arm1b_R",
-      "attachmentName": "MakeUp/arm1b"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_arm2_R",
-      "attachmentName": "MakeUp/arm2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_arm2b_R",
-      "attachmentName": "MakeUp/arm2b"
+      "slotName": "base_arm_L",
+      "attachmentName": "setbase/base_arm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_hand_R",
-      "attachmentName": "Base_Head/Base_hand_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_hand_R",
-      "attachmentName": "Base_Head/hand_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_hand_R2",
-      "attachmentName": "Base_Head/hand_2"
+      "slotName": "base_forearm_L",
+      "attachmentName": "setbase/base_forearm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Body_leg_L",
-      "attachmentName": "Base_Body/Base_leg"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_leg_L",
-      "attachmentName": "MakeUp/leg"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_legb_L",
-      "attachmentName": "MakeUp/legb"
+      "slotName": "base_forearm_R",
+      "attachmentName": "setbase/base_forearm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Body_leg_R",
-      "attachmentName": "Base_Body/Base_leg"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_leg_R",
-      "attachmentName": "MakeUp/leg"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_legb_R",
-      "attachmentName": "MakeUp/legb"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Porcelain_shoes_R",
-      "attachmentName": "Set_Porcelain/PQ_shoes_R"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Porcelain_shoes_L",
-      "attachmentName": "Set_Porcelain/PQ_shoes_R"
+      "slotName": "base_leg_R",
+      "attachmentName": "setbase/base_leg_R"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Body_Body1",
-      "attachmentName": "Base_Body/Base_Body"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_body",
-      "attachmentName": "MakeUp/body"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_bodyb",
-      "attachmentName": "MakeUp/bodyb"
+      "slotName": "base_leg_L",
+      "attachmentName": "setbase/base_leg_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_trouser_R",
-      "attachmentName": "Set_Base/trousers"
+      "slotName": "base_body2",
+      "attachmentName": "setbase/base_body"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_trouser_R2",
-      "attachmentName": "Set_Base/trousers"
+      "slotName": "base_bodysuit",
+      "attachmentName": "base_body"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_trouser_L",
-      "attachmentName": "Set_Base/trousers"
+      "slotName": "base_ear_L",
+      "attachmentName": "head/base_ear"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_trouser_L2",
-      "attachmentName": "Set_Base/trousers"
+      "slotName": "base_ear_R",
+      "attachmentName": "head/base_ear"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_dress_arm1_L",
-      "attachmentName": "Set_Base/dress_arm1"
+      "slotName": "base_Pupil_L",
+      "attachmentName": "head/base_pupil"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Pupil_L",
+      "attachmentName": "head/cos_pupil"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_dress_arm1_R",
-      "attachmentName": "Set_Base/dress_arm1"
+      "slotName": "base_Pupil_R",
+      "attachmentName": "head/base_pupil"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Pupil_R",
+      "attachmentName": "head/cos_pupil"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_sock_L",
-      "attachmentName": "Set_Base/sock"
+      "slotName": "eye shine L",
+      "attachmentName": "head/eye shine"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_shoe_L",
-      "attachmentName": "Set_Base/shoe"
+      "slotName": "eye shine R",
+      "attachmentName": "head/eye shine"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_sock_R",
-      "attachmentName": "Set_Base/sock"
+      "slotName": "base_hand_R",
+      "attachmentName": "setbase/base_hand_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_shoe_R",
-      "attachmentName": "Set_Base/shoe"
+      "slotName": "base_hand_L",
+      "attachmentName": "setbase/base_hand_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_dress",
-      "attachmentName": "Set_Base/dress"
+      "slotName": "base_shoes_L",
+      "attachmentName": "base/base_shoes_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_shirt_arm_R",
-      "attachmentName": "Set_Base/shirt_arm"
+      "slotName": "base_shoes_R",
+      "attachmentName": "base/base_shoes_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_shirt_arm_R2",
-      "attachmentName": "Set_Base/shirt_arm"
+      "slotName": "base_pants",
+      "attachmentName": "base/base_pants"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_shirt_arm_L",
-      "attachmentName": "Set_Base/shirt_arm"
+      "slotName": "base_shirt_arm_L",
+      "attachmentName": "base/base_shirt_arm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_shirt_arm_L2",
-      "attachmentName": "Set_Base/shirt_arm"
+      "slotName": "base_shirt_arm_R",
+      "attachmentName": "base/base_shirt_arm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_shirt",
-      "attachmentName": "Set_Base/shirt"
+      "slotName": "base_shirt",
+      "attachmentName": "base/base_shirt"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_salon_cape_02",
-      "attachmentName": "HairMake/salon_cape_02"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_ear_R",
-      "attachmentName": "Base_Head/Base_ear"
+      "slotName": "cos_underwear_top",
+      "attachmentName": "cos/underwear_top"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_ear_wet_R",
-      "attachmentName": "MakeUp/ear_wet"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_ear_L",
-      "attachmentName": "Base_Head/Base_ear"
+      "slotName": "cos_kimono_02_top_arm_L",
+      "attachmentName": "cos/cos_kimono_02_top_arm"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_ear_R",
-      "attachmentName": "Base_Head/ear"
+      "slotName": "cos_kimono_01_top_arm_L",
+      "attachmentName": "cos/cos_kimono_01_arm_L"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_ear_L",
-      "attachmentName": "Base_Head/ear"
+      "slotName": "cos_kimono_02_top_arm_R",
+      "attachmentName": "cos/cos_kimono_02_top_arm"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_shouder",
-      "attachmentName": "Set_Porcelain/shouder_bridge"
+      "slotName": "cos_kimono_01_top_arm_R",
+      "attachmentName": "cos/cos_kimono_01_arm_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_dress_arm_R",
-      "attachmentName": "Set_Porcelain/dress_arm"
+      "slotName": "cos_sandals_f_L",
+      "attachmentName": "cos/cos_sandals_f_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_dress_arm_L",
-      "attachmentName": "Set_Porcelain/dress_arm"
+      "slotName": "cos_sandals_f_R",
+      "attachmentName": "cos/cos_sandals_f_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_dress3",
-      "attachmentName": "Set_Porcelain/dress3"
+      "slotName": "cos_kimono_03",
+      "attachmentName": "cos/cos_kimono_03"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_dress2",
-      "attachmentName": "Set_Porcelain/dress2"
+      "slotName": "cos_kimono_02_bottom",
+      "attachmentName": "cos/cos_kimono_02_bottom"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_dress1",
-      "attachmentName": "Set_Porcelain/dress1"
+      "slotName": "cos_kimono_01_bottom",
+      "attachmentName": "cos/cos_kimono_01_bottom"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_neckle",
-      "attachmentName": "Set_Porcelain/PQ_neckle"
+      "slotName": "cos_kimono_02_top",
+      "attachmentName": "cos/cos_kimono_02_top"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_decor_02",
-      "attachmentName": "Set_Porcelain/PQ_decor_02"
+      "slotName": "cos_kimono_01_top",
+      "attachmentName": "cos/cos_kimono_01_top"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_ear_wet_L",
-      "attachmentName": "MakeUp/ear_wet"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_eye_ball_R",
-      "attachmentName": "Base_Head/Base_eye_ball"
+      "slotName": "cos_obi_02",
+      "attachmentName": "cos/cos_obi_02"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_eye_ball_R",
-      "attachmentName": "MakeUp/eye_ball"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_eye_ball_L",
-      "attachmentName": "Base_Head/Base_eye_ball"
+      "slotName": "cos_obi_01",
+      "attachmentName": "cos/cos_obi_01"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_eye_ball_L",
-      "attachmentName": "MakeUp/eye_ball"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_iris_R",
-      "attachmentName": "Base_Head/Base_iris"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_iris_L",
-      "attachmentName": "Base_Head/Base_iris"
+      "slotName": "cos_obi asset 4",
+      "attachmentName": "cos/cos_obi asset 4"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_len_R",
-      "attachmentName": "MakeUp/len"
+      "slotName": "cos_obi_asset_3",
+      "attachmentName": "cos/cos_obi_asset_3"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_len_L",
-      "attachmentName": "MakeUp/len"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_eye_R",
-      "attachmentName": "Base_Head/Base_eye_l"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_eye_L",
-      "attachmentName": "Base_Head/Base_eye_l"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_eyelid2_R",
-      "attachmentName": "Base_Head/Base_eyelid2"
+      "slotName": "cos_obi_asset_4",
+      "attachmentName": "cos/cos_obi_asset_3"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_eyelid_R",
-      "attachmentName": "MakeUp/eyelid"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Head_eyelid2_L",
-      "attachmentName": "Base_Head/Base_eyelid2"
+      "slotName": "cos_obi_asset_1",
+      "attachmentName": "cos/cos_obi_asset_1"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_eyelid_L",
-      "attachmentName": "MakeUp/eyelid"
+      "slotName": "cos_obi_asset_2",
+      "attachmentName": "cos/cos_obi_asset_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_obi_asset_6",
+      "attachmentName": "cos/cos_obi_asset_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_obi_asset_5",
+      "attachmentName": "cos/cos_obi_asset_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_obi_asset_7",
+      "attachmentName": "cos/cos_obi_asset_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_04_side_L",
+      "attachmentName": "base/hair_04_side"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_04_side_R",
+      "attachmentName": "base/hair_04_side"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_05_side_R",
+      "attachmentName": "base/hair_05_side"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_05_side_L",
+      "attachmentName": "base/hair_05_side"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_06_side_L",
+      "attachmentName": "base/hair_06_side_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_06_side_R",
+      "attachmentName": "base/hair_06_side_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_head",
-      "attachmentName": "Base_Head/Base_head"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Base_Head_dirt",
-      "attachmentName": "Base_Head/face_dirt"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_face_wet",
-      "attachmentName": "MakeUp/face_wet"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_cleaner_02a",
-      "attachmentName": "MakeUp/cleaner_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_cleaner_02b",
-      "attachmentName": "MakeUp/cleaner_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_cleaner_03",
-      "attachmentName": "MakeUp/cleaner_03"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_head",
-      "attachmentName": "Base_Head/head"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_foundation_2_R",
-      "attachmentName": "MakeUp/foundation_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_foundation_2_L",
-      "attachmentName": "MakeUp/foundation_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_foundation_3",
-      "attachmentName": "Base_Head/foundation_3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_conclear_03a",
-      "attachmentName": "MakeUp/conclear_03"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_conclear_03b",
-      "attachmentName": "MakeUp/conclear_03"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_conclear_03c",
-      "attachmentName": "MakeUp/conclear_03"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_conclear_03d",
-      "attachmentName": "MakeUp/conclear_03"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_Contour_01a",
-      "attachmentName": "MakeUp/Contour_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_Contour_01b",
-      "attachmentName": "MakeUp/Contour_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_Contour_01c",
-      "attachmentName": "MakeUp/Contour_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_Contour_01d",
-      "attachmentName": "MakeUp/Contour_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_Contour2",
-      "attachmentName": "MakeUp/Contour_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_blush",
-      "attachmentName": "MakeUp/blush"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_hightlight",
-      "attachmentName": "MakeUp/hightlight"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_paint_face",
-      "attachmentName": "MakeUp/paint_face"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eye_lash_sd_R",
-      "attachmentName": "MakeUp/eye_lash_sd"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eye_lash_sd_L",
-      "attachmentName": "MakeUp/eye_lash_sd"
+      "slotName": "base_head",
+      "attachmentName": "head/cos_head"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_eyelash_down_R",
-      "attachmentName": "Base_Head/Base_eyelash_down"
+      "slotName": "face_dirt",
+      "attachmentName": "makeup/face_dirt"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_eyelash_down_L",
-      "attachmentName": "Base_Head/Base_eyelash_down"
+      "slotName": "base_lower_lid_L",
+      "attachmentName": "head/base_lower_lid_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_eyelid_cls_R",
-      "attachmentName": "Base_Head/Base_eyelid_cls"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyelid_cls_wet_R",
-      "attachmentName": "MakeUp/eyelid_cls_wet"
+      "slotName": "base_lower_lid_R",
+      "attachmentName": "head/base_lower_lid_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_eyelid_cls_L",
-      "attachmentName": "Base_Head/Base_eyelid_cls"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyelid_cls_wet_L",
-      "attachmentName": "MakeUp/eyelid_cls_wet"
+      "slotName": "base_eyeliner_down_R",
+      "attachmentName": "head/base_eyeliner_down"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_brow_R1",
-      "attachmentName": "Base_Head/Base_brow"
+      "slotName": "base_eyeliner_down_L",
+      "attachmentName": "head/base_eyeliner_down"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_eyelinner_down_L",
+      "attachmentName": "head/cos_eyelinner_down"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_eyelinner_down_R",
+      "attachmentName": "head/cos_eyelinner_down"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_brow_L1",
-      "attachmentName": "Base_Head/Base_brow"
+      "slotName": "base_upper_lid_R",
+      "attachmentName": "head/base_upper_lid"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_mouth",
-      "attachmentName": "Base_Head/mouth_2"
+      "slotName": "base_upper_lid_L",
+      "attachmentName": "head/base_upper_lid"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_eyelinner_top_L",
+      "attachmentName": "head/cos_eyelinner_top"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_eyelinner_top_R",
+      "attachmentName": "head/cos_eyelinner_top"
     },
     {
       "isEnabled": true,
-      "slotName": "MakeUp_Lipstick",
-      "attachmentName": "MakeUp/Lipstick_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eye_lash2_R",
-      "attachmentName": "MakeUp/eye_lash2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyelid_cls_R",
-      "attachmentName": "Base_Head/eyelid_cls"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyelid_cls1_R",
-      "attachmentName": "Base_Head/eyelid_cls1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eye_lash2_L",
-      "attachmentName": "MakeUp/eye_lash2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyelid_cls_L",
-      "attachmentName": "Base_Head/eyelid_cls"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyelid_cls1_L",
-      "attachmentName": "Base_Head/eyelid_cls1"
+      "slotName": "base_eyeliner_top_L",
+      "attachmentName": "head/base_eyeliner_top"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_eyelash_up_R",
-      "attachmentName": "Base_Head/Base_eyelash_up"
+      "slotName": "base_eyeliner_top_R",
+      "attachmentName": "head/base_eyeliner_top"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_eyelash_up_L",
-      "attachmentName": "Base_Head/Base_eyelash_up"
+      "slotName": "base_brows_L",
+      "attachmentName": "head/base_brows"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_hair_front1",
-      "attachmentName": "Base_Head/hair_front"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyelash_up_L",
-      "attachmentName": "MakeUp/eye_lash1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyelash_up_R",
-      "attachmentName": "MakeUp/eye_lash1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyebrow_R",
-      "attachmentName": "MakeUp/brow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "MakeUp_eyebrow_L",
-      "attachmentName": "MakeUp/brow2"
+      "slotName": "base_brows_R",
+      "attachmentName": "head/base_brows"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head_F_hair1a",
-      "attachmentName": "Base_Head/Base_F_hair1a"
+      "slotName": "pimples_01",
+      "attachmentName": "head/pimples_01"
     },
     {
       "isEnabled": true,
-      "slotName": "HairMake_f_hair1_dirt",
-      "attachmentName": "HairMake/f_hair1_dirt"
+      "slotName": "pimples_08",
+      "attachmentName": "head/pimples_01"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_01v2",
+      "attachmentName": "head/pimples_01v2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_08v2",
+      "attachmentName": "head/pimples_01v2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_02",
+      "attachmentName": "head/pimples_02"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_07",
+      "attachmentName": "head/pimples_02"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_02v2",
+      "attachmentName": "head/pimples_02v2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_07v2",
+      "attachmentName": "head/pimples_02v2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_03",
+      "attachmentName": "head/pimples_03"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_06",
+      "attachmentName": "head/pimples_03"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_03v2",
+      "attachmentName": "head/pimples_03v2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_06v2",
+      "attachmentName": "head/pimples_03v2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_04",
+      "attachmentName": "head/pimples_04"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_05",
+      "attachmentName": "head/pimples_04"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_04v2",
+      "attachmentName": "head/pimples_04v2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "pimples_05v2",
+      "attachmentName": "head/pimples_04v2"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_f_hair1_wet",
-      "attachmentName": "HairMake/f_hair1_wet"
+      "slotName": "medicine_1",
+      "attachmentName": "makeup/medicine_1"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_f_hair1_shampoo2",
-      "attachmentName": "HairMake/shampoo_02"
+      "slotName": "medicine_3",
+      "attachmentName": "makeup/medicine_1"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_f_hair1_shampoo3",
-      "attachmentName": "HairMake/f_hair1_shampoo"
+      "slotName": "medicine_2",
+      "attachmentName": "makeup/medicine_2"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_f_hair2",
-      "attachmentName": "HairMake/f_hair2"
+      "slotName": "medicine_4",
+      "attachmentName": "makeup/medicine_2"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_f_hair3",
-      "attachmentName": "HairMake/f_hair3"
+      "slotName": "medicine_blend_L",
+      "attachmentName": "makeup/medicine_blend"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_f_hair4",
-      "attachmentName": "HairMake/f_hair4"
+      "slotName": "medicine_blend_R",
+      "attachmentName": "makeup/medicine_blend"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_f_hair5",
-      "attachmentName": "HairMake/f_hair5"
+      "slotName": "serum_L",
+      "attachmentName": "makeup/serum_1"
     },
     {
       "isEnabled": false,
-      "slotName": "HairMake_f_hair6",
-      "attachmentName": "HairMake/f_hair6"
+      "slotName": "serum_R",
+      "attachmentName": "makeup/serum_1"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_crown",
-      "attachmentName": "Set_Porcelain/PQ_crown"
+      "slotName": "serum_blend_L",
+      "attachmentName": "makeup/serum_blend"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_decor_01",
-      "attachmentName": "Set_Porcelain/PQ_decor_01"
+      "slotName": "serum_blend_R",
+      "attachmentName": "makeup/serum_blend"
     },
     {
       "isEnabled": false,
-      "slotName": "MakeUp_headband_02",
-      "attachmentName": "MakeUp/headband_02"
+      "slotName": "face_wet",
+      "attachmentName": "makeup/face_wet"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_lip",
+      "attachmentName": "head/Base_mouth_1"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "cos_lip",
+      "attachmentName": "head/cos_mouth_1"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Porcelain_heart_01",
-      "attachmentName": "Set_Porcelain/heart_"
+      "slotName": "face_wash_01",
+      "attachmentName": "makeup/face_wash_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "face_wash_02",
+      "attachmentName": "makeup/face_wash_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "face_wash_03",
+      "attachmentName": "makeup/face_wash_01"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "face_wash_blend",
+      "attachmentName": "makeup/face_wash_blend"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "foundation_apply_2",
+      "attachmentName": "makeup/foundation_apply_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "foundation_apply_4",
+      "attachmentName": "makeup/foundation_apply_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "foundation_apply_3",
+      "attachmentName": "makeup/foundation_apply_3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "foundation_apply_1",
+      "attachmentName": "makeup/foundation_apply_1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "foundation_apply_5",
+      "attachmentName": "makeup/foundation_apply_1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "foundation_blend",
+      "attachmentName": "makeup/foundation_blend"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "contour_apply",
+      "attachmentName": "makeup/contour_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "contour_blend",
+      "attachmentName": "makeup/contour_blend"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "wrinkles_blend",
+      "attachmentName": "makeup/wrinkles_blend"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "blush_apply_L",
+      "attachmentName": "makeup/blush_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "blush_apply_R",
+      "attachmentName": "makeup/blush_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "blush_blend",
+      "attachmentName": "makeup/blush_blend"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "hair_01_f",
+      "attachmentName": "base/hair_01_f"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_01_bangs",
+      "attachmentName": "base/hair_01_bangs"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "hair_dirt",
+      "attachmentName": "makeup/hair_dirt"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_wet_f",
+      "attachmentName": "makeup/hair_wet_f"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "shampoo_apply",
+      "attachmentName": "makeup/shampoo_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "shampoo_02",
+      "attachmentName": "makeup/shampoo_02"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "hair_02_bangs",
+      "attachmentName": "base/hair_02_bangs"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_03_bangs",
+      "attachmentName": "base/hair_03_bangs"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_05_bangs",
+      "attachmentName": "base/hair_05_bangs"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_06_bangs",
+      "attachmentName": "base/hair_06_bangs"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Eyebrows_02_L",
+      "attachmentName": "head/Eyebrows_02_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Eyebrows_02_R",
+      "attachmentName": "head/Eyebrows_02_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_sword",
+      "attachmentName": "cos/cos_sword"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hand_holding_2",
+      "attachmentName": "setbase/hand_holding_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "spin",
+      "attachmentName": "shadow/spin"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "mask back",
+      "attachmentName": "cos/mask back"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "mask eye 1",
+      "attachmentName": "cos/mask eye 1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "mask eye 2",
+      "attachmentName": "cos/mask eye 1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "mask eye 3",
+      "attachmentName": "cos/mask eye 2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "mask jaw",
+      "attachmentName": "cos/mask jaw"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Mask face",
+      "attachmentName": "cos/Mask face"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "headband",
+      "attachmentName": "base/headband"
     }
   ]
 }
