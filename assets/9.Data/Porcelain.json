@@ -672,7 +672,7 @@
       "attachmentName": "base/hair_01_bangs"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "hair_dirt",
       "attachmentName": "makeup/hair_dirt"
     },

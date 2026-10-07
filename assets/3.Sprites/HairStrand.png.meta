@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "eeac35df-e0c9-438e-97b5-a753266edecb",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "eeac35df-e0c9-438e-97b5-a753266edecb@6c48a",
+      "displayName": "HairStrand",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "eeac35df-e0c9-438e-97b5-a753266edecb",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "eeac35df-e0c9-438e-97b5-a753266edecb@f9941",
+      "displayName": "HairStrand",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": -9,
+        "offsetY": 0,
+        "trimX": 74,
+        "trimY": 91,
+        "width": 90,
+        "height": 74,
+        "rawWidth": 256,
+        "rawHeight": 256,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -45,
+            -37,
+            0,
+            45,
+            -37,
+            0,
+            -45,
+            37,
+            0,
+            45,
+            37,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            74,
+            165,
+            164,
+            165,
+            74,
+            91,
+            164,
+            91
+          ],
+          "nuv": [
+            0.2890625,
+            0.35546875,
+            0.640625,
+            0.35546875,
+            0.2890625,
+            0.64453125,
+            0.640625,
+            0.64453125
+          ],
+          "minPos": [
+            -45,
+            -37,
+            0
+          ],
+          "maxPos": [
+            45,
+            37,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "eeac35df-e0c9-438e-97b5-a753266edecb@6c48a",
+        "atlasUuid": "",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "fixAlphaTransparencyArtifacts": false,
+    "hasAlpha": true,
+    "redirect": "eeac35df-e0c9-438e-97b5-a753266edecb@6c48a"
+  }
+}
