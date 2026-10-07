@@ -1028,7 +1028,7 @@ export class DrawInputManager extends Component {
                 if (drawGraphic) this.tweenRestoreTransform(this.currentDrawItem.node, drawGraphic);
 
                 const itemNode = this.currentDrawItem.node;
-                const spawnWorldPos = this.currentDrawItem.SpawnPos.clone();
+                const spawnWorldPos = this.currentDrawItem.RefreshSpawnWorldPos().clone();
 
                 // Trả item về cha gốc TRƯỚC rồi mới cho map hoàn thành. Nếu map chuyển lúc item
                 // còn nằm ở DragLayer/Canvas thì việc tắt cả cụm item của map (VD ItemMap2) không
@@ -1155,7 +1155,7 @@ export class DrawInputManager extends Component {
         if (drawGraphic) this.tweenRestoreTransform(this.currentDrawItem.node, drawGraphic);
 
         const itemNode = this.currentDrawItem.node;
-        const spawnWorldPos = this.currentDrawItem.SpawnPos.clone();
+        const spawnWorldPos = this.currentDrawItem.RefreshSpawnWorldPos().clone();
         tween(this.currentDrawItem.node)
             .to(0.2, { worldPosition: spawnWorldPos })
             .call(() => {

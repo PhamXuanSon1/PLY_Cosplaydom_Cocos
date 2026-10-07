@@ -32,6 +32,18 @@ export class DrawItemMovement extends Component {
         this.originalLayer = this.node.layer;
     }
 
+    /**
+     * Tính lại SpawnPos (world) từ SpawnLocalPos theo vị trí HIỆN TẠI của node cha gốc.
+     * SpawnPos chỉ được lưu 1 lần ở onLoad; nếu sau đó cụm item (Table/ItemMap) bị di chuyển
+     * (anim intro map...) thì SpawnPos cũ bị lệch -> item bay về sai chỗ rồi mới giật về đúng.
+     */
+    public RefreshSpawnWorldPos(): Vec3 {
+        if (this.originalParent && this.originalParent.isValid) {
+            Vec3.transformMat4(this.SpawnPos, this.SpawnLocalPos, this.originalParent.worldMatrix);
+        }
+        return this.SpawnPos;
+    }
+
     /** Lưu Layer gốc của node và toàn bộ node con. Gọi TRƯỚC khi đổi Layer sang DragLayer/Canvas. */
     public CaptureLayers(): void {
         this.originalLayers.clear();
