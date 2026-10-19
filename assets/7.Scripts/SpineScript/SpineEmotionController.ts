@@ -152,6 +152,11 @@ export class SpineEmotionController extends Component {
         this.overrides.clear();
     }
 
+    /** Slot này đang bị cảm xúc ép attachment không (Character dùng để nhường slot). */
+    public hasOverride(slotName: string): boolean {
+        return this.overrides.has(slotName);
+    }
+
     private applyOverrides(): void {
         if (this.overrides.size === 0 || !this.skeletonAnimation) return;
         this.overrides.forEach((att, slotName) => {

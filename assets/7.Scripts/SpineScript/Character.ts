@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, sp } from 'cc';
+import { _decorator, Component, director, Director, Node, sp } from 'cc';
 import { SlotAttachmentPair } from '../Data/SlotAttachmentPair';
 const { ccclass, property } = _decorator;
 
@@ -19,19 +19,29 @@ export class Character extends Component {
         }
     }
     
-    protected update(dt: number): void {
-        // lưu lại trạng thái ép buộc của các slot trong mỗi frame
-        this.applyForcedAttachments();
+    protected onEnable(): void {
+        // Spine áp animation SAU update() -> nếu ép attachment trong update thì animation (VD: happy có key cos_lip)
+        // sẽ đè lại, slot bị tắt lại hiện ra. Áp ngay trước khi vẽ để trạng thái bật/tắt của người chơi luôn thắng.
+        director.on(Director.EVENT_BEFORE_DRAW, this.applyForcedAttachments, this);
+    }
+
+    protected onDisable(): void {
+        director.off(Director.EVENT_BEFORE_DRAW, this.applyForcedAttachments, this);
     }
 
     // áp dụng lại các attachment đã ép buộc cho các slot
     public applyForcedAttachments(): void {
         if(!this.spineSkeleton) return;
         const skeleton = (this.spineSkeleton as any)._skeleton;
+        // Cảm xúc (SpineEmotionController) đang ép slot nào thì Character nhường slot đó
+        const emotion: any = this.getComponent("SpineEmotionController");
 
         for(const [slotName, attachmentName] of this.forcedAttachments.entries()){
             try{
                 if (skeleton && typeof skeleton.findSlot === 'function' && !skeleton.findSlot(slotName)) {
+                    continue;
+                }
+                if (emotion && typeof emotion.hasOverride === 'function' && emotion.hasOverride(slotName)) {
                     continue;
                 }
                 // LƯU Ý: binding native (wasm) của Spine chỉ nhận std::string.
