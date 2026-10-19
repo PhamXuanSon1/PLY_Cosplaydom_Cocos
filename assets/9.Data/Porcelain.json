@@ -3,93 +3,733 @@
   "slotAttachmentPairs": [
     {
       "isEnabled": false,
-      "slotName": "masks circle",
-      "attachmentName": "cos/masks"
+      "slotName": "particle/e2_particle_0",
+      "attachmentName": "polygon"
     },
     {
       "isEnabled": false,
-      "slotName": "masks1",
-      "attachmentName": "cos/masks"
+      "slotName": "particle/e2_particle_1",
+      "attachmentName": "star"
     },
     {
       "isEnabled": false,
-      "slotName": "masks2",
-      "attachmentName": "cos/masks"
+      "slotName": "particle/e2_particle_2",
+      "attachmentName": "star"
     },
     {
       "isEnabled": false,
-      "slotName": "masks3",
-      "attachmentName": "cos/masks"
+      "slotName": "particle/e2_particle_3",
+      "attachmentName": "glow"
     },
     {
       "isEnabled": false,
-      "slotName": "masks4",
-      "attachmentName": "cos/masks"
+      "slotName": "particle/e2_particle_4",
+      "attachmentName": "glow"
     },
     {
       "isEnabled": false,
-      "slotName": "masks5",
-      "attachmentName": "cos/masks"
+      "slotName": "particle/e2_particle_5",
+      "attachmentName": "polygon"
     },
     {
       "isEnabled": false,
-      "slotName": "masks6",
-      "attachmentName": "cos/masks"
+      "slotName": "particle/e2_particle_6",
+      "attachmentName": "star"
     },
     {
       "isEnabled": false,
-      "slotName": "masks7",
-      "attachmentName": "cos/masks"
+      "slotName": "particle/e2_particle_7",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_8",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_9",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_10",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_11",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_12",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_13",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_14",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_15",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_16",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_17",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_18",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_19",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_20",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_21",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_22",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_23",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_24",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_25",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_26",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_27",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_28",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_29",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_30",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_31",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_32",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_33",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_34",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_35",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_36",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_37",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_38",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_39",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_40",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_41",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_42",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_43",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_44",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_45",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_46",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_47",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_48",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_49",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_50",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_51",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_52",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_53",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_54",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_55",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_56",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_57",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_58",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_59",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_60",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_61",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_62",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_63",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_64",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_65",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_66",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_67",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_68",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_69",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_70",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_71",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_72",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_73",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_74",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_75",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_76",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_77",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_78",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_79",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_80",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_81",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_82",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_83",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_84",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_85",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_86",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_87",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_88",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_89",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_90",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_91",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_92",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_93",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_94",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_95",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_96",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_97",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_98",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_99",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_100",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_101",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_102",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_103",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_104",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_105",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_106",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_107",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_108",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_109",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_110",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_111",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_112",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_113",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_114",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_115",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_116",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_117",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_118",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_119",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_120",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_121",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_122",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_123",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_124",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_125",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_126",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_127",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_128",
+      "attachmentName": "glow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_129",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_130",
+      "attachmentName": "polygon"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_131",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_132",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_133",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e2_particle_134",
+      "attachmentName": "star"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e1_particle_0",
+      "attachmentName": "needle"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e1_particle_1",
+      "attachmentName": "needle"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e1_particle_2",
+      "attachmentName": "needle"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e1_particle_3",
+      "attachmentName": "needle"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "particle/e1_particle_4",
+      "attachmentName": "needle"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_belt_4",
+      "attachmentName": "cos/cos_belt_4"
     },
     {
       "isEnabled": true,
-      "slotName": "hair_01_b",
-      "attachmentName": "base/hair_01_b"
+      "slotName": "hair_back_1",
+      "attachmentName": "base/hair_back_1"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_wet_b",
-      "attachmentName": "makeup/hair_wet_b"
+      "slotName": "hair_back_2",
+      "attachmentName": "base/hair_back_2"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_04_b",
-      "attachmentName": "base/hair_04_b"
+      "slotName": "hair_back_3",
+      "attachmentName": "base/hair_back_3"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_05_b",
-      "attachmentName": "base/hair_05_b"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_06_b",
-      "attachmentName": "base/hair_06_b"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "kimono_b_R",
-      "attachmentName": "cos/kimono_b_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "kimono_b_L",
-      "attachmentName": "cos/kimono_b_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_sandals_b_L",
-      "attachmentName": "cos/cos_sandals_b_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_sandals_b_R",
-      "attachmentName": "cos/cos_sandals_b_L"
+      "slotName": "hair_back_4",
+      "attachmentName": "cos/hair_back_4"
     },
     {
       "isEnabled": true,
       "slotName": "shadow",
-      "attachmentName": "shadow/shadow"
+      "attachmentName": "firework/shadow"
     },
     {
       "isEnabled": true,
@@ -102,9 +742,19 @@
       "attachmentName": "setbase/base_arm_L"
     },
     {
+      "isEnabled": false,
+      "slotName": "cos_arm_R",
+      "attachmentName": "setbase/cos_arm_L"
+    },
+    {
       "isEnabled": true,
       "slotName": "base_arm_L",
       "attachmentName": "setbase/base_arm_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_arm_L",
+      "attachmentName": "setbase/cos_arm_L"
     },
     {
       "isEnabled": true,
@@ -112,9 +762,19 @@
       "attachmentName": "setbase/base_forearm_L"
     },
     {
+      "isEnabled": false,
+      "slotName": "cos_forearm_L",
+      "attachmentName": "setbase/cos_forearm_L"
+    },
+    {
       "isEnabled": true,
       "slotName": "base_forearm_R",
       "attachmentName": "setbase/base_forearm_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_forearm_R",
+      "attachmentName": "setbase/cos_forearm_L"
     },
     {
       "isEnabled": true,
@@ -127,14 +787,39 @@
       "attachmentName": "setbase/base_leg_L"
     },
     {
+      "isEnabled": false,
+      "slotName": "cos_leg_L",
+      "attachmentName": "setbase/cos_leg_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_shoe_L",
+      "attachmentName": "cos/cos_shoe_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_leg_R",
+      "attachmentName": "setbase/cos_leg_R"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_shoe_R",
+      "attachmentName": "cos/cos_shoe_L"
+    },
+    {
       "isEnabled": true,
-      "slotName": "base_body2",
+      "slotName": "base_body",
       "attachmentName": "setbase/base_body"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_body",
+      "attachmentName": "setbase/cos_body"
     },
     {
       "isEnabled": true,
       "slotName": "base_bodysuit",
-      "attachmentName": "base_body"
+      "attachmentName": "setbase/base_bodysuit"
     },
     {
       "isEnabled": true,
@@ -142,9 +827,134 @@
       "attachmentName": "head/base_ear"
     },
     {
+      "isEnabled": false,
+      "slotName": "cos_ear_L",
+      "attachmentName": "head/cos_ear"
+    },
+    {
       "isEnabled": true,
       "slotName": "base_ear_R",
       "attachmentName": "head/base_ear"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_ear_R",
+      "attachmentName": "head/cos_ear"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_skirt",
+      "attachmentName": "base/base_skirt"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_shirt_arm_L",
+      "attachmentName": "base/base_shirt_arm_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_shirt_arm_R",
+      "attachmentName": "base/base_shirt_arm_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_shirt",
+      "attachmentName": "base/base_shirt"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_sock_L",
+      "attachmentName": "base/base_sock_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_sock_R",
+      "attachmentName": "base/base_sock_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_hand_R",
+      "attachmentName": "setbase/base_hand_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_hand_R",
+      "attachmentName": "setbase/cos_hand_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_hand_L",
+      "attachmentName": "setbase/base_hand_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_hand_L",
+      "attachmentName": "setbase/cos_hand_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_shoe_L",
+      "attachmentName": "base/base_shoe_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_shoe_R",
+      "attachmentName": "base/base_shoe_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_jacket_arm_L",
+      "attachmentName": "base/base_jacket_arm_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_jacket_arm_R",
+      "attachmentName": "base/base_jacket_arm_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_jacket_L",
+      "attachmentName": "base/base_jacket"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_jacket_R",
+      "attachmentName": "base/base_jacket"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_dress",
+      "attachmentName": "cos/cos_dress"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_belt_3",
+      "attachmentName": "cos/cos_belt_3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_belt_2",
+      "attachmentName": "cos/cos_belt_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_belt_decor",
+      "attachmentName": "cos/cos_belt_decor"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_belt_1",
+      "attachmentName": "cos/cos_belt_1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_dress_decor_L",
+      "attachmentName": "cos/cos_dress_decor_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_dress_decor_R",
+      "attachmentName": "cos/cos_dress_decor_L"
     },
     {
       "isEnabled": true,
@@ -178,188 +988,8 @@
     },
     {
       "isEnabled": true,
-      "slotName": "base_hand_R",
-      "attachmentName": "setbase/base_hand_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_hand_L",
-      "attachmentName": "setbase/base_hand_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_shoes_L",
-      "attachmentName": "base/base_shoes_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_shoes_R",
-      "attachmentName": "base/base_shoes_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_pants",
-      "attachmentName": "base/base_pants"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_shirt_arm_L",
-      "attachmentName": "base/base_shirt_arm_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_shirt_arm_R",
-      "attachmentName": "base/base_shirt_arm_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_shirt",
-      "attachmentName": "base/base_shirt"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_underwear_top",
-      "attachmentName": "cos/underwear_top"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_02_top_arm_L",
-      "attachmentName": "cos/cos_kimono_02_top_arm"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_01_top_arm_L",
-      "attachmentName": "cos/cos_kimono_01_arm_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_02_top_arm_R",
-      "attachmentName": "cos/cos_kimono_02_top_arm"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_01_top_arm_R",
-      "attachmentName": "cos/cos_kimono_01_arm_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_sandals_f_L",
-      "attachmentName": "cos/cos_sandals_f_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_sandals_f_R",
-      "attachmentName": "cos/cos_sandals_f_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_03",
-      "attachmentName": "cos/cos_kimono_03"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_02_bottom",
-      "attachmentName": "cos/cos_kimono_02_bottom"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_01_bottom",
-      "attachmentName": "cos/cos_kimono_01_bottom"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_02_top",
-      "attachmentName": "cos/cos_kimono_02_top"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_kimono_01_top",
-      "attachmentName": "cos/cos_kimono_01_top"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_02",
-      "attachmentName": "cos/cos_obi_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_01",
-      "attachmentName": "cos/cos_obi_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi asset 4",
-      "attachmentName": "cos/cos_obi asset 4"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_asset_3",
-      "attachmentName": "cos/cos_obi_asset_3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_asset_4",
-      "attachmentName": "cos/cos_obi_asset_3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_asset_1",
-      "attachmentName": "cos/cos_obi_asset_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_asset_2",
-      "attachmentName": "cos/cos_obi_asset_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_asset_6",
-      "attachmentName": "cos/cos_obi_asset_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_asset_5",
-      "attachmentName": "cos/cos_obi_asset_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_obi_asset_7",
-      "attachmentName": "cos/cos_obi_asset_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_04_side_L",
-      "attachmentName": "base/hair_04_side"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_04_side_R",
-      "attachmentName": "base/hair_04_side"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_05_side_R",
-      "attachmentName": "base/hair_05_side"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_05_side_L",
-      "attachmentName": "base/hair_05_side"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_06_side_L",
-      "attachmentName": "base/hair_06_side_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_06_side_R",
-      "attachmentName": "base/hair_06_side_L"
-    },
-    {
-      "isEnabled": true,
       "slotName": "base_head",
-      "attachmentName": "head/cos_head"
+      "attachmentName": "head/base_head"
     },
     {
       "isEnabled": true,
@@ -367,219 +997,9 @@
       "attachmentName": "makeup/face_dirt"
     },
     {
-      "isEnabled": true,
-      "slotName": "base_lower_lid_L",
-      "attachmentName": "head/base_lower_lid_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_lower_lid_R",
-      "attachmentName": "head/base_lower_lid_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_eyeliner_down_R",
-      "attachmentName": "head/base_eyeliner_down"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_eyeliner_down_L",
-      "attachmentName": "head/base_eyeliner_down"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_eyelinner_down_L",
-      "attachmentName": "head/cos_eyelinner_down"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_eyelinner_down_R",
-      "attachmentName": "head/cos_eyelinner_down"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_upper_lid_R",
-      "attachmentName": "head/base_upper_lid"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_upper_lid_L",
-      "attachmentName": "head/base_upper_lid"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_eyelinner_top_L",
-      "attachmentName": "head/cos_eyelinner_top"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_eyelinner_top_R",
-      "attachmentName": "head/cos_eyelinner_top"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_eyeliner_top_L",
-      "attachmentName": "head/base_eyeliner_top"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_eyeliner_top_R",
-      "attachmentName": "head/base_eyeliner_top"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_brows_L",
-      "attachmentName": "head/base_brows"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_brows_R",
-      "attachmentName": "head/base_brows"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_01",
-      "attachmentName": "head/pimples_01"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_08",
-      "attachmentName": "head/pimples_01"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_01v2",
-      "attachmentName": "head/pimples_01v2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_08v2",
-      "attachmentName": "head/pimples_01v2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_02",
-      "attachmentName": "head/pimples_02"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_07",
-      "attachmentName": "head/pimples_02"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_02v2",
-      "attachmentName": "head/pimples_02v2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_07v2",
-      "attachmentName": "head/pimples_02v2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_03",
-      "attachmentName": "head/pimples_03"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_06",
-      "attachmentName": "head/pimples_03"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_03v2",
-      "attachmentName": "head/pimples_03v2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_06v2",
-      "attachmentName": "head/pimples_03v2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_04",
-      "attachmentName": "head/pimples_04"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_05",
-      "attachmentName": "head/pimples_04"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_04v2",
-      "attachmentName": "head/pimples_04v2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "pimples_05v2",
-      "attachmentName": "head/pimples_04v2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "medicine_1",
-      "attachmentName": "makeup/medicine_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "medicine_3",
-      "attachmentName": "makeup/medicine_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "medicine_2",
-      "attachmentName": "makeup/medicine_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "medicine_4",
-      "attachmentName": "makeup/medicine_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "medicine_blend_L",
-      "attachmentName": "makeup/medicine_blend"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "medicine_blend_R",
-      "attachmentName": "makeup/medicine_blend"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "serum_L",
-      "attachmentName": "makeup/serum_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "serum_R",
-      "attachmentName": "makeup/serum_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "serum_blend_L",
-      "attachmentName": "makeup/serum_blend"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "serum_blend_R",
-      "attachmentName": "makeup/serum_blend"
-    },
-    {
       "isEnabled": false,
       "slotName": "face_wet",
       "attachmentName": "makeup/face_wet"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_lip",
-      "attachmentName": "head/Base_mouth_1"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "cos_lip",
-      "attachmentName": "head/cos_mouth_1"
     },
     {
       "isEnabled": false,
@@ -603,28 +1023,33 @@
     },
     {
       "isEnabled": false,
-      "slotName": "foundation_apply_2",
-      "attachmentName": "makeup/foundation_apply_2"
+      "slotName": "cos_head",
+      "attachmentName": "head/cos_head"
     },
     {
       "isEnabled": false,
-      "slotName": "foundation_apply_4",
-      "attachmentName": "makeup/foundation_apply_2"
+      "slotName": "foundation_apply_01",
+      "attachmentName": "makeup/foundation_01"
     },
     {
       "isEnabled": false,
-      "slotName": "foundation_apply_3",
-      "attachmentName": "makeup/foundation_apply_3"
+      "slotName": "foundation_apply_05",
+      "attachmentName": "makeup/foundation_01"
     },
     {
       "isEnabled": false,
-      "slotName": "foundation_apply_1",
-      "attachmentName": "makeup/foundation_apply_1"
+      "slotName": "foundation_apply_02",
+      "attachmentName": "makeup/foundation_02"
     },
     {
       "isEnabled": false,
-      "slotName": "foundation_apply_5",
-      "attachmentName": "makeup/foundation_apply_1"
+      "slotName": "foundation_apply_04",
+      "attachmentName": "makeup/foundation_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "foundation_apply_03",
+      "attachmentName": "makeup/foundation_02"
     },
     {
       "isEnabled": false,
@@ -633,143 +1058,263 @@
     },
     {
       "isEnabled": false,
-      "slotName": "contour_apply",
-      "attachmentName": "makeup/contour_apply"
-    },
-    {
-      "isEnabled": false,
       "slotName": "contour_blend",
       "attachmentName": "makeup/contour_blend"
     },
     {
       "isEnabled": false,
-      "slotName": "wrinkles_blend",
-      "attachmentName": "makeup/wrinkles_blend"
+      "slotName": "contour_01_apply_L",
+      "attachmentName": "makeup/contour_01"
     },
     {
       "isEnabled": false,
-      "slotName": "blush_apply_L",
-      "attachmentName": "makeup/blush_apply"
+      "slotName": "contour_01_apply_R",
+      "attachmentName": "makeup/contour_01"
     },
     {
       "isEnabled": false,
-      "slotName": "blush_apply_R",
-      "attachmentName": "makeup/blush_apply"
+      "slotName": "contour_02_apply_L",
+      "attachmentName": "makeup/contour_02"
     },
     {
       "isEnabled": false,
-      "slotName": "blush_blend",
-      "attachmentName": "makeup/blush_blend"
+      "slotName": "contour_02_apply_R",
+      "attachmentName": "makeup/contour_02"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "contour_03_apply",
+      "attachmentName": "makeup/contour_03"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "contour_04_apply_L",
+      "attachmentName": "makeup/contour_04"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "contour_04_apply_R",
+      "attachmentName": "makeup/contour_04"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "concealer_apply_1",
+      "attachmentName": "makeup/concealer_apply_1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "concealer_apply_6",
+      "attachmentName": "makeup/concealer_apply_1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "concealer_apply_2",
+      "attachmentName": "makeup/concealer_apply_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "concealer_apply_3",
+      "attachmentName": "makeup/concealer_apply_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "concealer_apply_4",
+      "attachmentName": "makeup/concealer_apply_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "concealer_apply_5",
+      "attachmentName": "makeup/concealer_apply_2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "conclear_blend",
+      "attachmentName": "makeup/concealer_blend"
     },
     {
       "isEnabled": true,
-      "slotName": "hair_01_f",
-      "attachmentName": "base/hair_01_f"
+      "slotName": "base_lower_lid_L",
+      "attachmentName": "head/base_lower_lid_L"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_01_bangs",
-      "attachmentName": "base/hair_01_bangs"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_dirt",
-      "attachmentName": "makeup/hair_dirt"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_wet_f",
-      "attachmentName": "makeup/hair_wet_f"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "shampoo_apply",
-      "attachmentName": "makeup/shampoo_apply"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "shampoo_02",
-      "attachmentName": "makeup/shampoo_02"
+      "slotName": "cos_lower_lid_L",
+      "attachmentName": "head/cos_lower_lid"
     },
     {
       "isEnabled": true,
-      "slotName": "hair_02_bangs",
-      "attachmentName": "base/hair_02_bangs"
+      "slotName": "base_lower_lid_R",
+      "attachmentName": "head/base_lower_lid_L"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_03_bangs",
-      "attachmentName": "base/hair_03_bangs"
+      "slotName": "cos_lower_lid_R",
+      "attachmentName": "head/cos_lower_lid"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_eyeliner_bot_L",
+      "attachmentName": "head/base_eyeliner_bot_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_eyeliner_bot_R",
+      "attachmentName": "head/base_eyeliner_bot_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_upper_lid_R",
+      "attachmentName": "head/base_upper_lid"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_upper_lid_L",
+      "attachmentName": "head/base_upper_lid"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_05_bangs",
-      "attachmentName": "base/hair_05_bangs"
+      "slotName": "cos_Eyeliner_bot_L",
+      "attachmentName": "head/cos_Eyeliner_bot_L"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_06_bangs",
-      "attachmentName": "base/hair_06_bangs"
+      "slotName": "cos_Eyeliner_bot_R",
+      "attachmentName": "head/cos_Eyeliner_bot_L"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_Eyebrows_02_L",
-      "attachmentName": "head/Eyebrows_02_L"
+      "slotName": "cos_upper_lid_L",
+      "attachmentName": "head/cos_upper_lid"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_Eyebrows_02_R",
-      "attachmentName": "head/Eyebrows_02_L"
+      "slotName": "cos_upper_lid_R",
+      "attachmentName": "head/cos_upper_lid"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_eyeliner_top_L",
+      "attachmentName": "head/base_eyeliner_top_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_eyeliner_top_R",
+      "attachmentName": "head/base_eyeliner_top_L"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_sword",
-      "attachmentName": "cos/cos_sword"
+      "slotName": "cos_Eyeliner_top_L",
+      "attachmentName": "head/cos_Eyeliner_top_L"
     },
     {
       "isEnabled": false,
-      "slotName": "hand_holding_2",
-      "attachmentName": "setbase/hand_holding_2"
+      "slotName": "cos_Eyeliner_top_R",
+      "attachmentName": "head/cos_Eyeliner_top_L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_brows_L",
+      "attachmentName": "head/base_brows"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_brows_R",
+      "attachmentName": "head/base_brows"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_lip",
+      "attachmentName": "head/Base_mouth_1"
     },
     {
       "isEnabled": false,
-      "slotName": "spin",
-      "attachmentName": "shadow/spin"
+      "slotName": "cos_lip",
+      "attachmentName": "head/cos_mouth_1"
     },
     {
       "isEnabled": false,
-      "slotName": "mask back",
-      "attachmentName": "cos/mask back"
+      "slotName": "cos_eyebrows_L",
+      "attachmentName": "head/cos_eyebrows__L"
     },
     {
       "isEnabled": false,
-      "slotName": "mask eye 1",
-      "attachmentName": "cos/mask eye 1"
+      "slotName": "cos_eyebrows_R",
+      "attachmentName": "head/cos_eyebrows__L"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "hair_front_1",
+      "attachmentName": "base/hair_front_1"
     },
     {
       "isEnabled": false,
-      "slotName": "mask eye 2",
-      "attachmentName": "cos/mask eye 1"
+      "slotName": "hair_front_2",
+      "attachmentName": "cos/hair_front_1"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "hair_bang_L1",
+      "attachmentName": "base/hair_bang_L1"
     },
     {
       "isEnabled": false,
-      "slotName": "mask eye 3",
-      "attachmentName": "cos/mask eye 2"
+      "slotName": "hair_bang_L2",
+      "attachmentName": "cos/hair_bang_R2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "hair_bang_R",
+      "attachmentName": "base/hair_bang_L1"
     },
     {
       "isEnabled": false,
-      "slotName": "mask jaw",
-      "attachmentName": "cos/mask jaw"
+      "slotName": "hair_bang_R2",
+      "attachmentName": "cos/hair_bang_R2"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "hair_bang_1",
+      "attachmentName": "base/hair_bang_1"
     },
     {
       "isEnabled": false,
-      "slotName": "Mask face",
-      "attachmentName": "cos/Mask face"
+      "slotName": "hair_bang_4",
+      "attachmentName": "cos/hair_bang_4"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "hair_bang_2",
+      "attachmentName": "cos/hair_bang_3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_wire",
+      "attachmentName": "cos/cos_wire"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_hat",
+      "attachmentName": "cos/cos_hat"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_hand_bookR",
+      "attachmentName": "cos/book1 + hand"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_forearm_touch_L",
+      "attachmentName": "cos/hand_L3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_touch",
+      "attachmentName": "cos/touch"
     },
     {
       "isEnabled": false,
       "slotName": "headband",
-      "attachmentName": "base/headband"
+      "attachmentName": "cos/headband"
     }
   ]
 }
