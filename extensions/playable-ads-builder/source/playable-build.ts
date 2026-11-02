@@ -3,9 +3,10 @@ import * as os from 'os';
 import * as fs from 'fs-extra';
 // @ts-ignore - no published types for this package version in this project's setup
 import { minify } from 'html-minifier';
-import { CHANNEL, IProductInfo, getChannelApiText, getChannelSpecificScript } from './channels';
+import { CHANNEL, CompressionType, IProductInfo, getChannelApiText, getChannelSpecificScript } from './channels';
 import { generateFileName, processChannelFiles, resetProcessedFiles, getProcessedFiles, ensureDirectoryExists } from './packager';
 import { collectWebMobileFiles, generateChannelZipJs, getPlayableEnginePath, ICompressionOptions, IAudioOptions } from './build-engine';
+import { collectExcludedImageHashes } from './textureExclusions';
 
 export interface IPlayableBuildOptions {
     product: IProductInfo;
@@ -109,7 +110,16 @@ export async function buildPlayableAds(webMobileDir: string, cocosVersion: strin
         const extVersion = getExtensionVersion();
         const baseHtml = patchBaseHtml(source, cocosVersion, extVersion);
 
-        const collected = await collectWebMobileFiles(webMobileDir, options.compression, options.audio, tempDir);
+        // Chi can quet asset-db tim anh loai tru khi THUC SU co nen (type !== None) - do khong
+        // anh huong gi neu khong nen gi ca.
+        const excludedImageHashes = options.compression.type !== CompressionType.None
+            ? await collectExcludedImageHashes()
+            : new Map<string, string>();
+        if (excludedImageHashes.size > 0) {
+            console.log(`[playable-ads-builder] Bỏ qua nén ${excludedImageHashes.size} ảnh (đang dùng Use Compress Texture hoặc thuộc Auto Atlas).`);
+        }
+
+        const collected = await collectWebMobileFiles(webMobileDir, options.compression, options.audio, tempDir, excludedImageHashes);
         onProgress?.('processFiles', 1, 1);
 
         await generateChannelZipJs(collected, options.channels, options.product, tempDir, (current, total) => onProgress?.('generateZip', current, total));

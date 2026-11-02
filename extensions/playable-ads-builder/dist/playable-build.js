@@ -42,6 +42,7 @@ const html_minifier_1 = require("html-minifier");
 const channels_1 = require("./channels");
 const packager_1 = require("./packager");
 const build_engine_1 = require("./build-engine");
+const textureExclusions_1 = require("./textureExclusions");
 function getExtensionVersion() {
     try {
         return require(path.join(__dirname, '..', 'package.json')).version || '1.0.0';
@@ -127,7 +128,15 @@ async function buildPlayableAds(webMobileDir, cocosVersion, options, onProgress)
         const source = await readSourceFiles(webMobileDir);
         const extVersion = getExtensionVersion();
         const baseHtml = patchBaseHtml(source, cocosVersion, extVersion);
-        const collected = await (0, build_engine_1.collectWebMobileFiles)(webMobileDir, options.compression, options.audio, tempDir);
+        // Chi can quet asset-db tim anh loai tru khi THUC SU co nen (type !== None) - do khong
+        // anh huong gi neu khong nen gi ca.
+        const excludedImageHashes = options.compression.type !== channels_1.CompressionType.None
+            ? await (0, textureExclusions_1.collectExcludedImageHashes)()
+            : new Map();
+        if (excludedImageHashes.size > 0) {
+            console.log(`[playable-ads-builder] Bỏ qua nén ${excludedImageHashes.size} ảnh (đang dùng Use Compress Texture hoặc thuộc Auto Atlas).`);
+        }
+        const collected = await (0, build_engine_1.collectWebMobileFiles)(webMobileDir, options.compression, options.audio, tempDir, excludedImageHashes);
         onProgress?.('processFiles', 1, 1);
         await (0, build_engine_1.generateChannelZipJs)(collected, options.channels, options.product, tempDir, (current, total) => onProgress?.('generateZip', current, total));
         await (0, packager_1.ensureDirectoryExists)(options.outputPath);
