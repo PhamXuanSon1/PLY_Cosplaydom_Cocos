@@ -48,8 +48,8 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -5.95,
-      "y": -180.047,
+      "x": 421.276,
+      "y": -780.404,
       "z": 0
     },
     "_lrot": {
@@ -374,9 +374,14 @@
       "__id__": 17
     },
     "itemType": 1,
-    "requireItemsToUnlock": [],
+    "requireItemsToUnlock": [
+      null,
+      null
+    ],
     "makeupID": "foundation",
+    "extraMakeupIDs": [],
     "tipRadius": 0.5,
+    "hitParticles": [],
     "tipPoint": {
       "__id__": 8
     },
@@ -387,13 +392,14 @@
     "snapTarget": null,
     "snapRadius": 1,
     "showSnapRadius": false,
+    "hintDragTarget": null,
     "closedSpriteObj": null,
     "openSpriteObj": null,
     "openBonesOnGrab": [],
     "closeBonesOnGrab": [],
     "drawFaceEffect": null,
     "playLoopFxOnDrag": true,
-    "loopFxToPlay": 4,
+    "loopFxToPlay": 12,
     "onlyPlayLoopFxWhenDrawing": false,
     "playFxOnComplete": false,
     "completeFxToPlay": 1,
@@ -448,7 +454,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 15.5
+      "z": -20
     },
     "enableScaleOnDrag": false,
     "dragScaleMultiplier": 1.2,
@@ -498,6 +504,6 @@
       "__id__": 0
     },
     "fileId": "fd6272e92ed14203b6e9c6",
-    "targetOverrides": null
+    "targetOverrides": []
   }
 ]
