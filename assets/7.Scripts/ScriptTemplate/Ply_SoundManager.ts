@@ -131,6 +131,8 @@ export class Ply_SoundManager extends Ply_Singleton {
     private fxSources: (AudioSource | null)[] = new Array(FX_TYPE_COUNT).fill(null);
     private queuedCount: number[] = new Array(FX_TYPE_COUNT).fill(0);
     private queueTimers: (number | null)[] = new Array(FX_TYPE_COUNT).fill(null);
+    /** Cac AudioSource phu de phat chong (repeatCount) cho tung FxType. */
+    private fxRepeatSources: AudioSource[][] = new Array(FX_TYPE_COUNT).fill(null).map(() => []);
 
     private isMute: boolean = false;
 
@@ -161,12 +163,9 @@ export class Ply_SoundManager extends Ply_Singleton {
         const source = this.fxSources[index]!;
         source.clip = data.clip;
         source.volume = data.volume;
+        source.loop = false;
         source.play();
-
-        // Phat lap de tang am luong (giong xu ly trong Unity)
-        for (let i = 1; i < data.repeatCount; i++) {
-            source.playOneShot(data.clip, data.volume);
-        }
+        this.playRepeats(fxType, data, false);
     }
 
     /**
@@ -188,6 +187,7 @@ export class Ply_SoundManager extends Ply_Singleton {
         const source = this.fxSources[index]!;
         source.clip = data.clip;
         source.volume = data.volume;
+        source.loop = false;
 
         if (source.playing) {
             // Neu đang phat, chi cho vao hang cho toi da 1 lan
@@ -195,6 +195,7 @@ export class Ply_SoundManager extends Ply_Singleton {
         } else {
             // Neu ranh thi phat luon
             source.play();
+            this.playRepeats(index as FxType, data, false);
 
             // Bat dau qua trinh kiem tra hang cho
             this.startQueueCheck(index);
@@ -222,6 +223,8 @@ export class Ply_SoundManager extends Ply_Singleton {
                 if (this.queuedCount[index] > 0) {
                     this.queuedCount[index] = 0;
                     source.play();
+                    const data = this.getSoundData(index as FxType);
+                    if (data) this.playRepeats(index as FxType, data, false);
                 } else {
                     this.unschedule(callback);
                     this.queueTimers[index] = null;
@@ -255,6 +258,34 @@ export class Ply_SoundManager extends Ply_Singleton {
         source.volume = data.volume;
         source.loop = true;
         source.play();
+        this.playRepeats(fxType, data, true);
+    }
+
+    /**
+     * Phat chong them (repeatCount - 1) ban sao cung luc de tang am luong (giong Unity).
+     * Dung AudioSource rieng cho tung ban sao thay vi playOneShot: playOneShot tren web
+     * load clip bat dong bo & khong dam bao phat, nen truoc day repeat khong co tac dung.
+     */
+    private playRepeats(fxType: FxType, data: SoundData, loop: boolean) {
+        const index = fxType as number;
+        const extra = Math.max(0, Math.floor(data.repeatCount) - 1);
+        if (extra <= 0) return;
+
+        let pool = this.fxRepeatSources[index];
+        if (!pool) pool = this.fxRepeatSources[index] = [];
+        for (let i = 0; i < extra; i++) {
+            if (!pool[i]) pool[i] = this.createAudioSource(`SoundFX_${FxType[fxType]}_Repeat${i + 1}`);
+            const extraSource = pool[i];
+            extraSource.clip = data.clip;
+            extraSource.volume = data.volume;
+            extraSource.loop = loop;
+            extraSource.play();
+        }
+    }
+
+    private stopRepeats(index: number) {
+        const pool = this.fxRepeatSources[index];
+        if (pool) for (const src of pool) if (src) src.stop();
     }
 
     /**
@@ -265,6 +296,7 @@ export class Ply_SoundManager extends Ply_Singleton {
         if (index >= 0 && index < this.fxSources.length && this.fxSources[index]) {
             this.fxSources[index]!.stop();
         }
+        this.stopRepeats(index);
     }
 
     /**
@@ -317,6 +349,7 @@ export class Ply_SoundManager extends Ply_Singleton {
             if (this.fxSources[i]) {
                 this.fxSources[i]!.stop();
             }
+            this.stopRepeats(i);
         }
     }
 
@@ -330,6 +363,7 @@ export class Ply_SoundManager extends Ply_Singleton {
             if (this.fxSources[i]) {
                 this.fxSources[i]!.stop();
             }
+            this.stopRepeats(i);
         }
     }
 
