@@ -111,7 +111,8 @@ export function getChannelApiText(channel: CHANNEL, product: IProductInfo): stri
         case CHANNEL.Facebook:
             return '\n        <script type="text/javascript">\n        function bingoPlayableApiDemo(){FbPlayableAd.onCTAClick()}\n        </script>\n    ';
         case CHANNEL.Google:
-            return '\n        <script type="text/javascript">\n        function bingoPlayableApiDemo(){ExitApi.exit()}\n        </script>\n    ';
+            // window.IS_GOOGLE_BUILD: GameManager đọc flag này để tự bật isGoogleBuild, không cần tick tay trong editor
+            return '\n        <script type="text/javascript">\n        window.IS_GOOGLE_BUILD=true;\n        function bingoPlayableApiDemo(){ExitApi.exit()}\n        </script>\n    ';
         case CHANNEL.IronSource:
             return '\n        <script type="text/javascript">\n        function bingoPlayableApiDemo(){dapi.openStoreUrl()}\n        </script>\n    ';
         case CHANNEL.InMobi:

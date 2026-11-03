@@ -54,7 +54,7 @@ export class GameManager extends Component {
     @property({
         group: { name: '1. Build Settings', id: 'buildSettings' },
         displayName: 'Is Google Build',
-        tooltip: 'Bật nếu là bản build cho Google (sẽ tắt các object/behaviour trong danh sách bên dưới)'
+        tooltip: 'Build kênh Google qua Playable Ads Builder sẽ tự bật (window.IS_GOOGLE_BUILD), không cần tick.\nChỉ tick để test chế độ Google trong editor/preview (sẽ tắt các object/behaviour trong danh sách bên dưới)'
     })
     public isGoogleBuild: boolean = false;
 

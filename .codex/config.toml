@@ -1,0 +1,5 @@
+[mcp_servers.cocos-ply-cosplayd-d4698d]
+url = "http://127.0.0.1:27179/"
+
+[mcp_servers.cocos-ply-cosplaydom]
+url = "http://127.0.0.1:27179/"
