@@ -18,6 +18,14 @@ export enum FxType {
     Curling = 9,
     /** Tieng phat khi mot DrawItem loai SnapToTarget dinh dung vao target. */
     Snap = 10,
+    /** Tieng tich tac dong ho dem nguoc (ClockTimer). */
+    Clock = 11,
+    /** Tieng nuoc (rua mat, voi nuoc...). */
+    Water = 12,
+    /** Tieng correct thu 2 (bien the khac cua Correct). */
+    Correct2 = 13,
+    /** Tieng nuoc chay cua voi sen (loop khi cam voi sen). */
+    WaterShower = 14,
 }
 Enum(FxType);
 
@@ -86,6 +94,18 @@ class FxAudio {
 
     @property(SoundData)
     snap: SoundData = new SoundData();
+
+    @property(SoundData)
+    clock: SoundData = new SoundData();
+
+    @property(SoundData)
+    water: SoundData = new SoundData();
+
+    @property(SoundData)
+    correct2: SoundData = new SoundData();
+
+    @property(SoundData)
+    waterShower: SoundData = new SoundData();
 }
 
 /**
@@ -280,6 +300,10 @@ export class Ply_SoundManager extends Ply_Singleton {
             case FxType.Scissors: return this.fxAudio.scissors;
             case FxType.Curling: return this.fxAudio.curling;
             case FxType.Snap: return this.fxAudio.snap;
+            case FxType.Clock: return this.fxAudio.clock;
+            case FxType.Water: return this.fxAudio.water;
+            case FxType.Correct2: return this.fxAudio.correct2;
+            case FxType.WaterShower: return this.fxAudio.waterShower;
             default: return null;
         }
     }

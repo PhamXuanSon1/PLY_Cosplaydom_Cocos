@@ -392,7 +392,7 @@
     "dipTarget": null,
     "hasDipped": false,
     "snapTarget": null,
-    "snapRadius": 2,
+    "snapRadius": 4,
     "showSnapRadius": false,
     "hintDragTarget": null,
     "closedSpriteObj": null,
@@ -839,7 +839,7 @@
     "dipTarget": null,
     "hasDipped": false,
     "snapTarget": null,
-    "snapRadius": 2,
+    "snapRadius": 4,
     "showSnapRadius": false,
     "hintDragTarget": null,
     "closedSpriteObj": null,
@@ -1386,6 +1386,6 @@
       "__id__": 0
     },
     "fileId": "uTEDhXR9W6/czBK/K0Cj/9",
-    "targetOverrides": null
+    "targetOverrides": []
   }
 ]

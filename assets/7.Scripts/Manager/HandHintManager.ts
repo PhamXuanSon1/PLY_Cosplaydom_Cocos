@@ -124,12 +124,46 @@ export class HandHintManager extends Component {
     private currentStatus: string = 'Đang rảnh (Idle)';
     private idleTime: number = 0;
     private isCounting: boolean = false;
+    /** Tư thế gốc của các node con trong bàn tay (clip Click animate position/eulerAngles của Hand_Drag). */
+    private handRestPose: { node: Node, pos: Vec3, euler: Vec3, scale: Vec3 }[] = [];
 
     protected onLoad(): void {
         HandHintManager.Instance = this;
         (globalThis as any).HandHintManager = HandHintManager;
 
         if (this.handIcon != null) this.handIcon.active = false;
+
+        const root = this.handAnimator || this.handIcon;
+        if (root != null) {
+            const collect = (n: Node) => {
+                this.handRestPose.push({ node: n, pos: n.position.clone(), euler: n.eulerAngles.clone(), scale: n.scale.clone() });
+                n.children.forEach(collect);
+            };
+            root.children.forEach(collect);
+        }
+    }
+
+    /** Dừng anim của tay và trả các node con về tư thế gốc, tránh tay bị nghiêng/lệch khi clip Click bị cắt ngang. */
+    private playClickAnim = (): void => {
+        const handAnim = this.handAnimator ? this.handAnimator.getComponent(Animation) : null;
+        if (handAnim && this.clickAnimationClip) {
+            if (!handAnim.getState(this.clickAnimationClip.name)) {
+                handAnim.createState(this.clickAnimationClip, this.clickAnimationClip.name);
+            }
+            handAnim.play(this.clickAnimationClip.name);
+        }
+    };
+
+    private resetHandPose(): void {
+        this.unschedule(this.playClickAnim);
+        const handAnim = this.handAnimator ? this.handAnimator.getComponent(Animation) : null;
+        if (handAnim) handAnim.stop();
+        for (const p of this.handRestPose) {
+            if (!p.node || !p.node.isValid) continue;
+            p.node.setPosition(p.pos);
+            p.node.setRotationFromEuler(p.euler);
+            p.node.setScale(p.scale);
+        }
     }
 
     private getDrawItemMgr(): DrawItemManager | null {
@@ -331,22 +365,14 @@ export class HandHintManager extends Component {
         this.handIcon.active = true;
 
         // Reset Animator về mặc định
-        const handAnim = this.handAnimator ? this.handAnimator.getComponent(Animation) : null;
-        if (handAnim) handAnim.stop();
+        this.resetHandPose();
 
         const startPos = nextItem.node.worldPosition.clone();
 
         if (nextItem.itemType === DrawItemType.ClickOnly) {
             this.handIcon.setWorldPosition(startPos);
             // Chạy clip (đã set Loop) sau 0.1s
-            this.scheduleOnce(() => {
-                if (handAnim && this.clickAnimationClip) {
-                    if (!handAnim.getState(this.clickAnimationClip.name)) {
-                        handAnim.createState(this.clickAnimationClip, this.clickAnimationClip.name);
-                    }
-                    handAnim.play(this.clickAnimationClip.name);
-                }
-            }, 0.1);
+            this.scheduleOnce(this.playClickAnim, 0.1);
         } else if (nextItem.itemType === DrawItemType.SnapToTarget) {
             if (nextItem.snapTarget != null) {
                 this.animateDrag(startPos, nextItem.snapTarget.worldPosition.clone());

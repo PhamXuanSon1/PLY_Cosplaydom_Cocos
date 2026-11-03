@@ -639,8 +639,10 @@ export class DrawInputManager extends Component {
 
                     if (this.progressFillImage) {
                         const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
-                        if (drawItemMgr && typeof drawItemMgr.GetMakeupProgressInCurrentMap === 'function') {
-                            this.progressFillImage.fillRange = drawItemMgr.GetMakeupProgressInCurrentMap(this.currentDrawItemController.makeupID);
+                        if (drawItemMgr && typeof drawItemMgr.GetItemProgressInCurrentMap === 'function') {
+                            const progress = drawItemMgr.GetItemProgressInCurrentMap(this.currentDrawItemController);
+                            if (progress >= 0) this.progressFillImage.fillRange = progress;
+                            else if (this.progressContainer) this.progressContainer.active = false;
                         }
                     }
                 }
@@ -726,13 +728,13 @@ export class DrawInputManager extends Component {
 
         if (this.currentDrawItemController && this.currentDrawItemController.tipPoint) {
             if (this.progressContainer && this.progressContainer.active && this.progressFillImage) {
-                if (this.currentDrawItemController.isCompleted) {
-                    this.progressContainer.active = false;
-                } else {
-                    const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
-                    if (drawItemMgr && typeof drawItemMgr.GetMakeupProgressInCurrentMap === 'function') {
-                        this.progressFillImage.fillRange = drawItemMgr.GetMakeupProgressInCurrentMap(this.currentDrawItemController.makeupID);
-                    }
+                // Item có extraMakeupIDs (VD vòi sen water > rinse) vẫn còn việc sau khi isCompleted,
+                // nên ẩn vòng tròn theo target còn lại chứ không theo isCompleted.
+                const drawItemMgr = DrawItemManager.Instance || (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
+                if (drawItemMgr && typeof drawItemMgr.GetItemProgressInCurrentMap === 'function') {
+                    const progress = drawItemMgr.GetItemProgressInCurrentMap(this.currentDrawItemController);
+                    if (progress >= 0) this.progressFillImage.fillRange = progress;
+                    else this.progressContainer.active = false;
                 }
             }
 

@@ -499,6 +499,23 @@ export class DrawItemManager extends Component {
         return Math.min(1, Math.max(0, totalCurrent / totalRequired));
     }
 
+    /**
+     * Tiến độ vòng tròn cho 1 item: lấy ID (makeupID rồi tới extraMakeupIDs) đầu tiên còn target đang bật mà chưa xong.
+     * Trả về -1 nếu item không còn target nào cần vẽ (để ẩn vòng tròn).
+     */
+    public GetItemProgressInCurrentMap(item: DrawItemController): number {
+        if (!item || this.currentMapIndex >= this.mapConfigs.length) return -1;
+
+        const ids = [item.makeupID].concat(item.extraMakeupIDs || []);
+        const targets = this.mapConfigs[this.currentMapIndex].targetsInMap;
+        for (const id of ids) {
+            if (!id) continue;
+            const pending = targets.some(t => t != null && t.requiredMakeupID === id && !t.isApplied && t.node.activeInHierarchy);
+            if (pending) return this.GetMakeupProgressInCurrentMap(id);
+        }
+        return -1;
+    }
+
     public GetHeartSpawnPosForCurrentMap(): Node | null {
         if (this.currentMapIndex < this.mapConfigs.length) {
             return this.mapConfigs[this.currentMapIndex].heartSpawnPos;
