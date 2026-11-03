@@ -281,6 +281,8 @@ export class HandHintManager extends Component {
 
         for (const item of config.orderedHintItems) {
             if (item == null) continue;
+            // Item còn khoá (chưa xong item yêu cầu) thì chưa chỉ tay vào
+            if (!item.isUnlocked()) continue;
 
             let isUncompleted = false;
             if (item.itemType === DrawItemType.ClickOnly ||
@@ -290,7 +292,7 @@ export class HandHintManager extends Component {
                     isUncompleted = true;
                 }
             } else { // DirectDraw, DipAndDraw
-                const target = this.findTargetFor(item.makeupID, mapIndex);
+                const target = this.findTargetFor(item, mapIndex);
                 if (target != null && !target.isApplied) {
                     isUncompleted = true;
                 }
@@ -352,8 +354,11 @@ export class HandHintManager extends Component {
                 console.warn(`[HandHint] Chưa gán snapTarget cho ${nextItem.node.name}`);
             }
         } else if (nextItem.itemType === DrawItemType.DirectDraw) {
-            const target = this.findTargetFor(nextItem.makeupID, mapIndex);
-            if (target != null) {
+            const target = this.findTargetFor(nextItem, mapIndex);
+            if (target != null && nextItem.hintDragTarget != null && nextItem.hintDragTarget.isValid) {
+                // Item tự chỉ điểm kéo tới (VD vòi sen: kéo lên trên đầu rồi giữ cho nước rơi xuống)
+                this.animateDragAndHold(startPos, nextItem.hintDragTarget.worldPosition.clone());
+            } else if (target != null) {
                 const targetPos = this.getTargetPos(target);
                 if (target.continuousMode) this.animateDragAndCircle(startPos, targetPos, this.getHintWorldRadius(target));
                 else this.animateDrag(startPos, targetPos);
@@ -361,7 +366,7 @@ export class HandHintManager extends Component {
                 console.warn(`[HandHint] Không tìm thấy MakeupTarget có ID ${nextItem.makeupID}`);
             }
         } else if (nextItem.itemType === DrawItemType.DipAndDraw) {
-            const target = this.findTargetFor(nextItem.makeupID, mapIndex);
+            const target = this.findTargetFor(nextItem, mapIndex);
             if (target != null && nextItem.dipTarget != null) {
                 const targetPos = this.getTargetPos(target);
                 const dipPos = nextItem.dipTarget.worldPosition.clone();
@@ -407,6 +412,17 @@ export class HandHintManager extends Component {
         this.handIcon.setWorldPosition(start);
         tween(this.handIcon)
             .to(this.dragDuration, { worldPosition: end }, { easing: 'sineInOut' })
+            .call(() => this.showHint())
+            .start();
+    }
+
+    /** Kéo tới đích rồi giữ yên 1 vòng xoay (circleDuration) trước khi lặp lại. */
+    private animateDragAndHold(start: Vec3, end: Vec3): void {
+        if (this.handIcon == null) return;
+        this.handIcon.setWorldPosition(start);
+        tween(this.handIcon)
+            .to(this.dragDuration, { worldPosition: end }, { easing: 'sineInOut' })
+            .delay(this.circleDuration)
             .call(() => this.showHint())
             .start();
     }
@@ -467,14 +483,17 @@ export class HandHintManager extends Component {
         tw.call(() => this.showHint()).start();
     }
 
-    private findTargetFor(makeupID: string, mapIndex: number): MakeupTarget | null {
+    /** Target chưa xong mà item vẽ được (ID chính hoặc ID phụ). Bỏ qua target đang tắt (bước sau chưa mở). */
+    private findTargetFor(item: DrawItemController, mapIndex: number): MakeupTarget | null {
         const drawItemMgr = this.getDrawItemMgr();
         if (drawItemMgr == null || mapIndex >= drawItemMgr.mapConfigs.length) return null;
 
+        const ids = [item.makeupID, ...(item.extraMakeupIDs || [])].filter(id => !!id).map(id => id.trim().toLowerCase());
         const targets = drawItemMgr.mapConfigs[mapIndex].targetsInMap;
         for (const t of targets) {
-            if (t == null) continue;
-            if (t.requiredMakeupID.trim().toLowerCase() === makeupID.trim().toLowerCase() && !t.isApplied) {
+            if (t == null || t.isApplied) continue;
+            if (!t.node || !t.node.activeInHierarchy) continue;
+            if (ids.indexOf(t.requiredMakeupID.trim().toLowerCase()) !== -1) {
                 return t;
             }
         }
@@ -547,8 +566,12 @@ export class HandHintManager extends Component {
                     g.fill();
                     g.stroke();
                 }
+            } else if (item.itemType === DrawItemType.DirectDraw && item.hintDragTarget && item.hintDragTarget.isValid) {
+                const endWorld = item.hintDragTarget.worldPosition;
+                const endLocal = new Vec3(endWorld.x - myWorldPos.x, endWorld.y - myWorldPos.y, 0);
+                this.drawDebugArrow(g, startLocal, endLocal, new Color(255, 200, 0, 240));
             } else if (item.itemType === DrawItemType.DirectDraw) {
-                const target = this.findTargetFor(item.makeupID, mapIndex);
+                const target = this.findTargetFor(item, mapIndex);
                 if (target && target.node && target.node.isValid) {
                     const endWorld = target.node.worldPosition;
                     const endLocal = new Vec3(endWorld.x - myWorldPos.x, endWorld.y - myWorldPos.y, 0);
@@ -564,7 +587,7 @@ export class HandHintManager extends Component {
                     g.stroke();
                 }
             } else if (item.itemType === DrawItemType.DipAndDraw) {
-                const target = this.findTargetFor(item.makeupID, mapIndex);
+                const target = this.findTargetFor(item, mapIndex);
                 if (item.dipTarget && item.dipTarget.isValid) {
                     const dipWorld = item.dipTarget.worldPosition;
                     const dipLocal = new Vec3(dipWorld.x - myWorldPos.x, dipWorld.y - myWorldPos.y, 0);

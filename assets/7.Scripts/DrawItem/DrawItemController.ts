@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Enum, CCString, CCBoolean, CCFloat, EventHandler, Graphics, Color, UITransform } from 'cc';
+import { _decorator, Component, Node, Enum, CCString, CCBoolean, CCFloat, EventHandler, Graphics, Color, UITransform, ParticleSystem2D } from 'cc';
 import { EDITOR } from 'cc/env';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 
@@ -29,7 +29,7 @@ export class DrawItemController extends Component {
         type: [Component],
         group: { name: '1. Basic Info', id: 'basicInfo' },
         displayName: 'Unlock Requirements',
-        tooltip: "Danh sách các vật phẩm CẦN PHẢI hoàn thành trước khi mở khoá vật phẩm này (dành cho trường hợp cần nhiều hơn 1 điều kiện)."
+        tooltip: "Danh sách các vật phẩm CẦN PHẢI hoàn thành trước khi mở khoá vật phẩm này (dành cho trường hợp cần nhiều hơn 1 điều kiện).\nCó thể kéo vào node có Makeup Target: target đó phải vẽ xong 100% mới mở khoá (VD khăn chờ vùng xả nước xong)."
     })
     public requireItemsToUnlock: DrawItemController[] = [];
 
@@ -38,6 +38,16 @@ export class DrawItemController extends Component {
             for (let i = 0; i < this.requireItemsToUnlock.length; i++) {
                 const reqObj = this.requireItemsToUnlock[i] as any;
                 if (reqObj != null) {
+                    // Yêu cầu là MakeupTarget: phải vẽ xong (isApplied) mới mở khoá
+                    const reqNode: Node | null = reqObj.node ? reqObj.node : (reqObj instanceof Node ? reqObj : null);
+                    const reqTarget: any = reqObj.requiredMakeupID !== undefined
+                        ? reqObj
+                        : (reqNode && !reqNode.getComponent(DrawItemController) ? reqNode.getComponent('MakeupTarget') : null);
+                    if (reqTarget) {
+                        if (!reqTarget.isApplied) return false;
+                        continue;
+                    }
+
                     let reqItem: DrawItemController | null = null;
                     if (reqObj.isCompleted !== undefined) {
                         reqItem = reqObj; // Đã là DrawItemController
@@ -75,12 +85,35 @@ export class DrawItemController extends Component {
     public makeupID: string = '';
 
     @property({
+        type: [CCString],
+        group: { name: '1. Basic Info', id: 'basicInfo' },
+        displayName: 'Extra Makeup IDs',
+        tooltip: "ID phụ: item vẽ được thêm lên các Makeup Target có ID này (VD vòi sen dùng lần 2 để xả bọt).\nTrạng thái hoàn thành của item vẫn chỉ tính theo Makeup ID chính."
+    })
+    public extraMakeupIDs: string[] = [];
+
+    /** Item có vẽ được lên target mang ID này không (ID chính hoặc ID phụ). */
+    public matchesMakeupID(id: string): boolean {
+        if (!id) return false;
+        if (id === this.makeupID) return true;
+        return !!this.extraMakeupIDs && this.extraMakeupIDs.indexOf(id) !== -1;
+    }
+
+    @property({
         type: CCFloat,
         group: { name: '1. Basic Info', id: 'basicInfo' },
         displayName: 'Tip Radius',
         tooltip: "Bán kính quét quanh điểm đầu cọ để phát hiện mục tiêu."
     })
     public tipRadius: number = 0.5;
+
+    @property({
+        type: [ParticleSystem2D],
+        group: { name: '1. Basic Info', id: 'basicInfo' },
+        displayName: 'Hit Particles',
+        tooltip: "Có phần tử: chỉ tính vẽ khi HẠT của các ParticleSystem2D này (VD giọt nước vòi sen) đang nằm trong Makeup Target. Nước chưa rơi tới / rơi trượt thì không tính.\nĐể trống: dò tại vị trí ngón tay như cũ."
+    })
+    public hitParticles: ParticleSystem2D[] = [];
 
     @property({
         type: Node,
@@ -145,6 +178,14 @@ export class DrawItemController extends Component {
         tooltip: "Bật ô này để hiển thị vòng tròn bán kính Snap Radius quanh Snap Target để dễ dàng căn chỉnh trên Editor hoặc trong Game."
     })
     public showSnapRadius: boolean = false;
+
+    @property({
+        type: Node,
+        group: { name: '2. Interaction Setup', id: 'interactionSetup' },
+        displayName: 'Hint Drag Target',
+        tooltip: "Gán node: bàn tay gợi ý kéo item tới vị trí node này rồi giữ yên (VD kéo vòi sen lên trên đầu), thay cho vòng xoay trên Makeup Target.\nĐể trống: gợi ý như cũ."
+    })
+    public hintDragTarget: Node | null = null;
 
     @property({
         type: Node,

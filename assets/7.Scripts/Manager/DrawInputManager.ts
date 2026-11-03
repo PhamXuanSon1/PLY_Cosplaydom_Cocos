@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game, BoxCollider2D, CircleCollider2D, PolygonCollider2D, Intersection2D, director, view, warn } from 'cc';
+import { _decorator, Component, Node, Camera, Vec3, Vec2, Sprite, Animation, CCFloat, CCBoolean, EventTouch, Input, input, tween, Tween, UIOpacity, UITransform, geometry, PhysicsSystem, PhysicsSystem2D, Collider, Collider2D, RigidBody2D, Layers, game, BoxCollider2D, CircleCollider2D, PolygonCollider2D, Intersection2D, director, view, warn, ParticleSystem2D } from 'cc';
 import { AppLovinAnalytics } from '../Tool/AppLovinAnalytics';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from './CharacterManager';
@@ -364,6 +364,65 @@ export class DrawInputManager extends Component {
         return new Vec3(uiWorldPos.x, uiWorldPos.y, 0);
     }
 
+    /**
+     * MakeupTarget đang bị item vẽ lên. Mặc định dò tại vị trí chạm.
+     * Item có Hit Particles (vòi sen...) thì chỉ tính target đang có hạt của các ParticleSystem2D đó
+     * nằm bên trong: nước rơi chạm mặt mới tính, chưa rơi tới hoặc rơi trượt thì không.
+     */
+    private getDrawTargets(event: EventTouch): MakeupTarget[] {
+        const ctrl = this.currentDrawItemController;
+        if (!ctrl || !ctrl.hitParticles || ctrl.hitParticles.length === 0) {
+            return this.raycastNodes(event, MakeupTarget, this.makeupTargetLayer);
+        }
+
+        const results: MakeupTarget[] = [];
+        const scene = director.getScene();
+        if (!scene) return results;
+
+        const candidates = scene.getComponentsInChildren(MakeupTarget).filter(t =>
+            t && t.node && t.node.activeInHierarchy &&
+            (this.makeupTargetLayer === -1 || (t.node.layer & this.makeupTargetLayer) !== 0));
+        if (candidates.length === 0) return results;
+
+        const point = new Vec3();
+        for (const ps of ctrl.hitParticles) {
+            if (!ps || !ps.node || !ps.node.activeInHierarchy) continue;
+            const particles: any[] = (ps as any)._simulator?.particles;
+            if (!particles) continue;
+
+            for (const particle of particles) {
+                this.getParticleWorldPos(ps, particle, point);
+                for (const target of candidates) {
+                    if (results.indexOf(target) !== -1) continue;
+                    const colliders = target.node.getComponentsInChildren(Collider2D);
+                    for (const col of colliders) {
+                        if (this.isPointInCollider(col, point)) {
+                            results.push(target);
+                            break;
+                        }
+                    }
+                }
+                if (results.length === candidates.length) return results;
+            }
+        }
+        return results;
+    }
+
+    /** Vị trí world của 1 hạt ParticleSystem2D (theo cách engine tính khi vẽ hạt). */
+    private getParticleWorldPos(ps: ParticleSystem2D, particle: any, out: Vec3): Vec3 {
+        // positionType: 0 = FREE (startPos là toạ độ world lúc sinh), 1 = RELATIVE (toạ độ của node cha), 2 = GROUPED (toạ độ local của node)
+        if (ps.positionType === 0) {
+            out.set(particle.pos.x + particle.startPos.x, particle.pos.y + particle.startPos.y, 0);
+        } else if (ps.positionType === 1) {
+            out.set(particle.pos.x + particle.startPos.x, particle.pos.y + particle.startPos.y, 0);
+            if (ps.node.parent) Vec3.transformMat4(out, out, ps.node.parent.worldMatrix);
+        } else {
+            out.set(particle.pos.x, particle.pos.y, 0);
+            Vec3.transformMat4(out, out, ps.node.worldMatrix);
+        }
+        return out;
+    }
+
     private isPointInCollider(col: Collider2D, worldPoint: Vec3): boolean {
         if (!col || !col.node || !col.node.activeInHierarchy || !col.enabled) return false;
         const uiTransform = col.node.getComponent(UITransform);
@@ -486,6 +545,7 @@ export class DrawInputManager extends Component {
     }
 
     public mouseDown(event?: EventTouch): void {
+        this.lastDragEvent = null;
         const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
         if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
             handHintMgr.HideHintTemporarily();
@@ -643,8 +703,22 @@ export class DrawInputManager extends Component {
         }
     }
 
+    // Lần kéo gần nhất: item có Hit Particles (vòi sen) vẫn phải tính khi người chơi giữ yên tay dưới dòng nước
+    private lastDragEvent: EventTouch | null = null;
+    private lastDragFrame: number = -1;
+
+    protected update(): void {
+        const ctrl = this.currentDrawItemController;
+        if (!this.currentDrawItem || !ctrl || !this.lastDragEvent) return;
+        if (!ctrl.hitParticles || ctrl.hitParticles.length === 0) return;
+        if (this.lastDragFrame === director.getTotalFrames()) return;
+        this.mouseDrag(this.lastDragEvent);
+    }
+
     public mouseDrag(event?: EventTouch): void {
         if (!this.currentDrawItem || !event) return;
+        this.lastDragEvent = event;
+        this.lastDragFrame = director.getTotalFrames();
 
         const touchWorldPos = this.getTouchWorldPos(event);
         const targetPos = touchWorldPos.clone().add(this.offset);
@@ -685,7 +759,7 @@ export class DrawInputManager extends Component {
             let isHittingValidTarget = false;
 
             if (canDraw) {
-                const targets = this.raycastNodes(event, MakeupTarget, this.makeupTargetLayer);
+                const targets = this.getDrawTargets(event);
                 this.currentFrameTargets = [];
                 let isWrongItem = false;
 
@@ -693,7 +767,7 @@ export class DrawInputManager extends Component {
                     if (!this.currentDrawItemController) break;
                     const target = targets[i];
 
-                    if (target.requiredMakeupID === this.currentDrawItemController.makeupID) {
+                    if (this.currentDrawItemController.matchesMakeupID(target.requiredMakeupID)) {
                         if (!this.currentDrawItemController.isUnlocked()) {
                             isWrongItem = true;
                             break;
@@ -706,7 +780,9 @@ export class DrawInputManager extends Component {
                         const beforeDraws = target.CurrentDrawTimes;
                         const wasApplied = target.isApplied;
                         const dt = game.deltaTime > 0 ? game.deltaTime : 0.016;
-                        target.applyMakeup(dt, touchWorldPos);
+                        // Item dùng Hit Particles: nước vẫn rơi khi tay đứng yên -> không truyền vị trí chuột để target không chặn "chuột đứng im"
+                        const usesHitParticles = !!(this.currentDrawItemController.hitParticles && this.currentDrawItemController.hitParticles.length > 0);
+                        target.applyMakeup(dt, usesHitParticles ? undefined : touchWorldPos);
                         const afterDraws = target.CurrentDrawTimes;
                         const isAppliedNow = target.isApplied;
 

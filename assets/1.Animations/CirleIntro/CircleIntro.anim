@@ -20,7 +20,11 @@
     ],
     "_exoticAnimation": null,
     "_events": [],
-    "_embeddedPlayers": []
+    "_embeddedPlayers": [],
+    "_additiveSettings": {
+      "__id__": 11
+    },
+    "_auxiliaryCurveEntries": []
   },
   {
     "__type__": "cc.animation.VectorTrack",
@@ -63,8 +67,8 @@
     "__type__": "cc.RealCurve",
     "_times": [
       0,
-      0.7666666666666667,
-      1.5333333333333334
+      0.7666666507720947,
+      1.5333333015441895
     ],
     "_values": [
       {
@@ -117,8 +121,8 @@
     "__type__": "cc.RealCurve",
     "_times": [
       0,
-      0.7666666666666667,
-      1.5333333333333334
+      0.7666666507720947,
+      1.5333333015441895
     ],
     "_values": [
       {
@@ -170,8 +174,8 @@
   {
     "__type__": "cc.RealCurve",
     "_times": [
-      0.7666666666666667,
-      1.5333333333333334
+      0.7666666507720947,
+      1.5333333015441895
     ],
     "_values": [
       {
@@ -214,5 +218,10 @@
     "_values": [],
     "preExtrapolation": 1,
     "postExtrapolation": 1
+  },
+  {
+    "__type__": "cc.AnimationClipAdditiveSettings",
+    "enabled": false,
+    "refClip": null
   }
 ]

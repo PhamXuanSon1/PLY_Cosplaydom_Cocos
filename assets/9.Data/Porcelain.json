@@ -2,1319 +2,469 @@
   "skeletonDataFileName": "Porcelain",
   "slotAttachmentPairs": [
     {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_0",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_1",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_2",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_3",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_4",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_5",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_6",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_7",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_8",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_9",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_10",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_11",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_12",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_13",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_14",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_15",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_16",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_17",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_18",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_19",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_20",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_21",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_22",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_23",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_24",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_25",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_26",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_27",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_28",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_29",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_30",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_31",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_32",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_33",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_34",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_35",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_36",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_37",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_38",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_39",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_40",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_41",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_42",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_43",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_44",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_45",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_46",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_47",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_48",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_49",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_50",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_51",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_52",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_53",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_54",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_55",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_56",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_57",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_58",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_59",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_60",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_61",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_62",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_63",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_64",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_65",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_66",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_67",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_68",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_69",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_70",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_71",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_72",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_73",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_74",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_75",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_76",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_77",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_78",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_79",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_80",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_81",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_82",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_83",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_84",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_85",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_86",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_87",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_88",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_89",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_90",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_91",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_92",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_93",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_94",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_95",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_96",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_97",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_98",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_99",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_100",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_101",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_102",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_103",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_104",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_105",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_106",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_107",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_108",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_109",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_110",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_111",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_112",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_113",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_114",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_115",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_116",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_117",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_118",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_119",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_120",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_121",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_122",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_123",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_124",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_125",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_126",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_127",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_128",
-      "attachmentName": "glow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_129",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_130",
-      "attachmentName": "polygon"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_131",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_132",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_133",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e2_particle_134",
-      "attachmentName": "star"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e1_particle_0",
-      "attachmentName": "needle"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e1_particle_1",
-      "attachmentName": "needle"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "particle/e1_particle_2",
-      "attachmentName": "needle"
+      "isEnabled": true,
+      "slotName": "Base_Hair_back",
+      "attachmentName": "Base/Base_Hair_back"
     },
     {
       "isEnabled": false,
-      "slotName": "particle/e1_particle_3",
-      "attachmentName": "needle"
+      "slotName": "Phase_3_Hair_water_back",
+      "attachmentName": "Phase_3_Hair/Phase_3_Hair_water_back"
     },
     {
       "isEnabled": false,
-      "slotName": "particle/e1_particle_4",
-      "attachmentName": "needle"
+      "slotName": "Phase_3_Hair_sampoo_back",
+      "attachmentName": "Phase_3_Hair/Phase_3_Hair_sampoo_back"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_belt_4",
-      "attachmentName": "cos/cos_belt_4"
+      "slotName": "Phase_3_Hair_back_final",
+      "attachmentName": "Phase_3_Hair/Phase_3_Hair_back"
     },
     {
       "isEnabled": true,
-      "slotName": "hair_back_1",
-      "attachmentName": "base/hair_back_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_back_2",
-      "attachmentName": "base/hair_back_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_back_3",
-      "attachmentName": "base/hair_back_3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "hair_back_4",
-      "attachmentName": "cos/hair_back_4"
+      "slotName": "Base_Arm_L",
+      "attachmentName": "Base/Base_Arm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "shadow",
-      "attachmentName": "firework/shadow"
+      "slotName": "Base_Arm_R",
+      "attachmentName": "Base/Base_Arm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "backeye",
-      "attachmentName": "head/backeye"
+      "slotName": "Base_hand_L",
+      "attachmentName": "Base/hand_L1"
     },
     {
       "isEnabled": true,
-      "slotName": "base_arm_R",
-      "attachmentName": "setbase/base_arm_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_arm_R",
-      "attachmentName": "setbase/cos_arm_L"
+      "slotName": "Base_hand_R",
+      "attachmentName": "Base/hand_L1"
     },
     {
       "isEnabled": true,
-      "slotName": "base_arm_L",
-      "attachmentName": "setbase/base_arm_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_arm_L",
-      "attachmentName": "setbase/cos_arm_L"
+      "slotName": "Base_Leg_L",
+      "attachmentName": "Base/Base_Leg_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_forearm_L",
-      "attachmentName": "setbase/base_forearm_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_forearm_L",
-      "attachmentName": "setbase/cos_forearm_L"
+      "slotName": "Base_Leg_R",
+      "attachmentName": "Base/Base_Leg_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_forearm_R",
-      "attachmentName": "setbase/base_forearm_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_forearm_R",
-      "attachmentName": "setbase/cos_forearm_L"
+      "slotName": "Base_Body",
+      "attachmentName": "Base/Base_Body"
     },
     {
       "isEnabled": true,
-      "slotName": "base_leg_R",
-      "attachmentName": "setbase/base_leg_R"
+      "slotName": "Base_Underwear",
+      "attachmentName": "Base/Base_Underwear"
     },
     {
       "isEnabled": true,
-      "slotName": "base_leg_L",
-      "attachmentName": "setbase/base_leg_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_leg_L",
-      "attachmentName": "setbase/cos_leg_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_shoe_L",
-      "attachmentName": "cos/cos_shoe_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_leg_R",
-      "attachmentName": "setbase/cos_leg_R"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_shoe_R",
-      "attachmentName": "cos/cos_shoe_L"
+      "slotName": "Set_Base_Shirt_R",
+      "attachmentName": "Set_Base/Set_Base_Shirt_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_body",
-      "attachmentName": "setbase/base_body"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_body",
-      "attachmentName": "setbase/cos_body"
+      "slotName": "Set_Base_Shirt_L",
+      "attachmentName": "Set_Base/Set_Base_Shirt_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_bodysuit",
-      "attachmentName": "setbase/base_bodysuit"
+      "slotName": "Set_Base_Shirt",
+      "attachmentName": "Set_Base/Set_Base_Shirt"
     },
     {
       "isEnabled": true,
-      "slotName": "base_ear_L",
-      "attachmentName": "head/base_ear"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_ear_L",
-      "attachmentName": "head/cos_ear"
+      "slotName": "Set_Base_Trousers",
+      "attachmentName": "Set_Base/Set_Base_Trousers"
     },
     {
       "isEnabled": true,
-      "slotName": "base_ear_R",
-      "attachmentName": "head/base_ear"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_ear_R",
-      "attachmentName": "head/cos_ear"
+      "slotName": "Set_Base_Sock_L",
+      "attachmentName": "Set_Base/Set_Base_Sock_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_skirt",
-      "attachmentName": "base/base_skirt"
+      "slotName": "Set_Base_Sock_R",
+      "attachmentName": "Set_Base/Set_Base_Sock_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_shirt_arm_L",
-      "attachmentName": "base/base_shirt_arm_L"
+      "slotName": "Set_Base_Shoe_L",
+      "attachmentName": "Set_Base/Set_Base_Shoe_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_shirt_arm_R",
-      "attachmentName": "base/base_shirt_arm_L"
+      "slotName": "Set_Base_Shoe_R",
+      "attachmentName": "Set_Base/Set_Base_Shoe_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_shirt",
-      "attachmentName": "base/base_shirt"
+      "slotName": "Set_Base_Necklace",
+      "attachmentName": "Set_Base/Set_Base_Necklace"
     },
     {
       "isEnabled": true,
-      "slotName": "base_sock_L",
-      "attachmentName": "base/base_sock_L"
+      "slotName": "Set_Base_Bracelet",
+      "attachmentName": "Set_Base/Set_Base_Bracelet"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Sock_L",
+      "attachmentName": "Set_Perona/Set_Perona_Sock_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Shoe_L",
+      "attachmentName": "Set_Perona/Set_Perona_Shoe_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Sock_R",
+      "attachmentName": "Set_Perona/Set_Perona_Sock_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Shoe_R",
+      "attachmentName": "Set_Perona/Set_Perona_Shoe_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Shirt_L",
+      "attachmentName": "Set_Perona/Set_Perona_Shirt_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Shirt_R",
+      "attachmentName": "Set_Perona/Set_Perona_Shirt_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Skirt",
+      "attachmentName": "Set_Perona/Set_Perona_Skirt"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Shirt",
+      "attachmentName": "Set_Perona/Set_Perona_Shirt"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Shirt_L2",
+      "attachmentName": "Set_Perona/Set_Perona_Shirt_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Shirt_R2",
+      "attachmentName": "Set_Perona/Set_Perona_Shirt_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Belt",
+      "attachmentName": "Set_Perona/Set_Perona_Belt"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Neck_bowtie",
+      "attachmentName": "Set_Perona/Set_Perona_Neck_bowtie"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Umbrella_3",
+      "attachmentName": "Set_Perona/Set_Perona_Umbrella_3"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Set_Perona_Umbrella_2",
+      "attachmentName": "Set_Perona/Set_Perona_Umbrella_2"
     },
     {
       "isEnabled": true,
-      "slotName": "base_sock_R",
-      "attachmentName": "base/base_sock_L"
+      "slotName": "Base_Eye_White",
+      "attachmentName": "Base/Base_Eye_White"
     },
     {
       "isEnabled": true,
-      "slotName": "base_hand_R",
-      "attachmentName": "setbase/base_hand_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_hand_R",
-      "attachmentName": "setbase/cos_hand_L"
+      "slotName": "Base_Pupil_L",
+      "attachmentName": "Base/Base_Pupil_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_hand_L",
-      "attachmentName": "setbase/base_hand_L"
+      "slotName": "Base_Pupil_R",
+      "attachmentName": "Base/Base_Pupil_R"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_hand_L",
-      "attachmentName": "setbase/cos_hand_L"
+      "slotName": "Phase_1_Makeup_Pupil_L",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Pupil_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Pupil_R",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Pupil_R"
     },
     {
       "isEnabled": true,
-      "slotName": "base_shoe_L",
-      "attachmentName": "base/base_shoe_L"
+      "slotName": "Base_Pupil_Light_L",
+      "attachmentName": "Base/Base_Pupil_Light_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_shoe_R",
-      "attachmentName": "base/base_shoe_L"
+      "slotName": "Base_Pupil_Light_R",
+      "attachmentName": "Base/Base_Pupil_Light_R"
     },
     {
       "isEnabled": true,
-      "slotName": "base_jacket_arm_L",
-      "attachmentName": "base/base_jacket_arm_L"
+      "slotName": "Base_Head",
+      "attachmentName": "Base/Base_Head"
     },
     {
       "isEnabled": true,
-      "slotName": "base_jacket_arm_R",
-      "attachmentName": "base/base_jacket_arm_L"
+      "slotName": "Base_dirty",
+      "attachmentName": "Base/Base_dirty"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Water",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Water"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Cleanser_apply",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Cleanser_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Cleanser",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Cleanser"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Foundation_apply",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Foundation_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Foundation",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Foundation"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Contour_apply",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Contour_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Conclear_apply",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Conclear_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Contour",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Contour"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Blush",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Blush"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Eyeshadow_L",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyeshadow"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Eyeshadow_R",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyeshadow"
     },
     {
       "isEnabled": true,
-      "slotName": "base_jacket_L",
-      "attachmentName": "base/base_jacket"
+      "slotName": "Base_Eye_close_R2",
+      "attachmentName": "Base/Base_Eye_close_R2"
     },
     {
       "isEnabled": true,
-      "slotName": "base_jacket_R",
-      "attachmentName": "base/base_jacket"
+      "slotName": "Base_Eye_close_L2",
+      "attachmentName": "Base/Base_Eye_close_R2"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_dress",
-      "attachmentName": "cos/cos_dress"
+      "slotName": "Phase_1_Makeup_Eye_close_R2",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eye_close_R2"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_belt_3",
-      "attachmentName": "cos/cos_belt_3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_belt_2",
-      "attachmentName": "cos/cos_belt_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_belt_decor",
-      "attachmentName": "cos/cos_belt_decor"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_belt_1",
-      "attachmentName": "cos/cos_belt_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_dress_decor_L",
-      "attachmentName": "cos/cos_dress_decor_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_dress_decor_R",
-      "attachmentName": "cos/cos_dress_decor_L"
+      "slotName": "Phase_1_Makeup_Eye_close_L2",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eye_close_R2"
     },
     {
       "isEnabled": true,
-      "slotName": "base_Pupil_L",
-      "attachmentName": "head/base_pupil"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_Pupil_L",
-      "attachmentName": "head/cos_pupil"
+      "slotName": "Base_Eyelid_R2",
+      "attachmentName": "Base/Base_Eyelid_R2"
     },
     {
       "isEnabled": true,
-      "slotName": "base_Pupil_R",
-      "attachmentName": "head/base_pupil"
+      "slotName": "Base_Eyelid_L2",
+      "attachmentName": "Base/Base_Eyelid_R2"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_Pupil_R",
-      "attachmentName": "head/cos_pupil"
+      "slotName": "Phase_1_Makeup_Eyelid_R2",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyelid_R2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Eyelid_L2",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyelid_R2"
     },
     {
       "isEnabled": true,
-      "slotName": "eye shine L",
-      "attachmentName": "head/eye shine"
+      "slotName": "Base_Eye_close_R1",
+      "attachmentName": "Base/Base_Eye_close_R1"
     },
     {
       "isEnabled": true,
-      "slotName": "eye shine R",
-      "attachmentName": "head/eye shine"
+      "slotName": "Base_Eye_close_L1",
+      "attachmentName": "Base/Base_Eye_close_R1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Eye_close_R1",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eye_close_R1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Eye_close_L1",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eye_close_R1"
     },
     {
       "isEnabled": true,
-      "slotName": "base_head",
-      "attachmentName": "head/base_head"
+      "slotName": "Base_Eyelid_R1",
+      "attachmentName": "Base/Base_Eyelid_R1"
     },
     {
       "isEnabled": true,
-      "slotName": "face_dirt",
-      "attachmentName": "makeup/face_dirt"
+      "slotName": "Base_Eyelid_L1",
+      "attachmentName": "Base/Base_Eyelid_R1"
     },
     {
       "isEnabled": false,
-      "slotName": "face_wet",
-      "attachmentName": "makeup/face_wet"
+      "slotName": "Phase_1_Makeup_Eyelid_R1",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyelid_R1"
     },
     {
       "isEnabled": false,
-      "slotName": "face_wash_01",
-      "attachmentName": "makeup/face_wash_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "face_wash_02",
-      "attachmentName": "makeup/face_wash_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "face_wash_03",
-      "attachmentName": "makeup/face_wash_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "face_wash_blend",
-      "attachmentName": "makeup/face_wash_blend"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_head",
-      "attachmentName": "head/cos_head"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "foundation_apply_01",
-      "attachmentName": "makeup/foundation_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "foundation_apply_05",
-      "attachmentName": "makeup/foundation_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "foundation_apply_02",
-      "attachmentName": "makeup/foundation_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "foundation_apply_04",
-      "attachmentName": "makeup/foundation_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "foundation_apply_03",
-      "attachmentName": "makeup/foundation_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "foundation_blend",
-      "attachmentName": "makeup/foundation_blend"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "contour_blend",
-      "attachmentName": "makeup/contour_blend"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "contour_01_apply_L",
-      "attachmentName": "makeup/contour_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "contour_01_apply_R",
-      "attachmentName": "makeup/contour_01"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "contour_02_apply_L",
-      "attachmentName": "makeup/contour_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "contour_02_apply_R",
-      "attachmentName": "makeup/contour_02"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "contour_03_apply",
-      "attachmentName": "makeup/contour_03"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "contour_04_apply_L",
-      "attachmentName": "makeup/contour_04"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "contour_04_apply_R",
-      "attachmentName": "makeup/contour_04"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "concealer_apply_1",
-      "attachmentName": "makeup/concealer_apply_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "concealer_apply_6",
-      "attachmentName": "makeup/concealer_apply_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "concealer_apply_2",
-      "attachmentName": "makeup/concealer_apply_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "concealer_apply_3",
-      "attachmentName": "makeup/concealer_apply_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "concealer_apply_4",
-      "attachmentName": "makeup/concealer_apply_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "concealer_apply_5",
-      "attachmentName": "makeup/concealer_apply_2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "conclear_blend",
-      "attachmentName": "makeup/concealer_blend"
+      "slotName": "Phase_1_Makeup_Eyelid_L1",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyelid_R1"
     },
     {
       "isEnabled": true,
-      "slotName": "base_lower_lid_L",
-      "attachmentName": "head/base_lower_lid_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_lower_lid_L",
-      "attachmentName": "head/cos_lower_lid"
+      "slotName": "Base_Lips",
+      "attachmentName": "Base/Base_Lip_1"
     },
     {
       "isEnabled": true,
-      "slotName": "base_lower_lid_R",
-      "attachmentName": "head/base_lower_lid_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_lower_lid_R",
-      "attachmentName": "head/cos_lower_lid"
+      "slotName": "Base_Brow_L",
+      "attachmentName": "Base/Base_Brow_L"
     },
     {
       "isEnabled": true,
-      "slotName": "base_eyeliner_bot_L",
-      "attachmentName": "head/base_eyeliner_bot_L"
+      "slotName": "Base_Brow_R",
+      "attachmentName": "Base/Base_Brow_R"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_mascara_R",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_mascara_R"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_mascara_L",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_mascara_R"
     },
     {
       "isEnabled": true,
-      "slotName": "base_eyeliner_bot_R",
-      "attachmentName": "head/base_eyeliner_bot_L"
+      "slotName": "Phase_1_Makeup_Lips",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Lip_1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Brow_L",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Brow_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Phase_1_Makeup_Brow_R",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Brow_R"
     },
     {
       "isEnabled": true,
-      "slotName": "base_upper_lid_R",
-      "attachmentName": "head/base_upper_lid"
+      "slotName": "Base_Hair_top",
+      "attachmentName": "Base/Base_Hair_top"
     },
     {
       "isEnabled": true,
-      "slotName": "base_upper_lid_L",
-      "attachmentName": "head/base_upper_lid"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_Eyeliner_bot_L",
-      "attachmentName": "head/cos_Eyeliner_bot_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_Eyeliner_bot_R",
-      "attachmentName": "head/cos_Eyeliner_bot_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_upper_lid_L",
-      "attachmentName": "head/cos_upper_lid"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_upper_lid_R",
-      "attachmentName": "head/cos_upper_lid"
+      "slotName": "Base_Hair_bang",
+      "attachmentName": "Base/Base_Hair_bang"
     },
     {
       "isEnabled": true,
-      "slotName": "base_eyeliner_top_L",
-      "attachmentName": "head/base_eyeliner_top_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_eyeliner_top_R",
-      "attachmentName": "head/base_eyeliner_top_L"
+      "slotName": "Set_Base_Hairclip",
+      "attachmentName": "Set_Base/Set_Base_Hairclip"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_Eyeliner_top_L",
-      "attachmentName": "head/cos_Eyeliner_top_L"
+      "slotName": "Phase_3_Hair_water_top",
+      "attachmentName": "Phase_3_Hair/Phase_3_Hair_water_top"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_Eyeliner_top_R",
-      "attachmentName": "head/cos_Eyeliner_top_L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_brows_L",
-      "attachmentName": "head/base_brows"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_brows_R",
-      "attachmentName": "head/base_brows"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "base_lip",
-      "attachmentName": "head/Base_mouth_1"
+      "slotName": "Phase_3_Hair_sampoo_top",
+      "attachmentName": "Phase_3_Hair/Phase_3_Hair_sampoo_top"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_lip",
-      "attachmentName": "head/cos_mouth_1"
+      "slotName": "Phase_3_Hair_tiedhair",
+      "attachmentName": "Phase_3_Hair/Phase_3_Hair_tiedhair"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_eyebrows_L",
-      "attachmentName": "head/cos_eyebrows__L"
+      "slotName": "Phase_3_Hair_cap",
+      "attachmentName": "Phase_3_Hair/Phase_3_Hair_cap"
     },
     {
       "isEnabled": false,
-      "slotName": "cos_eyebrows_R",
-      "attachmentName": "head/cos_eyebrows__L"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "hair_front_1",
-      "attachmentName": "base/hair_front_1"
+      "slotName": "Phase_3_Hair_top_final",
+      "attachmentName": "Phase_3_Hair/Phase_3_Hair_top"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_front_2",
-      "attachmentName": "cos/hair_front_1"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "hair_bang_L1",
-      "attachmentName": "base/hair_bang_L1"
+      "slotName": "Set_Perona_Crown",
+      "attachmentName": "Set_Perona/Set_Perona_Crown"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_bang_L2",
-      "attachmentName": "cos/hair_bang_R2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "hair_bang_R",
-      "attachmentName": "base/hair_bang_L1"
+      "slotName": "Set_Perona_Umbrella_1",
+      "attachmentName": "Set_Perona/Set_Perona_Umbrella_1"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_bang_R2",
-      "attachmentName": "cos/hair_bang_R2"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "hair_bang_1",
-      "attachmentName": "base/hair_bang_1"
+      "slotName": "Base_hand_R_top",
+      "attachmentName": "Base/Base_hand_R2"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_bang_4",
-      "attachmentName": "cos/hair_bang_4"
+      "slotName": "Base_hand_R_top2",
+      "attachmentName": "Base/Base_hand_R_top"
     },
     {
       "isEnabled": false,
-      "slotName": "hair_bang_2",
-      "attachmentName": "cos/hair_bang_3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_wire",
-      "attachmentName": "cos/cos_wire"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_hat",
-      "attachmentName": "cos/cos_hat"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_hand_bookR",
-      "attachmentName": "cos/book1 + hand"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_forearm_touch_L",
-      "attachmentName": "cos/hand_L3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_touch",
-      "attachmentName": "cos/touch"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "headband",
-      "attachmentName": "cos/headband"
+      "slotName": "Phase_1_Makeup_headband",
+      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_headband"
     }
   ]
 }

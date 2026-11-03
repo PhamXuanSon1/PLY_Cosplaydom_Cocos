@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum, Graphics, Color, UITransform, sp } from 'cc';
+import { _decorator, Component, Node, Vec3, CCString, CCBoolean, CCInteger, CCFloat, Enum, Graphics, Color, UITransform, sp, EventHandler } from 'cc';
 import { Character } from '../SpineScript/Character';
 import { FxType, Ply_SoundManager } from '../ScriptTemplate/Ply_SoundManager';
 import { CharacterManager } from '../Manager/CharacterManager';
@@ -124,6 +124,14 @@ export class MakeupTarget extends Component {
         tooltip: 'Bật cái này nếu CHỈ muốn tắt slot khi đã vẽ xong 100% (không làm mờ dần trong lúc vẽ).'
     })
     public turnOffOnlyWhenDone: boolean = false;
+
+    @property({
+        type: [EventHandler],
+        group: { name: '3. Turn Off Settings', id: 'turnOffSettings' },
+        displayName: 'On Applied Event',
+        tooltip: 'Gọi khi target này vừa vẽ xong 100% (VD: bật target của bước kế tiếp).'
+    })
+    public OnAppliedEvent: EventHandler[] = [];
 
     // ==========================================
     // 4. Status
@@ -369,6 +377,7 @@ export class MakeupTarget extends Component {
             if (this.currentDrawTimes >= targetMaxDraws) {
                 if (!this.isApplied) {
                     this.isApplied = true;
+                    EventHandler.emitEvents(this.OnAppliedEvent);
 
                     const drawItemMgr = (globalThis as any).DrawItemManager?.Instance || (window as any).DrawItemManager?.Instance;
                     let isIdCompleteInMap = true;

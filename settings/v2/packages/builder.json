@@ -23,5 +23,20 @@
         }
       }
     }
+  },
+  "splash-setting": {
+    "logo": {
+      "image": "project://settings/logo game (1).png",
+      "type": "custom"
+    },
+    "background": {
+      "color": {
+        "x": 0.9019607843137255,
+        "y": 0.8588235294117647,
+        "z": 0.9254901960784314,
+        "w": 1
+      },
+      "type": "color"
+    }
   }
 }
