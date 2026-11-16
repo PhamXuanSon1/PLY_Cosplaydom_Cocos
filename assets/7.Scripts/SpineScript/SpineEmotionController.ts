@@ -18,6 +18,13 @@ export class EmotonSlotConfig {
     })
 
     public requiredCurrentAttachment: string = "";
+
+    @property({
+        tooltip:
+            "BỎ QUA slot này nếu slot khác (tên ở đây) đang hiển thị. VD: base_lips bỏ qua khi cos_lip đang hiện, để chỉ lớp môi trên cùng đổi biểu cảm, 2 lớp môi không lệch nhau. Để trống = không kiểm tra.",
+    })
+    public skipIfSlotShowing: string = "";
+
     @property({
         tooltip:
             "(Không còn bắt buộc) Hết cảm xúc, slot tự trả về đúng trạng thái trước đó. Chỉ dùng khi muốn ép về 1 attachment cụ thể.",
@@ -56,6 +63,10 @@ export class SpineEmotionController extends Component {
 
     // slot -> attachment đang ép trong lúc có cảm xúc
     private overrides: Map<string, string> = new Map();
+    // Các slot mà animation cảm xúc có key attachment (VD 3.happy đổi miệng, 2.angry bật angry_emoji).
+    // Trong lúc cảm xúc chạy, Character phải nhường các slot này, nếu không nó ép lại attachment cũ mỗi frame
+    // và animation trông như không chạy.
+    private animSlots: Set<string> = new Set();
     private revertTimer: (() => void) | null = null;
 
     start() {
@@ -104,12 +115,22 @@ export class SpineEmotionController extends Component {
                 && currentName !== cfg.requiredCurrentAttachment) {
                 continue;
             }
+            if (cfg.skipIfSlotShowing && cfg.skipIfSlotShowing.trim() !== "") {
+                const other = skel.findSlot(cfg.skipIfSlotShowing.trim());
+                if (other && SpineEmotionController.readAttachmentName(other)) continue;
+            }
             this.overrides.set(cfg.slotName, cfg.targetAttachmentName);
         }
         // Đổi ngay trong frame này (không đợi tới lúc vẽ) để code khác đọc slot thấy đúng
         this.applyOverrides();
 
         if (animName) {
+            this.animSlots = SpineEmotionController.collectAttachmentSlots(skel, animName);
+            // Slot đã cấu hình trong Smile/Angry Slots thì do cấu hình quyết định (chỉ đổi khi slot đang hiện,
+            // đúng cặp attachment), không để key attachment của animation bật đè -> tránh 2 lớp môi lệch nhau.
+            for (const cfg of slots) {
+                if (cfg && cfg.slotName) this.animSlots.delete(cfg.slotName);
+            }
             const entry = skel.setAnimation(this.animationTrack, animName, false);
             if (entry) {
                 skel.setTrackCompleteListener(entry, () => {
@@ -133,6 +154,8 @@ export class SpineEmotionController extends Component {
             this.unschedule(this.revertTimer);
             this.revertTimer = null;
         }
+        // Nhả các slot do animation cảm xúc điều khiển -> Character ép lại trạng thái của nó từ frame sau
+        this.animSlots.clear();
         if (this.overrides.size === 0) return;
         const skel = this.skeletonAnimation;
         const character: any = this.getComponent("Character");
@@ -154,7 +177,36 @@ export class SpineEmotionController extends Component {
 
     /** Slot này đang bị cảm xúc ép attachment không (Character dùng để nhường slot). */
     public hasOverride(slotName: string): boolean {
-        return this.overrides.has(slotName);
+        return this.overrides.has(slotName) || this.animSlots.has(slotName);
+    }
+
+    /** Tên các slot mà animation có key attachment (hỗ trợ cả Spine bản JS lẫn WASM). */
+    private static collectAttachmentSlots(skel: sp.Skeleton, animName: string): Set<string> {
+        const result = new Set<string>();
+        try {
+            const skeleton: any = (skel as any)._skeleton;
+            const data: any = skeleton ? (skeleton.data ?? (typeof skeleton.getData === "function" ? skeleton.getData() : null)) : null;
+            if (!data) return result;
+            const anim: any = typeof data.findAnimation === "function" ? data.findAnimation(animName) : null;
+            if (!anim) return result;
+            const timelines: any = anim.timelines ?? (typeof anim.getTimelines === "function" ? anim.getTimelines() : null);
+            const slots: any = data.slots ?? (typeof data.getSlots === "function" ? data.getSlots() : null);
+            if (!timelines || !slots) return result;
+            const count = typeof timelines.size === "function" ? timelines.size() : timelines.length;
+            const slotCount = typeof slots.size === "function" ? slots.size() : slots.length;
+            for (let i = 0; i < count; i++) {
+                const tl: any = typeof timelines.get === "function" ? timelines.get(i) : timelines[i];
+                if (!tl) continue;
+                const names = tl.attachmentNames ?? (typeof tl.getAttachmentNames === "function" ? tl.getAttachmentNames() : undefined);
+                if (names === undefined) continue; // không phải AttachmentTimeline
+                const idx = tl.slotIndex ?? (typeof tl.getSlotIndex === "function" ? tl.getSlotIndex() : -1);
+                if (idx < 0 || idx >= slotCount) continue;
+                const slotData: any = typeof slots.get === "function" ? slots.get(idx) : slots[idx];
+                const name = slotData ? (slotData.name ?? (typeof slotData.getName === "function" ? slotData.getName() : null)) : null;
+                if (name) result.add(name);
+            }
+        } catch (e) { /* đọc data lỗi -> không nhường slot nào */ }
+        return result;
     }
 
     private applyOverrides(): void {

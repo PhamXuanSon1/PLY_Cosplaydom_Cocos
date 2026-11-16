@@ -312,9 +312,15 @@ export class HandHintManager extends Component {
 
         let nextItem: DrawItemController | null = null;
         let uncompletedItems: DrawItemController[] = [];
+        let hasHiddenItem = false;
 
         for (const item of config.orderedHintItems) {
             if (item == null) continue;
+            // Item chưa hiện (VD map mới đang đợi Complete Delay của map trước mới bật lên) -> chưa chỉ, thử lại sau
+            if (!item.node || !item.node.activeInHierarchy) {
+                if (!item.isCompleted) hasHiddenItem = true; // item đã xong rồi bị ẩn (VD snap xong) thì bỏ qua hẳn
+                continue;
+            }
             // Item còn khoá (chưa xong item yêu cầu) thì chưa chỉ tay vào
             if (!item.isUnlocked()) continue;
 
@@ -353,6 +359,15 @@ export class HandHintManager extends Component {
                 }
                 nextItem = uncompletedItems[0];
             }
+        }
+
+        if (nextItem == null && hasHiddenItem) {
+            // Còn item chưa hiện lên -> đếm lại, lát nữa thử tiếp thay vì tắt hint luôn
+            this.handIcon.active = false;
+            this.isCounting = true;
+            this.idleTime = 0;
+            this.currentStatus = 'Chờ item hiện lên rồi chỉ tay...';
+            return;
         }
 
         if (nextItem == null) {

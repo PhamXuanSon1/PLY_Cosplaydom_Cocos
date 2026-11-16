@@ -259,6 +259,11 @@ export class DrawInputManager extends Component {
             if (gameMgr && typeof gameMgr.GotoStore === 'function') {
                 gameMgr.GotoStore();
             }
+            // Hint vừa bị ẩn ở trên. Không trông vào onTouchEnd để bật lại: khi mở store
+            // (popup confirm ở preview / chuyển app trên máy) sự kiện thả tay có thể bị mất -> hint tắt luôn.
+            if (handHintMgr && typeof handHintMgr.ShowHintWithDelay === 'function') {
+                handHintMgr.ShowHintWithDelay();
+            }
             return;
         }
 
@@ -328,6 +333,9 @@ export class DrawInputManager extends Component {
     private onTouchMove(event: EventTouch): void {
         if (this.isPlayingIntro) return;
         if (!this.isClickFirst) return;
+        // Chế độ ra store: không kéo được gì. Nếu thả tay bị mất (popup store), engine tưởng vẫn đang giữ chuột
+        // -> mỗi lần rê chuột sẽ ẩn hint mà không bật lại. Bỏ qua để hint vẫn hiện.
+        if (this.isGoToStoreOnClickEnabled) return;
 
         const handHintMgr = HandHintManager.Instance || (globalThis as any).HandHintManager?.Instance || (window as any).HandHintManager?.Instance;
         if (handHintMgr && typeof handHintMgr.HideHintTemporarily === 'function') {
@@ -372,7 +380,10 @@ export class DrawInputManager extends Component {
     private getDrawTargets(event: EventTouch): MakeupTarget[] {
         const ctrl = this.currentDrawItemController;
         if (!ctrl || !ctrl.hitParticles || ctrl.hitParticles.length === 0) {
-            return this.raycastNodes(event, MakeupTarget, this.makeupTargetLayer);
+            // Bật "Hit At Tip Point": dò target tại đầu dao/cọ (Tip Point) thay vì ngón tay,
+            // vì khi kéo, item bị lệch khỏi ngón tay (VD dao cạo lông mày: lưỡi dao cách ngón tay ~150px).
+            const tipWorld = ctrl && ctrl.hitAtTipPoint && ctrl.tipPoint && ctrl.tipPoint.isValid ? ctrl.tipPoint.worldPosition.clone() : null;
+            return this.raycastNodes(event, MakeupTarget, this.makeupTargetLayer, tipWorld);
         }
 
         const results: MakeupTarget[] = [];
@@ -456,8 +467,9 @@ export class DrawInputManager extends Component {
         }
     }
 
-    private raycastNodes<T extends Component>(event: EventTouch, type: { new(): T }, layerMask: number = -1): T[] {
-        const uiWorldPos = (event as any).getUIWorldPosition ? (event as any).getUIWorldPosition() : event.getUILocation();
+    private raycastNodes<T extends Component>(event: EventTouch, type: { new(): T }, layerMask: number = -1, worldPoint: Vec3 | null = null): T[] {
+        // worldPoint: dò tại 1 điểm world cho trước (VD Tip Point của dao/cọ) thay vì vị trí ngón tay
+        const uiWorldPos = worldPoint ? worldPoint : ((event as any).getUIWorldPosition ? (event as any).getUIWorldPosition() : event.getUILocation());
         const touchWorldVec3 = new Vec3(uiWorldPos.x, uiWorldPos.y, 0);
         const touchVec2 = new Vec2(uiWorldPos.x, uiWorldPos.y);
         const results: T[] = [];

@@ -18,6 +18,16 @@
     },
     {
       "isEnabled": false,
+      "slotName": "cos_hairB",
+      "attachmentName": "cos_hairB"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_dye_Backhair",
+      "attachmentName": "cos_dye_Backhair"
+    },
+    {
+      "isEnabled": false,
       "slotName": "cos_tail_game_B",
       "attachmentName": "tail end game B"
     },
@@ -72,6 +82,16 @@
       "attachmentName": "cos_torso_armor_B"
     },
     {
+      "isEnabled": false,
+      "slotName": "cos_down body",
+      "attachmentName": "cos_down_body"
+    },
+    {
+      "isEnabled": true,
+      "slotName": "base_short",
+      "attachmentName": "body"
+    },
+    {
       "isEnabled": true,
       "slotName": "base_underwear",
       "attachmentName": "base_underwear"
@@ -105,21 +125,6 @@
       "isEnabled": true,
       "slotName": "base_Gloves_R",
       "attachmentName": "base_Gloves_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_hairB",
-      "attachmentName": "cos_hairB"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_dye_Backhair",
-      "attachmentName": "cos_dye_Backhair"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "cos_down body",
-      "attachmentName": "cos_down_body"
     },
     {
       "isEnabled": false,
@@ -203,6 +208,11 @@
     },
     {
       "isEnabled": false,
+      "slotName": "cos_hand_R",
+      "attachmentName": "cos_forearm_L"
+    },
+    {
+      "isEnabled": false,
       "slotName": "cos_forearm_scale_L",
       "attachmentName": "cos_forearm_scale_L"
     },
@@ -270,6 +280,11 @@
       "isEnabled": false,
       "slotName": "makeup_head_nangmui",
       "attachmentName": "makeup_nangmui"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_head_xoanepnhan",
+      "attachmentName": "makeup/makeup_xoanepnhan"
     },
     {
       "isEnabled": false,
@@ -402,7 +417,7 @@
       "attachmentName": "base_liner_upper_L"
     },
     {
-      "isEnabled": true,
+      "isEnabled": false,
       "slotName": "cos_lip",
       "attachmentName": "cos_lip"
     },
@@ -430,6 +445,16 @@
       "isEnabled": true,
       "slotName": "base_hairF",
       "attachmentName": "base_hairF"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base_eyebrow_L2",
+      "attachmentName": "base_brows_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "base_eyebrow_R2",
+      "attachmentName": "base_brows_L"
     },
     {
       "isEnabled": true,
@@ -640,6 +665,11 @@
       "isEnabled": false,
       "slotName": "angry_emoji",
       "attachmentName": "angry_emoji"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_hair_net",
+      "attachmentName": "cos/Hair_net"
     }
   ]
 }

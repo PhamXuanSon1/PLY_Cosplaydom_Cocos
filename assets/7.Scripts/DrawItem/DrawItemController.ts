@@ -125,6 +125,13 @@ export class DrawItemController extends Component {
 
     @property({
         group: { name: '2. Interaction Setup', id: 'interactionSetup' },
+        displayName: 'Hit At Tip Point',
+        tooltip: "BẬT: dò Makeup Target tại vị trí Tip Point (đầu dao/cọ) thay vì vị trí ngón tay.\nDùng cho item bị lệch khỏi ngón tay khi kéo và target nhỏ (VD dao cạo lông mày).\nTẮT: dò tại ngón tay như cũ."
+    })
+    public hitAtTipPoint: boolean = false;
+
+    @property({
+        group: { name: '2. Interaction Setup', id: 'interactionSetup' },
         displayName: 'Show Tip Point',
         tooltip: "Bật ô này để hiển thị 1 điểm đỏ (Red Dot) tại vị trí Tip Point để dễ dàng căn chỉnh trên Editor hoặc trong Game."
     })
