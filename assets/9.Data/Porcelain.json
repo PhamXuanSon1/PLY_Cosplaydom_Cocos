@@ -2,469 +2,644 @@
   "skeletonDataFileName": "Porcelain",
   "slotAttachmentPairs": [
     {
-      "isEnabled": true,
-      "slotName": "Base_Hair_back",
-      "attachmentName": "Base/Base_Hair_back"
+      "isEnabled": false,
+      "slotName": "frame impact",
+      "attachmentName": "frame impact"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_3_Hair_water_back",
-      "attachmentName": "Phase_3_Hair/Phase_3_Hair_water_back"
+      "slotName": "frame impact2",
+      "attachmentName": "frame impact"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_3_Hair_sampoo_back",
-      "attachmentName": "Phase_3_Hair/Phase_3_Hair_sampoo_back"
+      "slotName": "water fx",
+      "attachmentName": "water fx"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_3_Hair_back_final",
-      "attachmentName": "Phase_3_Hair/Phase_3_Hair_back"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Arm_L",
-      "attachmentName": "Base/Base_Arm_L"
+      "slotName": "cos_tail_game_B",
+      "attachmentName": "tail end game B"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Arm_R",
-      "attachmentName": "Base/Base_Arm_L"
+      "slotName": "base_arm_L",
+      "attachmentName": "base_arm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_hand_L",
-      "attachmentName": "Base/hand_L1"
+      "slotName": "base_arm_R",
+      "attachmentName": "base_arm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_hand_R",
-      "attachmentName": "Base/hand_L1"
+      "slotName": "base_forearm_L",
+      "attachmentName": "base_forearm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Leg_L",
-      "attachmentName": "Base/Base_Leg_L"
+      "slotName": "base_forearm_R",
+      "attachmentName": "base_forearm_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Leg_R",
-      "attachmentName": "Base/Base_Leg_L"
+      "slotName": "base_hand_L",
+      "attachmentName": "base_hand_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Body",
-      "attachmentName": "Base/Base_Body"
+      "slotName": "base_hand_R",
+      "attachmentName": "base_hand_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Underwear",
-      "attachmentName": "Base/Base_Underwear"
+      "slotName": "base_leg_L",
+      "attachmentName": "base_leg_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Shirt_R",
-      "attachmentName": "Set_Base/Set_Base_Shirt_L"
+      "slotName": "base_leg_R",
+      "attachmentName": "base_leg_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Shirt_L",
-      "attachmentName": "Set_Base/Set_Base_Shirt_L"
+      "slotName": "base_body",
+      "attachmentName": "body"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_torso_armor_B",
+      "attachmentName": "cos_torso_armor_B"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Shirt",
-      "attachmentName": "Set_Base/Set_Base_Shirt"
+      "slotName": "base_underwear",
+      "attachmentName": "base_underwear"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Trousers",
-      "attachmentName": "Set_Base/Set_Base_Trousers"
+      "slotName": "base_Shirt",
+      "attachmentName": "base_Shirt"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Sock_L",
-      "attachmentName": "Set_Base/Set_Base_Sock_L"
+      "slotName": "base_Overalls",
+      "attachmentName": "base_Overalls"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Sock_R",
-      "attachmentName": "Set_Base/Set_Base_Sock_L"
+      "slotName": "base_Boots_L",
+      "attachmentName": "base_Boots_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Shoe_L",
-      "attachmentName": "Set_Base/Set_Base_Shoe_L"
+      "slotName": "base_Boots_R",
+      "attachmentName": "base_Boots_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Shoe_R",
-      "attachmentName": "Set_Base/Set_Base_Shoe_L"
+      "slotName": "base_Gloves_L",
+      "attachmentName": "base_Gloves_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Necklace",
-      "attachmentName": "Set_Base/Set_Base_Necklace"
+      "slotName": "base_Gloves_R",
+      "attachmentName": "base_Gloves_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_hairB",
+      "attachmentName": "cos_hairB"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_dye_Backhair",
+      "attachmentName": "cos_dye_Backhair"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_down body",
+      "attachmentName": "cos_down_body"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_down_body_tatoo",
+      "attachmentName": "cos_down_body_tatoo"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Arm_fins_L",
+      "attachmentName": "cos_Arm_fins_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Arm_fins_R",
+      "attachmentName": "cos_Arm_fins_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_upper_body",
+      "attachmentName": "cos_upper_body"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_upper_body_scale_L",
+      "attachmentName": "cos_upper_body_scale"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_upper_body_scale_R",
+      "attachmentName": "cos_upper_body_scale"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Necklace",
+      "attachmentName": "cos_Necklace"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_tail_game_F",
+      "attachmentName": "tail end game F"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_shoulder_armor_stringB",
+      "attachmentName": "cos_shoulder_armor_stringB"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_shoulder_armor",
+      "attachmentName": "cos_shoulder_armor"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_shoulder_armor_string",
+      "attachmentName": "cos_shoulder_armor_string"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Belt",
+      "attachmentName": "cos_Belt"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_torso_armor",
+      "attachmentName": "cos_torso_armor"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_torso_armor_string",
+      "attachmentName": "cos_torso_armor_string"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_forearm_L",
+      "attachmentName": "cos_forearm_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_forearm_R",
+      "attachmentName": "cos_forearm_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_forearm_scale_L",
+      "attachmentName": "cos_forearm_scale_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_forearm_scale_R",
+      "attachmentName": "cos_forearm_scale_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Arm_brace",
+      "attachmentName": "cos_Arm_brace"
     },
     {
       "isEnabled": true,
-      "slotName": "Set_Base_Bracelet",
-      "attachmentName": "Set_Base/Set_Base_Bracelet"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Sock_L",
-      "attachmentName": "Set_Perona/Set_Perona_Sock_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Shoe_L",
-      "attachmentName": "Set_Perona/Set_Perona_Shoe_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Sock_R",
-      "attachmentName": "Set_Perona/Set_Perona_Sock_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Shoe_R",
-      "attachmentName": "Set_Perona/Set_Perona_Shoe_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Shirt_L",
-      "attachmentName": "Set_Perona/Set_Perona_Shirt_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Shirt_R",
-      "attachmentName": "Set_Perona/Set_Perona_Shirt_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Skirt",
-      "attachmentName": "Set_Perona/Set_Perona_Skirt"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Shirt",
-      "attachmentName": "Set_Perona/Set_Perona_Shirt"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Shirt_L2",
-      "attachmentName": "Set_Perona/Set_Perona_Shirt_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Shirt_R2",
-      "attachmentName": "Set_Perona/Set_Perona_Shirt_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Belt",
-      "attachmentName": "Set_Perona/Set_Perona_Belt"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Neck_bowtie",
-      "attachmentName": "Set_Perona/Set_Perona_Neck_bowtie"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Umbrella_3",
-      "attachmentName": "Set_Perona/Set_Perona_Umbrella_3"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Set_Perona_Umbrella_2",
-      "attachmentName": "Set_Perona/Set_Perona_Umbrella_2"
+      "slotName": "base_eye_B",
+      "attachmentName": "base_eyeB"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eye_White",
-      "attachmentName": "Base/Base_Eye_White"
+      "slotName": "base_ear_L",
+      "attachmentName": "base_ear_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Pupil_L",
-      "attachmentName": "Base/Base_Pupil_L"
+      "slotName": "base_purpil_L",
+      "attachmentName": "base_purpil_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_purpil_L",
+      "attachmentName": "cos_purpil_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Pupil_R",
-      "attachmentName": "Base/Base_Pupil_R"
+      "slotName": "base_purpil_R",
+      "attachmentName": "base_purpil_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Pupil_L",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Pupil_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Pupil_R",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Pupil_R"
+      "slotName": "cos_purpil_R",
+      "attachmentName": "cos_purpil_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Pupil_Light_L",
-      "attachmentName": "Base/Base_Pupil_Light_L"
+      "slotName": "base_ear_R",
+      "attachmentName": "base_ear_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Fishears_L",
+      "attachmentName": "cos/cos_Fishears_L"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_Fishears_R",
+      "attachmentName": "cos/cos_Fishears_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Pupil_Light_R",
-      "attachmentName": "Base/Base_Pupil_Light_R"
+      "slotName": "base_head",
+      "attachmentName": "base_head"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_head_nangmui",
+      "attachmentName": "makeup_nangmui"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_head_keomat",
+      "attachmentName": "makeup_head_keomat"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_conclear",
+      "attachmentName": "makeup_conclear"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_conclear_apply_1",
+      "attachmentName": "makeup_conclear_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_conclear_apply_2",
+      "attachmentName": "makeup_conclear_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_conclear_apply_3",
+      "attachmentName": "makeup_conclear_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_conclear_apply_4",
+      "attachmentName": "makeup_conclear_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_conclear_apply_5",
+      "attachmentName": "makeup_conclear_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_conclear_apply_6",
+      "attachmentName": "makeup_conclear_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_Contour",
+      "attachmentName": "makeup_Contour"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_contour_apply_1",
+      "attachmentName": "makeup_contour_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_contour_apply_2",
+      "attachmentName": "makeup_contour_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_contour_apply_3",
+      "attachmentName": "makeup_contour_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_contour_apply_4",
+      "attachmentName": "makeup_contour_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_contour_apply_5",
+      "attachmentName": "makeup_contour_apply"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_face_tatoo",
+      "attachmentName": "makeup_face_tatoo"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_blush",
+      "attachmentName": "makeup_blush"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_Highlight",
+      "attachmentName": "makeup_Highlight"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Head",
-      "attachmentName": "Base/Base_Head"
+      "slotName": "base_lips",
+      "attachmentName": "base_lip1"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_dirty",
-      "attachmentName": "Base/Base_dirty"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Water",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Water"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Cleanser_apply",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Cleanser_apply"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Cleanser",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Cleanser"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Foundation_apply",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Foundation_apply"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Foundation",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Foundation"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Contour_apply",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Contour_apply"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Conclear_apply",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Conclear_apply"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Contour",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Contour"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Blush",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Blush"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eyeshadow_L",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyeshadow"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eyeshadow_R",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyeshadow"
+      "slotName": "base_lower_lid_L",
+      "attachmentName": "base_lower_lid_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eye_close_R2",
-      "attachmentName": "Base/Base_Eye_close_R2"
+      "slotName": "base_lower_lid_R",
+      "attachmentName": "base_lower_lid_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eye_close_L2",
-      "attachmentName": "Base/Base_Eye_close_R2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eye_close_R2",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eye_close_R2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eye_close_L2",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eye_close_R2"
+      "slotName": "base_upper_lid_L",
+      "attachmentName": "base_upper_lid_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eyelid_R2",
-      "attachmentName": "Base/Base_Eyelid_R2"
+      "slotName": "base_upper_lid_R",
+      "attachmentName": "base_upper_lid_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eyelid_L2",
-      "attachmentName": "Base/Base_Eyelid_R2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eyelid_R2",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyelid_R2"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eyelid_L2",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyelid_R2"
+      "slotName": "base_liner_down_L",
+      "attachmentName": "base_liner_down_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eye_close_R1",
-      "attachmentName": "Base/Base_Eye_close_R1"
+      "slotName": "base_liner_down_R",
+      "attachmentName": "base_liner_down_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eye_close_L1",
-      "attachmentName": "Base/Base_Eye_close_R1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eye_close_R1",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eye_close_R1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eye_close_L1",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eye_close_R1"
+      "slotName": "base_liner_upper_L",
+      "attachmentName": "base_liner_upper_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eyelid_R1",
-      "attachmentName": "Base/Base_Eyelid_R1"
+      "slotName": "base_liner_upper_R",
+      "attachmentName": "base_liner_upper_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Eyelid_L1",
-      "attachmentName": "Base/Base_Eyelid_R1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eyelid_R1",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyelid_R1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Eyelid_L1",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Eyelid_R1"
+      "slotName": "cos_lip",
+      "attachmentName": "cos_lip"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Lips",
-      "attachmentName": "Base/Base_Lip_1"
+      "slotName": "base_Beard",
+      "attachmentName": "base_Beard"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_Beard_shaving_scream",
+      "attachmentName": "makeup_Beard_shaving_scream"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Brow_L",
-      "attachmentName": "Base/Base_Brow_L"
+      "slotName": "base_Mustache",
+      "attachmentName": "base_Mustache"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "makeup_Mustache_shaving_scream",
+      "attachmentName": "makeup_Mustache_shaving_scream"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Brow_R",
-      "attachmentName": "Base/Base_Brow_R"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_mascara_R",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_mascara_R"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_mascara_L",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_mascara_R"
+      "slotName": "base_hairF",
+      "attachmentName": "base_hairF"
     },
     {
       "isEnabled": true,
-      "slotName": "Phase_1_Makeup_Lips",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Lip_1"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Brow_L",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Brow_L"
-    },
-    {
-      "isEnabled": false,
-      "slotName": "Phase_1_Makeup_Brow_R",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_Brow_R"
+      "slotName": "base_brows_L",
+      "attachmentName": "base_brows_L"
     },
     {
       "isEnabled": true,
-      "slotName": "Base_Hair_top",
-      "attachmentName": "Base/Base_Hair_top"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Base_Hair_bang",
-      "attachmentName": "Base/Base_Hair_bang"
-    },
-    {
-      "isEnabled": true,
-      "slotName": "Set_Base_Hairclip",
-      "attachmentName": "Set_Base/Set_Base_Hairclip"
+      "slotName": "base_brows_R",
+      "attachmentName": "base_brows_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_3_Hair_water_top",
-      "attachmentName": "Phase_3_Hair/Phase_3_Hair_water_top"
+      "slotName": "cos_Eyebrow_L",
+      "attachmentName": "cos_Eyebrow_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_3_Hair_sampoo_top",
-      "attachmentName": "Phase_3_Hair/Phase_3_Hair_sampoo_top"
+      "slotName": "cos_Eyebrow_R",
+      "attachmentName": "cos_Eyebrow_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_3_Hair_tiedhair",
-      "attachmentName": "Phase_3_Hair/Phase_3_Hair_tiedhair"
+      "slotName": "cos_eyeliner_bot_L",
+      "attachmentName": "cos_eyeliner_bot_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_3_Hair_cap",
-      "attachmentName": "Phase_3_Hair/Phase_3_Hair_cap"
+      "slotName": "cos_eyeliner_bot_R",
+      "attachmentName": "cos_eyeliner_bot_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_3_Hair_top_final",
-      "attachmentName": "Phase_3_Hair/Phase_3_Hair_top"
+      "slotName": "cos_eyeliner_top_L",
+      "attachmentName": "cos_eyeliner_top_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Perona_Crown",
-      "attachmentName": "Set_Perona/Set_Perona_Crown"
+      "slotName": "cos_eyeliner_top_R",
+      "attachmentName": "cos_eyeliner_top_L"
     },
     {
       "isEnabled": false,
-      "slotName": "Set_Perona_Umbrella_1",
-      "attachmentName": "Set_Perona/Set_Perona_Umbrella_1"
+      "slotName": "cos_hairF4",
+      "attachmentName": "cos_hairF4"
     },
     {
       "isEnabled": false,
-      "slotName": "Base_hand_R_top",
-      "attachmentName": "Base/Base_hand_R2"
+      "slotName": "cos_dye_hairF3",
+      "attachmentName": "cos_dye_hairF3"
     },
     {
       "isEnabled": false,
-      "slotName": "Base_hand_R_top2",
-      "attachmentName": "Base/Base_hand_R_top"
+      "slotName": "cos_Crown",
+      "attachmentName": "cos_Crown"
     },
     {
       "isEnabled": false,
-      "slotName": "Phase_1_Makeup_headband",
-      "attachmentName": "Phase_1_Makeup/Phase_1_Makeup_headband"
+      "slotName": "cos_hairF2",
+      "attachmentName": "cos_hairF2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_dye_hairF2",
+      "attachmentName": "cos_dye_hairF2"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_hairF1",
+      "attachmentName": "cos_hairF1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_dye_hairF1",
+      "attachmentName": "cos_dye_hairF1"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_armL_endgame",
+      "attachmentName": "cos_armL_endgame"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_armR_endgame",
+      "attachmentName": "cos_armR_endgame"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_handR_endgame",
+      "attachmentName": "cos_handR_endgame"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "Trident",
+      "attachmentName": "Trident"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_handR_endgame2",
+      "attachmentName": "cos_handR_endgame"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "cos_handL_endgame",
+      "attachmentName": "cos_handL_endgame"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "water fish",
+      "attachmentName": "water fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "water fx F",
+      "attachmentName": "water fx F"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish4",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish16",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish10",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish8",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish20",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish14",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish5",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish17",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish11",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish6",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish18",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish12",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish7",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish19",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish13",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish9",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish21",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "small fish15",
+      "attachmentName": "small fish"
+    },
+    {
+      "isEnabled": false,
+      "slotName": "angry_emoji",
+      "attachmentName": "angry_emoji"
     }
   ]
 }

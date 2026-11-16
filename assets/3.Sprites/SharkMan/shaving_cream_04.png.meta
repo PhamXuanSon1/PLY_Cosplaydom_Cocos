@@ -11,7 +11,7 @@
     "6c48a": {
       "importer": "texture",
       "uuid": "9f2051d0-33ae-4063-96b6-04ea4193b44b@6c48a",
-      "displayName": "exec-86012265-900f-4ce0-952d-bdf43df43865",
+      "displayName": "shaving_cream_04",
       "id": "6c48a",
       "name": "texture",
       "userData": {
@@ -35,20 +35,20 @@
     "f9941": {
       "importer": "sprite-frame",
       "uuid": "9f2051d0-33ae-4063-96b6-04ea4193b44b@f9941",
-      "displayName": "exec-86012265-900f-4ce0-952d-bdf43df43865",
+      "displayName": "shaving_cream_04",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
         "trimThreshold": 1,
         "rotated": false,
-        "offsetX": -7,
-        "offsetY": 13.5,
-        "trimX": 0,
-        "trimY": 5,
-        "width": 851,
-        "height": 1782,
-        "rawWidth": 865,
-        "rawHeight": 1819,
+        "offsetX": 1.5,
+        "offsetY": 1,
+        "trimX": 7,
+        "trimY": 3,
+        "width": 114,
+        "height": 255,
+        "rawWidth": 125,
+        "rawHeight": 263,
         "borderTop": 0,
         "borderBottom": 0,
         "borderLeft": 0,
@@ -60,17 +60,17 @@
         "meshType": 0,
         "vertices": {
           "rawPosition": [
-            -425.5,
-            -891,
+            -57,
+            -127.5,
             0,
-            425.5,
-            -891,
+            57,
+            -127.5,
             0,
-            -425.5,
-            891,
+            -57,
+            127.5,
             0,
-            425.5,
-            891,
+            57,
+            127.5,
             0
           ],
           "indexes": [
@@ -82,33 +82,33 @@
             3
           ],
           "uv": [
-            0,
-            1814,
-            851,
-            1814,
-            0,
-            32,
-            851,
-            32
+            7,
+            260,
+            121,
+            260,
+            7,
+            5,
+            121,
+            5
           ],
           "nuv": [
-            0,
-            0.017592083562396922,
-            0.9838150289017341,
-            0.017592083562396922,
-            0,
-            0.9972512369433755,
-            0.9838150289017341,
-            0.9972512369433755
+            0.056,
+            0.019011406844106463,
+            0.968,
+            0.019011406844106463,
+            0.056,
+            0.9885931558935361,
+            0.968,
+            0.9885931558935361
           ],
           "minPos": [
-            -425.5,
-            -891,
+            -57,
+            -127.5,
             0
           ],
           "maxPos": [
-            425.5,
-            891,
+            57,
+            127.5,
             0
           ]
         },

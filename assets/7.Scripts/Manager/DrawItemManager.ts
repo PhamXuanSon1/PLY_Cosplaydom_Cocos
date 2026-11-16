@@ -49,6 +49,12 @@ export class MapMakeupConfig {
         tooltip: 'Chạy khi hoàn thành toàn bộ map (thường dùng để chuyển sang map tiếp theo)'
     })
     public OnMapCompleted: EventHandler[] = [];
+
+    @property({
+        displayName: 'Complete Delay',
+        tooltip: 'Số giây chờ trước khi chạy On Map Completed (VD: đợi animation của item cuối chạy xong rồi mới tắt map). 0 = chạy ngay.'
+    })
+    public completeDelay: number = 0;
 }
 
 /** Cách thưởng Heart + anim vui. */
@@ -317,7 +323,11 @@ export class DrawItemManager extends Component {
         this.currentMapIndex++;
         this.updateMapStatusDisplay();
 
-        EventHandler.emitEvents(currentConfig.OnMapCompleted);
+        if (currentConfig.completeDelay > 0) {
+            this.scheduleOnce(() => EventHandler.emitEvents(currentConfig.OnMapCompleted), currentConfig.completeDelay);
+        } else {
+            EventHandler.emitEvents(currentConfig.OnMapCompleted);
+        }
 
         return true;
     }
